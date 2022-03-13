@@ -166,7 +166,7 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                             <li className="nav_letter1"><NavLink className="link_letter" to="nftStaking">sNFT  Staking</NavLink></li>
                             <li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking">SHOE Staking</NavLink></li>
                             <li className="nav_letter"><NavLink className="link_letter" to="nftFarming">Farm</NavLink></li>
-                            <li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking2">Booster NFTs</NavLink></li>
+                            <li className="nav_letter"><NavLink className="link_letter" to="boosterNFT">Booster NFTs</NavLink></li>
                             <li className="nav_letter">
                                 <select className="networkselect"
                                     value={this.props.wallet.getChainId()}

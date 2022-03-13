@@ -341,3 +341,9 @@
 .link_letter:hover{
 	text-decoration: none;
 }
+
+
+.link_letterFarm{
+	position: relative;
+	display: inline-block;
+}

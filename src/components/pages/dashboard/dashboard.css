@@ -125,6 +125,66 @@
 }
 
 
+/* .dropbtn {
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+} */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    height: 148px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+
+/* left: 72.81%;
+right: 12.6%;
+top: 1.85%;
+bottom: 93.87%; */
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    /* left: 0%;
+    right: 0%;
+    top: 30px; */
+    left: 72.81%;
+    right: 12.6%;
+    top: 1.85%;
+    bottom: 93.87%;
+    background-color: #120059;
+    width: 280px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    height: 74px;
+    /* font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px; */
+    z-index: 1;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #26325C;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
 @keyframes star1 {
     from {
@@ -177,13 +237,13 @@
 }
 
 @media (max-width: 990px) {
-	.main-img {
-		width : 400px!important;
-	}
-    .main{
+    .main-img {
+        width: 400px!important;
+    }
+    .main {
         transform: rotateX(-15deg);
     }
-    .title{
+    .title {
         padding-top: 400px!important;
     }
     @keyframes example {
@@ -202,19 +262,19 @@
 }
 
 @media (max-width: 668px) {
-	.main-img {
-		width : 300px!important;
-	}
-    .main{
+    .main-img {
+        width: 300px!important;
+    }
+    .main {
         transform: rotateX(-25deg);
     }
-    .title{
+    .title {
         padding-top: 280px!important;
         font-size: 50px!important;
     }
-    .main>div{
-        width : 70px!important;
-        left : -35px!important;
+    .main>div {
+        width: 70px!important;
+        left: -35px!important;
     }
     @keyframes example {
         0% {
