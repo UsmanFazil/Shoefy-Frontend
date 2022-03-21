@@ -14,7 +14,7 @@ import FoxImg from '../../../images/fox.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation ,useHistory} from 'react-router-dom';
 
 import { Footer } from '../footer';
 
@@ -36,12 +36,12 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
 
     constructor(props: DashboardProps) {
         super(props);
-
         this.connectWallet = this.connectWallet.bind(this);
         this.disconnectWallet = this.disconnectWallet.bind(this);
     }
 
     async componentDidMount() {
+        console.log("Value of useLocation",useLocation)
         if (window.ethereum) {
             const accounts = await window.ethereum
                 .request({ method: 'eth_accounts' })
@@ -103,7 +103,19 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
             this._timeout = setTimeout(async () => await self.loop.call(self), 1000);
         }
     }
+
     private async updateOnce(): Promise<boolean> {
+        const shoefy = this.readState().shoefy;
+
+        this.updateState({
+            address: this.props.wallet._address,
+            accountEllipsis: this.props.wallet._address ? `${this.props.wallet._address.substring(0, 4)}...${this.props.wallet._address.substring(this.props.wallet._address.length - 4)}` : '___'
+        });
+
+        return true;
+    }
+
+    private async ChangeRoute(): Promise<boolean> {
         const shoefy = this.readState().shoefy;
 
         this.updateState({
@@ -119,6 +131,8 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
 
         const t: TFunction<"translation"> = this.readProps().t;
         const state = this.readState();
+
+
 
         const accountEllipsis = this.props.wallet._address ? `${this.props.wallet._address.substring(0, 4)}...${this.props.wallet._address.substring(this.props.wallet._address.length - 4)}` : '___';
         return (
@@ -144,8 +158,8 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                                 <div className="dropdown">
                                     <NavLink className="link_letter dropbtn " to="nftFarming">Farm</NavLink>
                                     <div className="dropdown-content">
-                                        <a href="#">General Farming</a>
-                                        <a href="#">Rapid Farming</a>
+                                        <NavLink className="anchor" to="nftFarming">General Farming</NavLink>
+                                        <NavLink className="anchor" to="nftFarming">Rapid Farming</NavLink>
                                     </div>
                                 </div>
 

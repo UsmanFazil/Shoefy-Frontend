@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { NotificationManager } from 'react-notifications';
-
+``
 export abstract class BaseComponent<TProps, TState> extends Component<TProps, TState> {
 
 	protected constructor(props: TProps) {
@@ -24,6 +24,7 @@ export abstract class BaseComponent<TProps, TState> extends Component<TProps, TS
 
 export interface ComponentRef extends Function { new(...args: any[]): Component; }
 
+//Make interface like this
 export interface IShellPage {
 	id: String;
 	title: String;

@@ -207,7 +207,6 @@
 
 .user-info-body div span {
 	font-size: 14px !important;
-	color: #08F2F1;
 }
 
 @media (max-width: 900px) {
@@ -290,8 +289,6 @@
 	/* background-color: #020742; */
 	margin-bottom: 20px;
 	flex-direction: column;
-
-	
 }
 
 .each_up{
@@ -393,8 +390,6 @@
 	text-align: left !important;
 	margin-bottom: 0 !important;
 }
-
-
 
 .nftdetail{
 	display : flex;

@@ -15,6 +15,7 @@
         "viewonbscscan": "View on BSCscan",
         "copyright": "ShoeFy Staking 2021+"
     },
+    
     "staking": {
         "connect_wallet": "Connect Wallet",
         "disconnect_wallet": "Disconnect Wallet",
@@ -44,5 +45,72 @@
             "amount": "Amount of tokens to unstake:",
             "claim_rewards": "Claim rewards"
         }
+    },
+
+    "NFTFarming": {
+        "GeneralFarming": {
+            "title": "General Farming",
+            "description": "Stake your SHOE tokens to farm sNFTs of your choice",
+            "amount": "Amount of tokens to stake:",
+            "claim_rewards": "Claim rewards"
+        },
+        "RapidFarming": {
+            "title": "Rapid Farming",
+            "description": "Stake extra SHOE tokens to farm sNFTs of your choice in a short duration",
+            "amount": "Amount of tokens to unstake:",
+            "claim_rewards": "Claim rewards"
+        }
+    },
+
+    "ExpandingRow": {
+            "CommonNFT":{
+                "title":"Common sNFT",
+                "Image_Path":"./ExpandableImage/Common.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "UniqueNFT":{
+                "title":"Unique sNFT",
+                "Image_Path":"./ExpandableImage/Unique.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "RaresNFT":{
+                "title":"Rare sNFT",
+                "Image_Path":"./ExpandableImage/Rare.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "EpicsNFT":{
+                "title":"Epic sNFT",
+                "Image_Path":"./ExpandableImage/Epic.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "LegendaryNFT":{
+                "title":"Legendary sNFT",
+                "Image_Path":"./ExpandableImage/Legendary.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "MythicGodsNFT":{
+                "title":"Mythic God sNFT",
+                "Image_Path":"./ExpandableImage/MythicGodsNFT.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "MythicDevilsNFT":{
+                "title":"Mythic Devil sNFT",
+                "Image_Path":"./ExpandableImage/MythicDevilsNFT.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            },
+            "MythicAliensNFT":{
+                "title":"Mythic Alien sNFT",
+                "Image_Path":"./ExpandableImage/MythicAliensNFT.svg",
+                "stakeAmount": "Tokens to stake",
+                "lockUpDuration": "Lockup Duration"
+            }
+            
     }
 }
