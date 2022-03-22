@@ -22,7 +22,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ExpandableComponentMain from "./Common/expandableComponent";
 //  "./Model";
 import ModelComponentMain from "./Common/Model";
@@ -34,10 +34,7 @@ import { Footer } from "./footer";
 import "../shellNav.css";
 import "../shellNav.icons.css";
 
-import image from "../../images/CommonNFT.svg";
-import down from "../../images/down.png";
 import mark from "../../../src/images/mark.png";
-import { flexbox } from "@mui/system";
 
 export type StakingProps = {};
 
@@ -58,32 +55,10 @@ export type StakingState = {
   // actual set values
   address?: string;
   balance?: number;
-  stakedBalance?: number;
-  stakedBalance2?: Array;
-  pendingRewards?: number;
-  pendingRewards2?: Array;
-  claimedRewards?: number;
-  claimedRewards2?: Array;
-  lockedBalance2?: number;
-  unstakeBlanace2?: Array;
-  tokencaps2?: Array;
-
-  apr?: number;
-  allowance: number;
-  allowance2: number;
 
   // values pending to be set
-  ctPercentageStake?: number;
-  ctValueStake?: number;
-  ctValueStake2?: Array;
-  ctPercentageUnstake?: number;
-  ctValueUnstake?: number;
-  ctValueUnstake2?: Array;
   pending?: boolean;
-
   approveFlag: boolean;
-  totalclaim: number;
-  unstakable: Array;
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -114,9 +89,11 @@ class nftFarmingComponent extends BaseComponent<
     this.handleInputUnstake = this.handleInputUnstake.bind(this);
     this.connectWallet = this.connectWallet.bind(this);
     this.disconnectWallet = this.disconnectWallet.bind(this);
+
     this.state = {
       approveFlag: false,
       approveFlag1: false,
+      activeTab: " "
     };
   }
 
@@ -141,121 +118,15 @@ class nftFarmingComponent extends BaseComponent<
   }
 
   async confirmStake(step): Promise<void> {
-    if (step >= 0) {
-      try {
-        const state = this.readState();
-        console.log(state.unstakeBlanace2[step]);
-        const dates = [30, 60, 90];
-        if (state.unstakeBlanace2[step] != 0) {
-          NotificationManager.warning(
-            `You already staked in ${dates[step]}days`
-          );
-          return;
-        }
-        if (state.tokencaps2[step] < state.ctValueStake2[step]) {
-          NotificationManager.warning(
-            "Staking Balance exceeds Token Cap amount"
-          );
-          return;
-        }
-        if (state.ctValueStake2[step] >= 0) {
-          this.updateState({ pending: true });
-          console.log("ctVa:", state.ctValueStake2[step]);
-          await state.shoefy.stake2(state.ctValueStake2[step], step);
-          document.getElementById("modalswitch2").click();
-        } else {
-          NotificationManager.warning("Can't stake a negative amount.");
-          return;
-        }
-
-        this.updateState({ pending: false });
-        this.updateOnce(true).then();
-      } catch (e) {
-        this.updateState({ pending: false });
-        this.handleError(e);
-      }
-    } else {
-      try {
-        const state = this.readState();
-        this.updateState({ pending: true });
-
-        if (state.ctValueStake >= 0) {
-          //console.log("ctVa:", state.ctValueStake);
-          await state.shoefy.stake(state.ctValueStake);
-
-          document.getElementById("modalswitch2").click();
-        } else {
-          NotificationManager.warning("Can't stake a negative amount.");
-          return;
-        }
-
-        this.updateState({ pending: false });
-        this.updateOnce(true).then();
-      } catch (e) {
-        this.updateState({ pending: false });
-        this.handleError(e);
-      }
-    }
-  }
-
-  async confirmUnstake(step): Promise<void> {
-    try {
-      const state = this.readState();
-      if (state.unstakable[step] < 0) {
-        NotificationManager.warning("Staking period not matured!");
-        return;
-      }
-      if (Number(state.ctValueUnstake2[step]) > 0) {
-        this.updateState({ pending: true });
-
-        await state.shoefy.withdraw(step);
-        document.getElementById("modalswitch3").click();
-      } else {
-        NotificationManager.warning("Can't unstake a negative amount.");
-        return;
-      }
-
-      this.updateState({ pending: false });
-      this.updateOnce(true).then();
-    } catch (e) {
-      this.updateState({ pending: false });
-      this.handleError(e);
-    }
-  }
-
-  async confirmClaim(): Promise<void> {
-    try {
-      const state = this.readState();
-      this.updateState({ pending: true });
-
-      await state.shoefy.claim();
-
-      this.updateState({ pending: false });
-      this.updateOnce(true).then();
-    } catch (e) {
-      this.updateState({ pending: false });
-      this.handleError(e);
-    }
-  }
-
-  async confirmApprove(step): Promise<void> {
-    try {
-      const state = this.readState();
-      this.updateState({ pending: true });
-      let flag;
-      let temp =
-        "115792089237316195423570985008687907853269984665640564039457584007913129639935";
-      if (step >= 0) {
-        flag = await state.shoefy.approve2(temp);
-        this.updateState({ pending: false, approveFlag1: flag.status });
-      } else {
-        flag = await state.shoefy.approve(temp);
-        this.updateState({ pending: false, approveFlag: flag.status });
-      }
-    } catch (e) {
-      this.updateState({ pending: false });
-      this.handleError(e);
-    }
+    const state = this.readState();
+    this.updateState({ pending: false });
+    this.updateOnce(true).then();
+    document.getElementById("modalswitch2").click();
+    document.getElementById("modalswitch3").click();
+    NotificationManager.warning("Can't stake a negative amount.");
+    // understand confirmUnstake
+    // understand confirmClaim
+    //understand confirmApprove
   }
 
   componentWillUnmount() {
@@ -266,6 +137,13 @@ class nftFarmingComponent extends BaseComponent<
   }
 
   async componentDidMount() {
+    const urlValue = window.location.hash;
+    const hash = urlValue.replace("#", "");
+    console.log("Hash value", hash);
+    this.setState({ activeTab: hash });
+
+    console.log(this.state.activeTab);
+
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
@@ -303,39 +181,13 @@ class nftFarmingComponent extends BaseComponent<
         }
         if (resetCt) {
           this.updateState({
-            ctPercentageStake: 0,
-            ctValueStake: 0,
-            ctValueStake2: [],
-            ctPercentageUnstake: 0,
-            ctValueUnstake: 0,
-            ctValueUnstake2: [],
             address: this.props.wallet._address,
             balance: shoefy.balance,
-            claimedRewards: shoefy.claimRewards,
-            stakedBalance: shoefy.stakedBalance,
-            stakedBalance2: shoefy.stakedBalance2,
-            allowance: shoefy.allowance,
-            allowance2: shoefy.allowance2,
-            pendingRewards: shoefy.pendingStakeRewards,
-            pendingRewards2: shoefy.pendingRewards2,
-            claimedRewards2: shoefy.claimedRewards2,
-            lockedBalance2: shoefy.lockedBalance2,
-            unstakeBlanace2: shoefy.unstakeBlanace2,
-            tokencaps2: shoefy.tokencaps,
-            apr: shoefy.apr,
-            totalclaim: shoefy.totalclaim,
-            unstakable: shoefy.unstakable,
           });
         } else {
           this.updateState({
             address: this.props.wallet._address,
             balance: shoefy.balance,
-            stakedBalance: shoefy.stakedBalance,
-            stakedBalance2: shoefy.stakedBalance2,
-            allowance: shoefy.allowance,
-            allowance2: shoefy.allowance2,
-            pendingRewards: shoefy.pendingStakeRewards,
-            apr: shoefy.apr,
           });
         }
       } catch (e) {
@@ -385,85 +237,17 @@ class nftFarmingComponent extends BaseComponent<
       }
 
       this.updateState({
-        ctPercentageStake: 0,
-        ctValueStake: 0,
-        ctPercentageUnstake: 0,
-        ctValueUnstake: 0,
         shoefy: null,
         wallet: null,
         address: null,
         looping: false,
         pending: false,
         balance: 0,
-        stakedBalance: 0,
-        apr: 0,
       });
     } catch (e) {
       this.updateState({ pending: false });
       this.handleError(e);
     }
-  }
-
-  setStakePercentage(step, percent) {
-    const r = this.readState().shoefy;
-    if (!r) return;
-
-    const p = Math.max(0, Math.min(+(percent || 0), 100));
-    const v = Math.min(r.balance * (p * 0.01), r.balance * 1);
-    this.setStakeValue(step, v);
-  }
-
-  setUnStakePercentage(percent) {
-    const r = this.readState().stakedBalance;
-    if (!r) return;
-
-    const p = Math.max(0, Math.min(+(percent || 0), 100));
-    const v = Math.min(r * (p * 0.01), r * 1);
-
-    this.updateState({
-      ctValueUnstake: v,
-    });
-  }
-
-  setUnstake2Max(step) {
-    let temp = this.readState().ctValueUnstake2;
-    temp[step] = this.readState().unstakeBlanace2[step];
-    this.updateState({ ctValueUnstake2: temp });
-  }
-
-  setStakeValue(step, value) {
-    const r = this.readState().shoefy;
-    if (!r) return;
-
-    const t = r.balance;
-    const v = Math.max(0, Math.min(+(value || 0), r.balance));
-    if (step == -1)
-      this.updateState({
-        ctPercentageStake: Math.floor((100 * v) / t),
-        ctValueStake: v,
-      });
-    else {
-      const temp = this.readState().ctValueStake2;
-
-      temp[step] = v;
-      this.updateState({
-        ctPercentageStake: Math.floor((100 * v) / t),
-        ctValueStake2: temp,
-      });
-      console.log(
-        this.readState().ctValueStake2[0],
-        this.readState().ctValueStake2[1]
-      );
-    }
-  }
-  setUnstakeValue(value) {
-    const v = Math.max(
-      0,
-      Math.min(+(value || 0), this.readState().stakedBalance)
-    );
-    this.updateState({
-      ctValueUnstake: v,
-    });
   }
 
   show_detail(index) {
@@ -495,6 +279,7 @@ class nftFarmingComponent extends BaseComponent<
           this.props.wallet._address.length - 4
         )}`
       : "___";
+
     return (
       <div>
         {/* Nav Bar */}
@@ -614,7 +399,10 @@ class nftFarmingComponent extends BaseComponent<
                             role="tab"
                             data-bs-toggle="tab"
                             className="nav-link active"
-                            href="#ctl-stake"
+                            href="#ctl-sidra"
+                            onClick={() => {
+                              this.setState({ activeTab: "general" });
+                            }}
                           >
                             {t("NFTFarming.GeneralFarming.title")}
                           </a>
@@ -624,7 +412,10 @@ class nftFarmingComponent extends BaseComponent<
                             role="tab"
                             data-bs-toggle="tab"
                             className="nav-link"
-                            href="#ctl-unstake"
+                            href="#ctl-tariq"
+                            onClick={() => {
+                              this.setState({ activeTab: "rapid" });
+                            }}
                           >
                             {t("NFTFarming.RapidFarming.title")}
                           </a>
@@ -633,9 +424,13 @@ class nftFarmingComponent extends BaseComponent<
 
                       {/* from here */}
                       <div className="tab-content">
+                        first div
                         <div
                           role="tabpanel"
-                          className="tab-pane active"
+                          className={`tab-pane ${
+                            this.state.activeTab === "general" ? "active" : ""
+                          }`}
+                          // className="tab-pane active"
                           id="ctl-stake"
                         >
                           {/* Here is the General Tab */}
@@ -676,9 +471,12 @@ class nftFarmingComponent extends BaseComponent<
                         </div>
 
                         {/* Other Tab starts */}
+                        second
                         <div
                           role="tabpanel"
-                          className="tab-pane"
+                          className={`tab-pane ${
+                            this.state.activeTab === "rapid" ? "active" : ""
+                          }`}
                           id="ctl-unstake"
                         >
                           {/* Here is the rapid tab */}
@@ -718,8 +516,6 @@ class nftFarmingComponent extends BaseComponent<
                         </div>
                       </div>
                       {/* to there */}
-                      
-
                     </div>
                   </div>
                 </FadeInRightDiv>
@@ -755,14 +551,14 @@ class nftFarmingComponent extends BaseComponent<
                     }}
                     disabled={state.pending}
                     type="button"
-                    onClick={async () => console.log("Clicked Your Farms ")}
+                    onClick={async () => this.confirmStake(1)}
+                    // onClick={async () => console.log("Clicked Your Farms ")}
                   >
                     Your Farms
                   </button>
                 </div>
                 <ExpandableComponentMain />
               </div>
-
             </div>
             <NotificationContainer />
           </div>

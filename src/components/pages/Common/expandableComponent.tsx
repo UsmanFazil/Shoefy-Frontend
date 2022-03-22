@@ -262,7 +262,7 @@ class expandableComponent extends BaseComponent<
                 {/* It is another row to show to salman */}
 						    {/* <h2>{ t('ExpandingRow.CommonNFT.Image_Path')}</h2> */}
 
-                <div
+                {/* <div
                   className="expandable_each_element"
                   style={{ transition: "0.3s" }}
                 >
@@ -325,7 +325,7 @@ class expandableComponent extends BaseComponent<
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {/* Remove till here */}
                 

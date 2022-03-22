@@ -132,8 +132,6 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
         const t: TFunction<"translation"> = this.readProps().t;
         const state = this.readState();
 
-
-
         const accountEllipsis = this.props.wallet._address ? `${this.props.wallet._address.substring(0, 4)}...${this.props.wallet._address.substring(this.props.wallet._address.length - 4)}` : '___';
         return (
             <div>
@@ -156,13 +154,12 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                             {/* <li className="nav_letter"><NavLink className="link_letter link_letterFarm" to="nftFarming">Farm</NavLink></li> */}
                             <li className="nav_letter">
                                 <div className="dropdown">
-                                    <NavLink className="link_letter dropbtn " to="nftFarming">Farm</NavLink>
+                                    <NavLink className="dropbtn " to="nftFarming">Farm</NavLink>
                                     <div className="dropdown-content">
-                                        <NavLink className="anchor" to="nftFarming">General Farming</NavLink>
-                                        <NavLink className="anchor" to="nftFarming">Rapid Farming</NavLink>
+                                        <NavLink className="anchor inside_content"  to="nftFarming#general">General Farming</NavLink>
+                                        <NavLink className="anchor inside_content" to="nftFarming#rapid">Rapid Farming</NavLink>
                                     </div>
                                 </div>
-
                                 {/* <NavLink className="link_letter link_letterFarm" to="nftFarming">Farm</NavLink> */}
                             </li>
 
