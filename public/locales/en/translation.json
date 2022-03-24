@@ -44,6 +44,12 @@
             "percentage": "Percentage of tokens to unstake:",
             "amount": "Amount of tokens to unstake:",
             "claim_rewards": "Claim rewards"
+        },
+        "Farming": {
+            "ApproveTitle": "Approve",
+            "StakeTitle": "Stake",
+            "HarvestTitle": "Harvest",
+            "ChooseTitle":"Choose NFT"
         }
     },
 
@@ -62,55 +68,54 @@
         }
     },
 
-    "ExpandingRow": {
-            "CommonNFT":{
+    "ExpandingRow": [
+            {
                 "title":"Common sNFT",
                 "Image_Path":"./ExpandableImage/Common.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "UniqueNFT":{
+            {
                 "title":"Unique sNFT",
                 "Image_Path":"./ExpandableImage/Unique.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "RaresNFT":{
+            {
                 "title":"Rare sNFT",
                 "Image_Path":"./ExpandableImage/Rare.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "EpicsNFT":{
+            {
                 "title":"Epic sNFT",
                 "Image_Path":"./ExpandableImage/Epic.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "LegendaryNFT":{
+            {
                 "title":"Legendary sNFT",
                 "Image_Path":"./ExpandableImage/Legendary.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "MythicGodsNFT":{
+            {
                 "title":"Mythic God sNFT",
                 "Image_Path":"./ExpandableImage/MythicGodsNFT.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "MythicDevilsNFT":{
+            {
                 "title":"Mythic Devil sNFT",
                 "Image_Path":"./ExpandableImage/MythicDevilsNFT.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
-            "MythicAliensNFT":{
+           {
                 "title":"Mythic Alien sNFT",
                 "Image_Path":"./ExpandableImage/MythicAliensNFT.svg",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
-            }
-            
-    }
+            }  
+        ]
 }

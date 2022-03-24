@@ -31,21 +31,20 @@ body {
 	padding: 32px;
 	
 	position: static;
-	width: 523px;
+	width: 437px;
 	height: 342px;
 	left: 572px;
 	top: 0px;
 	
 	background: #04011C;
 	border-radius: 18px;
-	
 }
 
 .Center__Container{
-	    display: flex;
+	display: flex;
     flex-direction: column;
     margin: 20px;
-    width: 459px;
+    width: 359px;
     height: 200px;
 }
 
@@ -66,6 +65,10 @@ body {
 	padding: 24px;
 }
 
+*{
+	/* border: 1px solid; */
+}
+
 .test_container{
 	background: #04011C;
 border-radius: 18px;
@@ -77,13 +80,44 @@ border-radius: 18px;
 	flex-direction: column;
 	align-items: center;
 	gap: 1rem;
-	width: 237px;
+	width: 215px;
 	height: 342px;
 	cursor: pointer;
 	position: relative;
 	border-radius: 12px;
 	padding: 1rem;
 	background-color: #e6e8ec;
+	/*  */
+}
+
+.colorful_card{
+	background: linear-gradient(90deg, #F7F0AC 0%, #ACF7F0 50%, #F0ACF7 100%) !important;
+}
+
+.white__button{
+	border: 1px solid #B1B5C4 !important;
+	color:  #B1B5C4 !important;
+	box-sizing: border-box;
+	border-radius: 8px;
+}
+
+
+.white__button:hover{
+	background: #08F2F1 !important;
+	border: 1px solid #08F2F1;
+	color: #04011C !important;
+}
+
+.pink__button{
+	border: 1px solid #B1B5C4;
+	box-sizing: border-box;
+	border-radius: 8px;
+}
+
+.blue__button{
+	border: 1px solid #B1B5C4;
+	box-sizing: border-box;
+	border-radius: 8px;
 }
 
 .right-label{
@@ -110,7 +144,7 @@ color: #F4F5F6;
 	
 	/* Primary/1 */
 	
-	color: #DFA920;
+	color: #DFA920 !important;
 }
 
 /* .card:hover {
@@ -129,7 +163,7 @@ color: #F4F5F6;
 	text-align: center;
 	background: #fcfcfd;
 	position: absolute;
-	height: 252px;
+	height: 253px;
 	left: 0%;
 	right: 0%;
 	top: 0px;
@@ -138,7 +172,7 @@ color: #F4F5F6;
 
 .card__img img {
 	position: absolute;
-	width: 213px;
+	width: 190px;
 	height: 219px;
 	left: 12px;
 	top: 12px;
@@ -169,7 +203,7 @@ color: #F4F5F6;
 
 .card__footer {
 	height: 200px;
-	width: 237px;
+	width: 214px;
 	font-weight: bold;
 	border: 1px solid #e6e8ec;
 	background-color: #e6e8ec;

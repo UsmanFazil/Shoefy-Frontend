@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as numeral from 'numeral';
 import { compose } from 'recompose';
 
-import { BaseComponent, ShellErrorHandler } from '../../shellInterfaces'
+import { BaseComponent, ShellErrorHandler } from '../../../shellInterfaces'
 
 import { WithTranslation, withTranslation, TFunction, Trans } from 'react-i18next';
 import 'react-notifications/lib/notifications.css';
 
-import image from "../../../images/CommonNFT.svg"
+import image from "../../../../images/CommonNFT.svg"
 
 import './Model.css';
 

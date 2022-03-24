@@ -171,7 +171,16 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                             <li className="nav_letter1"><NavLink className="link_letter" to="sales">Sales</NavLink></li>
                             <li className="nav_letter1"><NavLink className="link_letter" to="nftStaking">sNFT  Staking</NavLink></li>
                             <li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking">SHOE Staking</NavLink></li>
-                            <li className="nav_letter"><NavLink className="link_letter" to="nftFarming">Farm</NavLink></li>
+                            <li className="nav_letter">
+                                <div className="dropdown">
+                                    <NavLink className="dropbtn " to="nftFarming">Farm</NavLink>
+                                    <div className="dropdown-content">
+                                        <NavLink className="anchor inside_content"  to="nftFarming#general">General Farming</NavLink>
+                                        <NavLink className="anchor inside_content" to="nftFarming#rapid">Rapid Farming</NavLink>
+                                    </div>
+                                </div>
+                                {/* <NavLink className="link_letter link_letterFarm" to="nftFarming">Farm</NavLink> */}
+                            </li>
                             <li className="nav_letter"><NavLink className="link_letter" to="boosterNFT">Booster NFTs</NavLink></li>
                             <li className="nav_letter">
                                 <select className="networkselect"

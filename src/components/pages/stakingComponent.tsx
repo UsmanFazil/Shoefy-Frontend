@@ -14,7 +14,7 @@ import AnimatedNumber from 'animated-number-react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import './stakingComponent.css';
 
@@ -62,7 +62,7 @@ export type StakingState = {
 
 	approveFlag: boolean,
 	totalclaim: number,
-	unstakable: Array,
+	unstakable: Array
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -93,7 +93,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		this.disconnectWallet = this.disconnectWallet.bind(this);
 		this.state = {
 			approveFlag: false,
-			approveFlag1: false,
+			approveFlag1: false
 		};
 	}
 
@@ -261,7 +261,6 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 				this.connectWallet();
 			}
 		}
-
 	}
 
 	private async loop(): Promise<void> {
@@ -436,11 +435,15 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	setUnstakeValue(value) {
 		const v = Math.max(0, Math.min(+(value || 0), this.readState().stakedBalance));
 		this.updateState({
-			ctValueUnstake: v,
+			ctValueUnstake: v
 		});
 	}
 
 	show_detail(index) {
+
+	console.log("I run show_detail value of index",index)
+    console.log( "I am the flag value show_detail" + this.state['flag' + index]);
+
 		if (this.state['flag' + index] == false)
 			this.setState({ ['flag' + index]: true });
 		else {
@@ -449,11 +452,17 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 
 	render() {
+		console.log("NEXT NEXT NEXT")
 		let detail = ['0px', '0px', '0px', '0px'];
+		// console.log("Value of detail",detail)
+
 		for (let i = 0; i < 4; i++) {
 			if (this.state['flag' + i] == false) {
+				console.log( "I am the flag value sin render method if block" + this.state['flag' + i]);
 				detail[i] = ''
+				console.log("Value of detail[i]",detail[i])
 			} else {
+				console.log( "I am the flag value sin render method else block" + this.state['flag' + i]);
 				detail[i] = '0px'
 			}
 		}
@@ -480,7 +489,15 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 							<li className="nav_letter1"><NavLink className="link_letter" to="sales">Sales</NavLink></li>
 							<li className="nav_letter1"><NavLink className="link_letter" to="nftStaking">sNFT  Staking</NavLink></li>
 							<li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking">SHOE Staking</NavLink></li>
-							<li className="nav_letter"><NavLink className="link_letter" to="nftFarming">Farm</NavLink></li>
+							<li className="nav_letter">
+                                <div className="dropdown">
+                                    <NavLink className="dropbtn " to="nftFarming">Farm</NavLink>
+                                    <div className="dropdown-content">
+                                        <NavLink className="anchor inside_content"  to="nftFarming#general">General Farming</NavLink>
+                                        <NavLink className="anchor inside_content" to="nftFarming#rapid">Rapid Farming</NavLink>
+                                    </div>
+                                </div>
+                            </li>
 							<li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking2">Booster NFTs</NavLink></li>
 							<li className="nav_letter">
 								<select className="networkselect"

@@ -33,7 +33,9 @@ import MythicAliensNFT from "./ExpandableImage/MythicAliensNFT"
 
 import green_down from "../../../images/green_down.svg";
 
-export type StakingProps = {};
+export type StakingProps = {
+  choosenOption:string;
+};
 
 // Call API
 interface TableView {
@@ -120,6 +122,7 @@ class expandableComponent extends BaseComponent<
   constructor(props: StakingProps & WithTranslation) {
     super(props);
 
+    console.log("Value of props in expandable component",props)
     this.state = {
       //   approveFlag: false,
       //   approveFlag1: false,
@@ -148,7 +151,7 @@ class expandableComponent extends BaseComponent<
 
   show_detail(index) {
     console.log("Value of index", index);
-    if (this.state["flag" + index] == false)
+    if (this.state["flag" + index] === false)
       this.setState({ ["flag" + index]: true });
     //   this.setState({border:"1px solid #08f2f1"});
     else {
@@ -163,8 +166,15 @@ class expandableComponent extends BaseComponent<
     // Ask Salman
     let detail = ["0px", "0px", "0px", "0px", "", "","",""];
     console.log("Value of the detail", detail);
+    // row =>{css}
+    // height: "120px",
+    // border: detail[4],
+    // borderBottom: detail[0],
+    // borderStyle: detail[6],
+    // borderColor: detail[5]
+
     for (let i = 0; i < 4; i++) {
-      if (this.state["flag" + i] == false) {
+      if (this.state["flag" + i] === false) {
         detail[i] = "";
         detail[4] = "0px 1px 1px 1px";
         detail[5] = "#08f2f1";
@@ -181,7 +191,8 @@ class expandableComponent extends BaseComponent<
 
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
-	  let test = t('ExpandingRow.CommonNFT.title');
+	  let test = t('ExpandingRow');
+    console.log("Value of test",test)
 
     return (
       <div>
@@ -246,12 +257,12 @@ class expandableComponent extends BaseComponent<
                       borderTop: detail[0],
                       borderStyle: detail[6],
                       borderColor: detail[5],
-                      overflow: "hidden",
+                      overflow: "hidden"
                     }}
                   >
-                    <div className="col-md-11 d-flex">
+                    <div className="col-md-12 d-flex">
                       <div className="d-flex flex-column flex-fill ">
-                        <CardContainerComponentMain />
+                        <CardContainerComponentMain choosenOption={this.props.choosenOption} />
                       </div>
                     </div>
                   </div>
@@ -300,7 +311,7 @@ class expandableComponent extends BaseComponent<
                     </div>
                     <div
                       className="expand3"
-                      onClick={() => this.show_detail(4)}
+                      onClick={() => this.show_detail(2)}
                     >
                       <span>{detail[7]} </span>
 
@@ -310,7 +321,7 @@ class expandableComponent extends BaseComponent<
                   <div
                     className="expand_down"
                     style={{
-                      maxHeight: detail[3],
+                      maxHeight: detail[2],
                       border: detail[4],
                       borderTop: detail[0],
                       borderStyle: detail[6],

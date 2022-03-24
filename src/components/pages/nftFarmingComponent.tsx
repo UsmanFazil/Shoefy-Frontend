@@ -5,6 +5,8 @@ import { compose } from "recompose";
 import { BaseComponent, ShellErrorHandler } from "../shellInterfaces";
 import { Wallet } from "../wallet";
 import { withWallet } from "../walletContext";
+import { Modal } from "./Common/Modal/Modal.component";
+// import data from "public/locales/en/translation.json";
 
 import { Shoefy } from "../contracts/shoefy";
 import {
@@ -46,7 +48,7 @@ interface TableView {
   LockupDuration: string;
 }
 
-export type StakingState = {
+export type FarmingState = {
   data: TableView[];
   shoefy?: Shoefy;
   wallet?: Wallet;
@@ -59,6 +61,9 @@ export type StakingState = {
   // values pending to be set
   pending?: boolean;
   approveFlag: boolean;
+  isModelOpen: boolean;
+  chooseButton?:string
+
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -76,57 +81,33 @@ const PulseDiv = styled.div`
 
 class nftFarmingComponent extends BaseComponent<
   StakingProps & WithTranslation,
-  StakingState
+  FarmingState
 > {
   private _timeout: any = null;
 
   constructor(props: StakingProps & WithTranslation) {
     super(props);
 
-    this.handleStakeSlider = this.handleStakeSlider.bind(this);
-    this.handleUnstakeSlider = this.handleUnstakeSlider.bind(this);
-    this.handleInputStake = this.handleInputStake.bind(this);
-    this.handleInputUnstake = this.handleInputUnstake.bind(this);
     this.connectWallet = this.connectWallet.bind(this);
     this.disconnectWallet = this.disconnectWallet.bind(this);
 
     this.state = {
       approveFlag: false,
       approveFlag1: false,
-      activeTab: " "
+      activeTab: " ",
+      isModelOpen: false,
+      chooseButton:'General Farming Pools'
     };
   }
 
-  handleStakeSlider(event) {
-    this.setStakePercentage(event.target.value);
-  }
-  handleUnstakeSlider(event) {
-    this.setUnstakePercentage(event.target.value);
-  }
-  handleInputStake(type, event) {
-    let temp = event.target.value.toString();
-    if (temp[0] === "0") event.target.value = temp.slice(1, temp.length);
-    this.setStakeValue(type, event.target.value);
-  }
-  handleInputUnstake(event) {
-    let temp = event.target.value.toString();
-    if (temp[0] === "0") event.target.value = temp.slice(1, temp.length);
-    this.setUnstakeValue(event.target.value);
-  }
   handleError(error) {
     ShellErrorHandler.handle(error);
   }
 
   async confirmStake(step): Promise<void> {
-    const state = this.readState();
-    this.updateState({ pending: false });
-    this.updateOnce(true).then();
-    document.getElementById("modalswitch2").click();
-    document.getElementById("modalswitch3").click();
-    NotificationManager.warning("Can't stake a negative amount.");
-    // understand confirmUnstake
-    // understand confirmClaim
-    //understand confirmApprove
+
+    this.setState({ chooseButton: step });
+
   }
 
   componentWillUnmount() {
@@ -135,14 +116,29 @@ class nftFarmingComponent extends BaseComponent<
     }
     this.updateState({ shoefy: null, looping: false });
   }
+  // this.updateState({ pending: false });
+
+  toggleModal = () => {
+    this.setState({ isModelOpen: !this.state.isModelOpen });
+  };
+
+  //{this.setState{isModalOpen:!this.state.isModelOpen}}
+  //  setModalState(!isModalOpen);
 
   async componentDidMount() {
     const urlValue = window.location.hash;
     const hash = urlValue.replace("#", "");
-    console.log("Hash value", hash);
+    console.log("Hash value1", hash);
     this.setState({ activeTab: hash });
 
-    console.log(this.state.activeTab);
+    fetch("./translation.json")
+      // .then((res) => res.json())
+      .then((data) => {
+        // this.setState({ data });
+        console.log("value of data", data);
+      });
+
+    console.log("Hash value2", this.state.activeTab);
 
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
@@ -232,6 +228,7 @@ class nftFarmingComponent extends BaseComponent<
     try {
       this.updateState({ pending: true });
       const result = await this.props.wallet.disconnect();
+
       if (result) {
         throw "The wallet connection was cancelled.";
       }
@@ -259,17 +256,11 @@ class nftFarmingComponent extends BaseComponent<
   }
 
   render() {
-    let detail = ["0px", "0px", "0px", "0px"];
-    for (let i = 0; i < 4; i++) {
-      if (this.state["flag" + i] == false) {
-        detail[i] = "";
-      } else {
-        detail[i] = "0px";
-      }
-    }
-
+    console.log(this.state.isModelOpen);
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
+    let test = t("ExpandingRow");
+    console.log("Value of test", test);
 
     const accountEllipsis = this.props.wallet._address
       ? `${this.props.wallet._address.substring(
@@ -398,7 +389,10 @@ class nftFarmingComponent extends BaseComponent<
                           <a
                             role="tab"
                             data-bs-toggle="tab"
-                            className="nav-link active"
+                            className={`nav-link ${
+                              this.state.activeTab === "general" ? "active" : ""
+                            }`}
+                            // remove this
                             href="#ctl-sidra"
                             onClick={() => {
                               this.setState({ activeTab: "general" });
@@ -411,7 +405,10 @@ class nftFarmingComponent extends BaseComponent<
                           <a
                             role="tab"
                             data-bs-toggle="tab"
-                            className="nav-link"
+                            className={`nav-link ${
+                              this.state.activeTab === "rapid" ? "active" : ""
+                            }`}
+                            // remove this
                             href="#ctl-tariq"
                             onClick={() => {
                               this.setState({ activeTab: "rapid" });
@@ -424,7 +421,6 @@ class nftFarmingComponent extends BaseComponent<
 
                       {/* from here */}
                       <div className="tab-content">
-                        first div
                         <div
                           role="tabpanel"
                           className={`tab-pane ${
@@ -434,7 +430,7 @@ class nftFarmingComponent extends BaseComponent<
                           id="ctl-stake"
                         >
                           {/* Here is the General Tab */}
-                          <div className="col-md-12 d-flex">
+                          <div className="col-md-12 d-flex mt-5">
                             <div className="shadow d-flex flex-column flex-fill gradient-card primary user-info">
                               <h1 className="user-info-title">
                                 {t("NFTFarming.GeneralFarming.title")}
@@ -471,7 +467,6 @@ class nftFarmingComponent extends BaseComponent<
                         </div>
 
                         {/* Other Tab starts */}
-                        second
                         <div
                           role="tabpanel"
                           className={`tab-pane ${
@@ -481,7 +476,7 @@ class nftFarmingComponent extends BaseComponent<
                         >
                           {/* Here is the rapid tab */}
                           <div className="col-md-12 d-flex">
-                            <div className="shadow d-flex flex-column flex-fill gradient-card primary user-info">
+                            <div className="shadow d-flex flex-column flex-fill gradient-card primary user-info mt-5">
                               <h1 className="user-info-title">
                                 {t("NFTFarming.RapidFarming.title")}
                               </h1>
@@ -533,9 +528,9 @@ class nftFarmingComponent extends BaseComponent<
                     }}
                     disabled={state.pending}
                     type="button"
-                    onClick={async () =>
-                      console.log("Clicked General Farming Pool")
-                    }
+                    onClick={async () => {
+                      this.confirmStake(" General Farming Pools")
+                    }}
                   >
                     General Farming Pools
                   </button>
@@ -551,13 +546,15 @@ class nftFarmingComponent extends BaseComponent<
                     }}
                     disabled={state.pending}
                     type="button"
-                    onClick={async () => this.confirmStake(1)}
+                    onClick={async () => this.confirmStake("Your Farms")}
                     // onClick={async () => console.log("Clicked Your Farms ")}
                   >
                     Your Farms
                   </button>
                 </div>
-                <ExpandableComponentMain />
+                {/* {} */}
+                {/* {t("ExpandingRow").map(panel=><ExpandableComponentMain  />)} */}
+                {<ExpandableComponentMain choosenOption={this.state.chooseButton}/>}
               </div>
             </div>
             <NotificationContainer />
