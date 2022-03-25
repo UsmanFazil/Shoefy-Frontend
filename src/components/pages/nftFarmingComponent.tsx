@@ -26,6 +26,7 @@ import "react-notifications/lib/notifications.css";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import ExpandableComponentMain from "./Common/expandableComponent";
+
 //  "./Model";
 import ModelComponentMain from "./Common/Model";
 import "./nftFarmingComponent.css";
@@ -41,6 +42,14 @@ import mark from "../../../src/images/mark.png";
 export type StakingProps = {};
 
 // Call API
+
+export interface RowData{
+  title:string,
+  Image_Path:string,
+  stakeAmount: string,
+  lockUpDuration: string
+}
+
 interface TableView {
   id: string;
   title: string;
@@ -53,6 +62,7 @@ export type FarmingState = {
   shoefy?: Shoefy;
   wallet?: Wallet;
   looping?: boolean;
+  expandingRow:RowData[];
 
   // actual set values
   address?: string;
@@ -96,7 +106,8 @@ class nftFarmingComponent extends BaseComponent<
       approveFlag1: false,
       activeTab: " ",
       isModelOpen: false,
-      chooseButton:'General Farming Pools'
+      chooseButton:'General Farming Pools',
+      expandingRow:[]
     };
   }
 
@@ -131,10 +142,10 @@ class nftFarmingComponent extends BaseComponent<
     console.log("Hash value1", hash);
     this.setState({ activeTab: hash });
 
-    fetch("./translation.json")
-      // .then((res) => res.json())
+    fetch("./locales/en/translation.json")
+      .then((res) => res.json())
       .then((data) => {
-        // this.setState({ data });
+        this.setState({ expandingRow:data.ExpandingRow });
         console.log("value of data", data);
       });
 
@@ -553,8 +564,7 @@ class nftFarmingComponent extends BaseComponent<
                   </button>
                 </div>
                 {/* {} */}
-                {/* {t("ExpandingRow").map(panel=><ExpandableComponentMain  />)} */}
-                {<ExpandableComponentMain choosenOption={this.state.chooseButton}/>}
+                {this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} choosenOption={this.state.chooseButton}/>))}
               </div>
             </div>
             <NotificationContainer />

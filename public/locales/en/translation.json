@@ -71,49 +71,49 @@
     "ExpandingRow": [
             {
                 "title":"Common sNFT",
-                "Image_Path":"./ExpandableImage/Common.svg",
+                "Image_Path":"Common_pop",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Unique sNFT",
-                "Image_Path":"./ExpandableImage/Unique.svg",
+                "Image_Path":"Unique",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Rare sNFT",
-                "Image_Path":"./ExpandableImage/Rare.svg",
+                "Image_Path":"Rare",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Epic sNFT",
-                "Image_Path":"./ExpandableImage/Epic.svg",
+                "Image_Path":"Epic",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Legendary sNFT",
-                "Image_Path":"./ExpandableImage/Legendary.svg",
+                "Image_Path":"Legendary",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Mythic God sNFT",
-                "Image_Path":"./ExpandableImage/MythicGodsNFT.svg",
+                "Image_Path":"MythicGodsNFT",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
             {
                 "title":"Mythic Devil sNFT",
-                "Image_Path":"./ExpandableImage/MythicDevilsNFT.svg",
+                "Image_Path":"MythicDevilsNFT",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             },
            {
                 "title":"Mythic Alien sNFT",
-                "Image_Path":"./ExpandableImage/MythicAliensNFT.svg",
+                "Image_Path":"MythicAliensNFT",
                 "stakeAmount": "Tokens to stake",
                 "lockUpDuration": "Lockup Duration"
             }  
