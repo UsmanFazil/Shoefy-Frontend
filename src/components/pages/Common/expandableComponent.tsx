@@ -169,6 +169,27 @@ class expandableComponent extends BaseComponent<
   render() {
   
     let detail = ["0px", "0px", "0px", "0px", "", "","",""];
+
+    let topElement = {
+      border:'',
+      borderBottom:'',
+      borderStyle:'',
+      borderColor:''
+      }
+
+    let bottomElement = {
+      maxHeight:'',
+      border:'',
+      borderTop:'',
+      borderStyle:'',
+      borderColor:''
+    }
+
+    // maxHeight: detail[3],
+    // border: detail[4],
+    // borderTop: detail[0],
+    // borderStyle: detail[6],
+    // borderColor: detail[5],
     console.log("Value of the detail", detail);
     // row =>{css}
     // height: "120px",
@@ -206,44 +227,74 @@ class expandableComponent extends BaseComponent<
 
             <div className="row expandable_staking-body">
 
-            <FadeInRightDiv className="your_staking">
-									<div className="each_element" style={{ transition: '0.3s' }}>
-										<div className="each_up" style={{ height: '120px' }}>
-											<div className="expand_1">
-												<img src={Image_Data[Image_Path]} width="35px" height="35px" />
-											</div>
-											<div className="nftdetail">
-												<div className="stake2" >
-													<div className="s2_up" >{title} </div>
-													<div className="s2_down" >Static Time (60days)</div>
-												</div>
-												<div className="stake1">
-													<div className="s2_up">{stakeAmount}</div>
-													<div className="s2_down">2000 SHOE</div>
-												</div>
+            <FadeInRightDiv className="your_staking remove_top">
+                <div
+                  className="each_element remove_bottom"
+                  style={{ transition: "0.3s" }}
+                >
+                  <div
+                    className="expandable_each_up "
+                    style={{
+                      height: "120px",
+                      border: detail[4],
+                      borderBottom: detail[0],
+                      borderStyle: detail[6],
+                      borderColor: detail[5]
+                    }}
+                  >
+                    <div className="expand_1">
+                      <img src={Image_Data[Image_Path]} width="35px" height="35px" />
+                    </div>
+                    <div className="expandable_nftdetail">
+                      <div className="expand0">
+                        <div className="e2_down"><span>{title}</span></div>
+                      </div>
+                      <div className="expand1">
+                        <div className="e2_up">{stakeAmount}</div>
+                        <div className="e2_down">2000 SHOE</div>
+                      </div>
 
-												<div className="stake2">
-													<div className="s2_up">{lockUpDuration}</div>
-													<div className="s2_down">{state.tokencaps2 ? state.tokencaps2[1] : "60 days"}</div>
-												</div>
-											</div>
-											<div className="stake3" onClick={() => this.show_detail(2)}>
-												Detail<img src={green_down} width="14px" height="8px"></img>
-											</div>
-										</div>
-										<div className="each_down" style={{ maxHeight: detail[2], overflow: 'hidden' }}>
-											<div className="col-md-11 d-flex">
-												<div className="shadow d-flex flex-column flex-fill gradient-card ">
-													<div style={{ margin: "-20px" }}>
-                          {/* Start */}
-                          <CardContainerComponentMain choosenOption={this.props.choosenOption} />
-                            {/* End */}
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</FadeInRightDiv>
+                      <div className="expand2">
+                        <div className="e2_up"> {lockUpDuration}</div>
+
+                        <div className="e2_down">
+                          {state.tokencaps2 ? state.tokencaps2[2] : "0"}
+                          60 Days
+                          {/* Test Here */}
+						            {/* <h2>{ t('ExpandingRow.CommonNFT.Image_Path')}</h2> */}
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="expand3"
+                      onClick={() => this.show_detail(3)}
+                    >
+                      <span>{detail[7]} </span>
+
+                      <img src={green_down} width="14px" height="8px"></img>
+                    </div>
+                  </div>
+                  <div
+                    className="expand_down"
+                    style={{
+                      maxHeight: detail[3],
+                      border: detail[4],
+                      borderTop: detail[0],
+                      borderStyle: detail[6],
+                      borderColor: detail[5],
+                      overflow: "hidden"
+                    }}
+                  >
+                    <div className="col-md-12 d-flex">
+                      <div className="d-flex flex-column flex-fill ">
+                        <CardContainerComponentMain choosenOption={this.props.choosenOption} />
+                      </div>
+                    </div>
+                  </div>
+                </div>                
+              </FadeInRightDiv>
+
+
             </div>
             </div>
             <NotificationContainer />

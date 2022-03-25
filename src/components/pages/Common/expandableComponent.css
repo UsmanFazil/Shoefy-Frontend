@@ -362,6 +362,14 @@
 	width: 100%;
 }
 
+.remove_top{
+	margin-top: 0px !important;
+}
+
+.remove_bottom{
+	margin-bottom: 0px !important;
+}
+
 .total-amount {
 	font-size: 40px !important;
 	font-style: normal !important;
