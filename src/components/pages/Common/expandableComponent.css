@@ -261,6 +261,7 @@
 	background-color: #04011c;
 	/* border-radius: 16px; */
 	border: 1px var(--color-green-text);
+	border-bottom: 0px !important;
 }
 
 .expand_down {
@@ -350,7 +351,8 @@
 }
 
 .margin_top {
-	margin-top: 15px !important;
+	margin-top: 40px !important;
+	margin-bottom: 40px !important;
 }
 
 .stake-tab-content {

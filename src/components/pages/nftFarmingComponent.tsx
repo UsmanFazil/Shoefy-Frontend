@@ -558,7 +558,7 @@ class nftFarmingComponent extends BaseComponent<
                     Your Farms
                   </button>
                 </div>
-                {this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} choosenOption={this.state.chooseButton}/>))}
+                {this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
               </div>
             </div>
             <NotificationContainer />
