@@ -41,7 +41,7 @@ top: 112px;
 	padding: 50px;
 	box-sizing: border-box;
 	border-radius: 10px;
-	background-color: #E2E8F0;
+	background-color: #030843;
 	cursor: auto;
 }
 
@@ -60,11 +60,14 @@ top: 112px;
 }
 
 .modal__center{
-  position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  /* position: absolute;
   width: 654px;
   height: 320px;
   left: 119px;
-  top: 112px;
+  top: 112px; */
 }
 
 

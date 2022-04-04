@@ -127,14 +127,10 @@ class nftFarmingComponent extends BaseComponent<
     }
     this.updateState({ shoefy: null, looping: false });
   }
-  // this.updateState({ pending: false });
 
   toggleModal = () => {
     this.setState({ isModelOpen: !this.state.isModelOpen });
   };
-
-  //{this.setState{isModalOpen:!this.state.isModelOpen}}
-  //  setModalState(!isModalOpen);
 
   async componentDidMount() {
     const urlValue = window.location.hash;
@@ -558,12 +554,10 @@ class nftFarmingComponent extends BaseComponent<
                     disabled={state.pending}
                     type="button"
                     onClick={async () => this.confirmStake("Your Farms")}
-                    // onClick={async () => console.log("Clicked Your Farms ")}
                   >
                     Your Farms
                   </button>
                 </div>
-                {/* {} */}
                 {this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} choosenOption={this.state.chooseButton}/>))}
               </div>
             </div>

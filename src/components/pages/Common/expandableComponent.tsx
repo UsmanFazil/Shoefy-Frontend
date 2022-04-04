@@ -213,6 +213,26 @@ class expandableComponent extends BaseComponent<
         detail[7] = "Show more"
       }
     }
+
+    {/* .expandable_each_up {                                 if (this.state["flag" + i] === false) {       
+	display: flex;                                            detail[4] = "0px 1px 1px 1px";
+	height: 500px;                                            detail[5] = "#08f2f1";
+	background-color: #04011c;                                detail[6] = "solid";
+	border: 1px var(--color-green-text);                      detail[7] = "Show less"
+}                                                         } else {
+.expand_down {                                            detail[i] = "0px";
+	display: flex;                                          detail[4] = "";
+	flex: 2;                                                detail[5] = "";
+	justify-content: center;                                detail[6] = "";
+	background: linear-gradient(                            detail[7] = "Show more"
+		180deg,                                               }
+		#071141 0%,
+		#102275 45.31%,
+		#091038 83.33%,
+		#14215e 100%
+	);
+	border: 1px var(--color-green-text);
+} */}
     
     const {  title, Image_Path, stakeAmount,lockUpDuration} = this.props.data
     const state = this.readState();

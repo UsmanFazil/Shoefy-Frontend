@@ -86,24 +86,4 @@
 	color: #141416;
 }
 
-.footer_bottom_tag {
-	position: absolute;
-	width: 35px;
-	height: 20px;
-	left: 12px;
-	top: 304px;
-	
-	/* Caption 2 (Bold) */
-	
-	font-family: 'Montserrat';
-	font-style: normal;
-	font-weight: 700;
-	font-size: 12px;
-	line-height: 20px;
-	/* identical to box height, or 167% */
-	
-	
-	/* Neutrals/3 */
-	
-	color: #353945;
-}
+
