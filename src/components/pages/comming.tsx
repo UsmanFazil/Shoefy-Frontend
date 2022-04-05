@@ -173,7 +173,7 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                             <li className="nav_letter"><NavLink className="link_letter" to="shoefyStaking">SHOE Staking</NavLink></li>
                             <li className="nav_letter">
                                 <div className="dropdown">
-                                    <NavLink className="dropbtn " to="nftFarming">Farm</NavLink>
+                                    <NavLink className="dropbtn " to="nftFarming#general">Farm</NavLink>
                                     <div className="dropdown-content">
                                         <NavLink className="anchor inside_content"  to="nftFarming#general">General Farming</NavLink>
                                         <NavLink className="anchor inside_content" to="nftFarming#rapid">Rapid Farming</NavLink>

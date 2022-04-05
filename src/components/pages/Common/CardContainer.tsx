@@ -91,7 +91,7 @@ class CardContainer extends BaseComponent<
         {/* <Model/> */}
 
         <div className="row">
-          <div className="col-sm-2 col-md-3">
+          <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
               cardImage={mysterCheck ? Mystery : CommonPhoenix}
               cardTitle={mysterCheck ? "Character" : "Phoenix"}
@@ -99,9 +99,22 @@ class CardContainer extends BaseComponent<
               cardSubtitle={mysterCheck ? "Mystery" : "Fire"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
+
+          {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
+              <button
+                type="button"
+                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                onClick={async () => {
+                  this.toggleModal();
+                }}
+              >
+                Choose NFT
+              </button>
+            </div>)}
+
           </div>
 
-          <div className="col-sm-2 col-md-3">
+          <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
               cardImage={mysterCheck ? Mystery : CommonTaurus}
               cardTitle={mysterCheck ? "Character" : "Taurus"}
@@ -109,10 +122,22 @@ class CardContainer extends BaseComponent<
               cardSubtitle={mysterCheck ? "Mystery" : "Earth"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
+
+         {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
+              <button
+                type="button"
+                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                onClick={async () => {
+                  this.toggleModal();
+                }}
+              >
+                Choose NFT
+              </button>
+            </div>)}
           </div>
 
           {/* Stake and Approve */}
-          <div className="col-sm-2 col-md-6 mt-5">
+          <div className="col-sm-12 col-md-12 col-lg-6 mt-5">
             <div className="Main__Container">
               <form className="Center__Container">
                 <div
@@ -160,95 +185,14 @@ class CardContainer extends BaseComponent<
                 </div>
               </form>
             </div>
-            {/* <div role="tabpanel" className="tab-pane active mt-4 ml-3 test_container" id="ctl-unstake">
-              <form id="unstaking-form">
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <label className="form-label right-label">
-                    One user can farm max. 10 common sNFTs
-                  </label>
-                </div>
-                <div className="maxValue">
-                  <input
-                    type="number"
-                    className="form-control form-control-lg"
-                    disabled
-                    onChange={() => {}}
-                    value={1}
-                  />
-                </div>
-                <div className="d-flex justify-content-center button-row margin_top">
-                  <button
-                    className="btn btn-md link-dark"
-                    style={{
-                      width: "100%",
-                      backgroundColor: "#CF3279",
-                      margin: 0,
-                      color: "white",
-                    }}
-                    disabled={state.pending}
-                    type="button"
-                    onClick={async () => this.confirmUnstake(2)}
-                  >
-                    {t("staking.unstake.title")}
-                  </button>
-
-                  <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <label className="form-label right-label">
-                    One user can farm max. 10 common sNFTs
-                  </label>
-                </div>
-              
-                </div>
-              </form>
-            </div> */}
           </div>
         </div>
 
-        {/* <Card
-              cardImage={mysterCheck? Mystery:CommonTaurus}
-              cardTitle={mysterCheck? "Character":"Taurus"}
-              cardType="common"
-              cardSubtitle={mysterCheck? "Mystery":"Earth"}
-            /> */}
-
-        {mysterCheck && (
-          <div className="row">
-            <div className="col-sm-2 col-md-3">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>
-
-            <div className="col-sm-2 col-md-3">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>
-
-            {/* Stake and Approve */}
-            <div className="col-sm-2 col-md-3"></div>
-          </div>
-        )}
+      
         {/* Second Row */}
 
         <div className="row">
-          <div className="col-sm-2 col-md-3">
+          <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
               cardImage={mysterCheck ? Mystery : CommonPegasus}
               cardTitle={mysterCheck ? "Character" : "Pegasus"}
@@ -256,9 +200,22 @@ class CardContainer extends BaseComponent<
               cardSubtitle={mysterCheck ? "Mystery" : "Wind"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
+
+           {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
+              <button
+                type="button"
+                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                onClick={async () => {
+                  this.toggleModal();
+                }}
+              >
+                Choose NFT
+              </button>
+            </div>)}
+
           </div>
 
-          <div className="col-sm-2 col-md-3">
+          <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
               cardImage={mysterCheck ? Mystery : CommonWhale}
               cardTitle={mysterCheck ? "Character" : "Whale"}
@@ -266,12 +223,25 @@ class CardContainer extends BaseComponent<
               cardSubtitle={mysterCheck ? "Mystery" : "Water"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
+
+             {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
+              <button
+                type="button"
+                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                onClick={async () => {
+                  this.toggleModal();
+                }}
+              >
+                Choose NFT
+              </button>
+            </div>)}
+
           </div>
 
           {/* Stake and Approve */}
-          <div className="col-sm-2 col-md-3"></div>
+          <div className="col-sm-0 col-md-2 col-lg-3"></div>
 
-          <div className="col-sm-2 col-md-3">
+          <div className="col-sm-0 col-md-2 col-lg-3">
             {/* <Card
               cardImage={Mystery}
               cardTitle="Character"
@@ -283,41 +253,6 @@ class CardContainer extends BaseComponent<
             {/* <Model/> */}
           </div>
         </div>
-
-        {mysterCheck && (
-          <div className="row">
-            <div className="col-sm-2 col-md-3">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>
-
-            <div className="col-sm-2 col-md-3">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal2();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>
-
-            {/* Stake and Approve */}
-            <div className="col-sm-2 col-md-3"></div>
-
-            <div className="col-sm-2 col-md-3">
-              {/* <button type="button" className="btn btn-outline-Choose NFT btn-block" onClick={async () => {this.toggleModal();}}>Choose NFT</button> */}
-            </div>
-          </div>
-        )}
 
         <Modal
           title={"You have successfully harvested X number(s) of common sNFTs"}

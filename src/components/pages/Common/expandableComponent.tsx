@@ -292,13 +292,11 @@ class expandableComponent extends BaseComponent<
                 </div>                
               </FadeInRightDiv>
 
-
             </div>
             </div>
             <NotificationContainer />
           </div>  
         </div>
-
 
         <div className="part_f">
           <Footer />

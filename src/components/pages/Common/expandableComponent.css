@@ -424,7 +424,7 @@
 
 @media (max-width: 600px) {
 	.expand_1 {
-		display: none;
+		display: none !important;
 	}
 	.e2_up {
 		font-size: 12px;
@@ -443,5 +443,12 @@
 	.expand3 {
 		font-size: 14px;
 		padding-right: 10px;
+	}
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		margin-right: 0px !important;
+		margin-left: 0px !important;
 	}
 }
