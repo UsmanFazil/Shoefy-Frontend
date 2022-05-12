@@ -215,6 +215,7 @@ class expandableComponent extends BaseComponent<
     }
     
     const {  title, Image_Path, stakeAmount,lockUpDuration} = this.props.data
+    console.log("Value of things",title, Image_Path, stakeAmount,lockUpDuration)
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
 	  let test = t(title);
@@ -249,16 +250,16 @@ class expandableComponent extends BaseComponent<
                         <div className="e2_down"><span>{title}</span></div>
                       </div>
                       <div className="expand1">
-                        <div className="e2_up">{stakeAmount}</div>
-                        <div className="e2_down">2000 SHOE</div>
+                        <div className="e2_up">Tokens to stake</div>
+                        <div className="e2_down">{stakeAmount}</div>
                       </div>
 
                       <div className="expand2">
-                        <div className="e2_up"> {lockUpDuration}</div>
-
+                        <div className="e2_up"> 
+                        Lockup Duration
+                        </div>
                         <div className="e2_down">
-                          {state.tokencaps2 ? state.tokencaps2[2] : "0"}
-                          60 Days
+                          {lockUpDuration}
                           {/* Test Here */}
 						            {/* <h2>{ t('ExpandingRow.CommonNFT.Image_Path')}</h2> */}
                         </div>

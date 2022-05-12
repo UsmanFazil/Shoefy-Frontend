@@ -67,55 +67,74 @@
             "claim_rewards": "Claim rewards"
         }
     },
-
     "ExpandingRow": [
             {
                 "title":"Common sNFT",
                 "Image_Path":"Common_pop",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "2000 SHOE",
+                "lockUpDuration": "60 Days"
             },
             {
                 "title":"Unique sNFT",
                 "Image_Path":"Unique",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "4000 SHOE",
+                "lockUpDuration": "90 Days"
             },
             {
                 "title":"Rare sNFT",
                 "Image_Path":"Rare",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "9000 SHOE",
+                "lockUpDuration": "120 Days"
             },
             {
                 "title":"Epic sNFT",
                 "Image_Path":"Epic",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "15000 SHOE",
+                "lockUpDuration": "150 Days"
             },
             {
                 "title":"Legendary sNFT",
                 "Image_Path":"Legendary",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "20000 SHOE",
+                "lockUpDuration": "180 Days"
             },
             {
                 "title":"Mythic God sNFT",
                 "Image_Path":"MythicGodsNFT",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "25000 SHOE",
+                "lockUpDuration": "210 Days"
             },
             {
                 "title":"Mythic Devil sNFT",
                 "Image_Path":"MythicDevilsNFT",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "30000 SHOE",
+                "lockUpDuration": "240 Days"
             },
            {
                 "title":"Mythic Alien sNFT",
                 "Image_Path":"MythicAliensNFT",
-                "stakeAmount": "Tokens to stake",
-                "lockUpDuration": "Lockup Duration"
+                "stakeAmount": "35000 SHOE",
+                "lockUpDuration": "270 Days"
             }  
+        ],
+        "ExpandingRapidRow": [
+            {
+                "title":"Common sNFT",
+                "Image_Path":"Common_pop",
+                "stakeAmount": "4000 SHOE",
+                "lockUpDuration": "20 Days"
+            },
+            {
+                "title":"Unique sNFT",
+                "Image_Path":"Unique",
+                "stakeAmount": "8000 SHOE",
+                "lockUpDuration": "40 Days"
+            },
+            {
+                "title":"Rare sNFT",
+                "Image_Path":"Rare",
+                "stakeAmount": "16000 SHOE",
+                "lockUpDuration": "60 Days"
+            }
         ]
 }

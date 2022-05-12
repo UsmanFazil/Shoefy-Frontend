@@ -24,7 +24,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation ,useHistory}  from "react-router-dom";
 import ExpandableComponentMain from "./Common/expandableComponent";
 
 //  "./Model";
@@ -72,8 +72,7 @@ export type FarmingState = {
   pending?: boolean;
   approveFlag: boolean;
   isModelOpen: boolean;
-  chooseButton?:string
-
+  chooseButton?:string;
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -107,7 +106,8 @@ class nftFarmingComponent extends BaseComponent<
       activeTab: " ",
       isModelOpen: false,
       chooseButton:'General Farming Pools',
-      expandingRow:[]
+      expandingRow:[],
+      data:[]
     };
   }
 
@@ -141,7 +141,14 @@ class nftFarmingComponent extends BaseComponent<
     fetch("./locales/en/translation.json")
       .then((res) => res.json())
       .then((data) => {
+        // ExpandingRapidRow
+        this.setState({ data:data });
+        if (hash =='rapid'){
+        this.setState({ expandingRow:data.ExpandingRapidRow });
+        }else{
         this.setState({ expandingRow:data.ExpandingRow });
+        }
+
         console.log("value of data", data);
       });
 
@@ -260,6 +267,19 @@ class nftFarmingComponent extends BaseComponent<
     else {
       this.setState({ ["flag" + index]: false });
     }
+  }
+
+  onRapid(){
+    this.setState({ activeTab: "rapid" });
+    location.replace("/nftFarming#rapid");
+    this.setState({ expandingRow:this.state.data.ExpandingRapidRow });
+  }
+
+  onGeneral(){
+    this.setState({ activeTab: "general" });
+    location.replace("/nftFarming#general");
+    console.log("Value of rapid",window.location.href);
+      this.setState({ expandingRow:this.state.data.ExpandingRow });
   }
 
   render() {
@@ -400,12 +420,11 @@ class nftFarmingComponent extends BaseComponent<
                               this.state.activeTab === "general" ? "active" : ""
                             }`}
                             // remove this
-                            href="#ctl-sidra"
-                            onClick={() => {
-                              this.setState({ activeTab: "general" });
-                            }}
+                            onClick={() => this.onGeneral()
+                          }
                           >
                             {t("NFTFarming.GeneralFarming.title")}
+                             {/* here */}
                           </a>
                         </li>
                         <li role="presentation" className="nav-item">
@@ -416,12 +435,11 @@ class nftFarmingComponent extends BaseComponent<
                               this.state.activeTab === "rapid" ? "active" : ""
                             }`}
                             // remove this
-                            href="#ctl-tariq"
-                            onClick={() => {
-                              this.setState({ activeTab: "rapid" });
-                            }}
+                            onClick={() => this.onRapid()
+                          }
                           >
-                            {t("NFTFarming.RapidFarming.title")}
+                            {t("NFTFarming.RapidFarming.title")} 
+                            {/* there */}
                           </a>
                         </li>
                       </ul>
@@ -433,7 +451,6 @@ class nftFarmingComponent extends BaseComponent<
                           className={`tab-pane ${
                             this.state.activeTab === "general" ? "active" : ""
                           }`}
-                          // className="tab-pane active"
                           id="ctl-stake"
                         >
                           {/* Here is the General Tab */}
@@ -464,7 +481,7 @@ class nftFarmingComponent extends BaseComponent<
                                     }
                                     className="staking-info"
                                   >
-                                    0 ShoeFy
+                                    0 ShoeFy don't know 1
                                   </AnimatedNumber>
                                 </div>
                               </div>
