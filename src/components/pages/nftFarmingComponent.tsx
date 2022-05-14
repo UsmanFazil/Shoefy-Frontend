@@ -24,7 +24,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, useLocation ,useHistory}  from "react-router-dom";
+import { NavLink}  from "react-router-dom";
 import ExpandableComponentMain from "./Common/expandableComponent";
 
 //  "./Model";
@@ -63,7 +63,8 @@ export type FarmingState = {
   wallet?: Wallet;
   looping?: boolean;
   expandingRow:RowData[];
-
+  show?:boolean;
+  
   // actual set values
   address?: string;
   balance?: number;
@@ -107,7 +108,8 @@ class nftFarmingComponent extends BaseComponent<
       isModelOpen: false,
       chooseButton:'General Farming Pools',
       expandingRow:[],
-      data:[]
+      data:[],
+      show:false
     };
   }
 
@@ -118,6 +120,7 @@ class nftFarmingComponent extends BaseComponent<
   async confirmStake(step): Promise<void> {
 
     this.setState({ chooseButton: step });
+    // this.setState({ show: !this.state.show});
 
   }
 
@@ -152,8 +155,6 @@ class nftFarmingComponent extends BaseComponent<
         console.log("value of data", data);
       });
 
-    console.log("Hash value2", this.state.activeTab);
-
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
@@ -169,6 +170,7 @@ class nftFarmingComponent extends BaseComponent<
         this.connectWallet();
       }
     }
+
   }
 
   private async loop(): Promise<void> {
@@ -273,13 +275,15 @@ class nftFarmingComponent extends BaseComponent<
     this.setState({ activeTab: "rapid" });
     location.replace("/nftFarming#rapid");
     this.setState({ expandingRow:this.state.data.ExpandingRapidRow });
+    this.setState({ show: !this.state.show});
   }
 
   onGeneral(){
     this.setState({ activeTab: "general" });
     location.replace("/nftFarming#general");
     console.log("Value of rapid",window.location.href);
-      this.setState({ expandingRow:this.state.data.ExpandingRow });
+    this.setState({ expandingRow:this.state.data.ExpandingRow });
+    this.setState({ show: !this.state.show});
   }
 
   render() {
@@ -287,7 +291,6 @@ class nftFarmingComponent extends BaseComponent<
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
     let test = t("ExpandingRow");
-    console.log("Value of test", test);
 
     const accountEllipsis = this.props.wallet._address
       ? `${this.props.wallet._address.substring(
@@ -575,7 +578,12 @@ class nftFarmingComponent extends BaseComponent<
                     Your Farms
                   </button>
                 </div>
-                {this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
+
+                {!this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
+
+
+                {this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
+                
               </div>
             </div>
             <NotificationContainer />

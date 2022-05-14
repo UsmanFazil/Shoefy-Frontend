@@ -1,15 +1,15 @@
 import { Wallet } from '../wallet';
 import { Contract } from 'web3-eth-contract';
-
-
 // import { ethers } from 'ethers';
 import * as web3 from 'web3-utils';
 import Web3 from 'web3';
+
 export const ShoeFyAddress = {
-	4: "0x868c05B8c8a51c72e362CdC50364ED86595f7b8e",
+	4: "0x8F973d1C33194fe773e7b9242340C3fdB2453b49",
 	97: "0x4c687a9158F31321aD76eC7185C458201B375582",
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC"
 };
+
 export const StakingAddress = "0x86bdb4ea03f1b5158229c8fd15dca51310dc4661";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
 
@@ -29,6 +29,7 @@ export const SaleAddress = {
 	4: "0x55a0451bc9f9d214bf5a7107e71f81138b26dc25",
 	97: "0xcb2ef1dd6a8ff15d6f5dc7dd8df247adf3045988"
 }
+
 export class Shoefy {
 	private readonly _wallet: Wallet;
 	private readonly _contract: Contract;
@@ -55,6 +56,7 @@ export class Shoefy {
 	private _allowance: number = 0;
 	private _allowance2: number = 0;
 	private _tokencaps2: any = [];
+
 	constructor(wallet: Wallet) {
 		this._wallet = wallet;
 		// this._stakingContract = wallet.connectToContract(StakingAddress, require('./staking.abi.json'));
@@ -66,8 +68,6 @@ export class Shoefy {
 		this.stake2 = this.stake2.bind(this);
 	}
 
-
-
 	get contract(): Contract {
 		return this._contract;
 	}
@@ -75,12 +75,15 @@ export class Shoefy {
 	get wallet(): Wallet {
 		return this._wallet;
 	}
+
 	get balance(): number {
 		return this._balance;
 	}
+
 	get balance_eth(): string {
 		return this._balance_eth;
 	}
+
 	get stakedBalance(): number {
 		return this._stake;
 	}
@@ -88,52 +91,68 @@ export class Shoefy {
 	get pendingStakeRewards(): number {
 		return this._pendingRewards;
 	}
+
 	get claimRewards(): number {
 		return this._claimRewards;
 	}
+
 	get apr(): number {
 		return this._apr;
 	}
+
 	get locktime(): number {
 		return this._locktime;
 	}
+
 	get allowance(): number {
 		return this._allowance
 	}
+
 	get allowance2(): number {
 		return this._allowance2
 	}
+	
 	get stakedBalance2(): any {
 		return this._stake2;
 	}
+
 	get pendingRewards2(): any {
 		return this._pendingRewards2;
 	}
+
 	get claimedRewards2(): any {
 		return this._claimedRewards2;
 	}
+
 	get lockedBalance2(): number {
 		return this._lockedBalance2;
 	}
+
 	get unstakeBlanace2(): any {
 		return this._unstake2;
 	}
+
 	get totalclaim(): number {
 		return this._totalclaim;
 	}
+
 	get unstakable(): any {
 		return this._unstakable;
 	}
+	
 	get tokencaps(): any {
 		return this._tokencaps2;
 	}
+
 	async approve(amount: number): Promise<void> {
 		let flag = await this._shoeFyContract.methods.approve(StakingAddress, amount).send({ 'from': this._wallet.getAddress() });
+		console.log("Value of _shoeFyContract approve",this._shoeFyContract)
 		return flag;
 	}
 
 	async approve2(amount: any): Promise<void> {
 		let flag = await this._shoeFyContract.methods.approve(Staking2Address[this.wallet.getChainId()], amount).send({ 'from': this._wallet.getAddress() });
+		console.log("Value of _shoeFyContract approve2",this._shoeFyContract)
 		return flag
 	}
 
@@ -156,6 +175,7 @@ export class Shoefy {
 			throw 'Your shoefy balance is not sufficient to stake this amount';
 		}
 	}
+
 	async unstakeAndClaim(amount: number): Promise<void> {
 		await this.refresh();
 		if (this._stake >= amount) {
@@ -165,6 +185,7 @@ export class Shoefy {
 			throw 'Your staked shoefy balance is not sufficient to unstake this amount';
 		}
 	}
+	
 	async withdraw(step: number): Promise<void> {
 		const rates = [275, 350, 500];
 		// alert(amount);
@@ -175,6 +196,7 @@ export class Shoefy {
 		// throw 'Your staked shoefy balance is not sufficient to unstake this amount';
 		// }
 	}
+
 	async claim(): Promise<void> {
 		await this._stakingContract.methods.claimStakingRewards().send({ 'from': this._wallet.getAddress() });
 		await this.refresh();
@@ -183,23 +205,29 @@ export class Shoefy {
 	async setPlaceholderURI(uri: string): Promise<void> {
 		await this._SaleContract.methods.setPlaceholderURI(uri).send({ from: this._wallet.getAddress() });
 	}
+
 	async approveSale(amount: number) {
 		await this._shoeFyContract.methods.approve(SaleAddress[this._wallet.getChainId()], web3.toWei(String(amount), 'ether')).send({ from: this._wallet.getAddress() });
 	}
+
 	async purchase(): Promise<void> {
 		await this._SaleContract.methods.buyNFT().send({ from: this._wallet.getAddress() });
 		const id = await this._NFTContract.methods.totalSupply().call();
 		return id;
 	}
+
 	async setWhiteList(address: string) {
 		await this._SaleContract.methods.whitelist(address, true).send({ from: this._wallet.getAddress() })
 	}
+
 	async setNFTAdmin(address: string) {
 		await this._NFTContract.methods.setAdmin(address, true).send({ from: this._wallet.getAddress() })
 	}
+
 	async unlockWhitelisted() {
 		await this._SaleContract.methods.unlockWhitelisted().send({ from: this._wallet.getAddress() })
 	}
+
 	async refresh(): Promise<void> {
 		let web3 = new Web3(window.ethereum);
 		let balance_eth = await web3.eth.getBalance(this._wallet.getAddress());
@@ -217,6 +245,7 @@ export class Shoefy {
 
 		this._totalclaim = claims;
 		this._claimedRewards2[0] = claims;
+
 		for (let i = 0; i < 3; i++) {
 			this._unstakable[i] = -1;
 			this._stake2[i] = 0;
@@ -224,6 +253,7 @@ export class Shoefy {
 			this._pendingRewards2[i] = 0;
 			this._tokencaps2[i] = 0;
 		}
+
 		for (let i = 0; i < stakers.amount.length; i++) {
 			this._unstakable[i] = time - stakers.lockedtime[i];
 			this._stake2[i] = stakers.amount[i] / Math.pow(10, 18);
@@ -231,10 +261,12 @@ export class Shoefy {
 			this._pendingRewards2[i] = (this._unstake2[i] - this._stake2[i]);
 			console.log(this._pendingRewards2[i]);
 		}
+
 		for (let i = 0; i < 3; i++) {
 			this._stake2[i] = await this._staking2Contract.methods.lockedBalance(i).call() / Math.pow(10, 18);
 			const tokencaps = Math.ceil(await this._staking2Contract.methods.tokencaps(i).call() / Math.pow(10, 18));
 			this._tokencaps2[i] = tokencaps;
 		}
+
 	}
 }

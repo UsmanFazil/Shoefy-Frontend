@@ -185,18 +185,7 @@ class expandableComponent extends BaseComponent<
       borderColor:''
     }
 
-    // maxHeight: detail[3],
-    // border: detail[4],
-    // borderTop: detail[0],
-    // borderStyle: detail[6],
-    // borderColor: detail[5],
     console.log("Value of the detail", detail);
-    // row =>{css}
-    // height: "120px",
-    // border: detail[4],
-    // borderBottom: detail[0],
-    // borderStyle: detail[6],
-    // borderColor: detail[5]
 
     for (let i = 0; i < 4; i++) {
       if (this.state["flag" + i] === false) {

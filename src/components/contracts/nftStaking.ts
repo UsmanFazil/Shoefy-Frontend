@@ -5,7 +5,7 @@ import * as web3 from 'web3-utils';
 import { requestAPICall } from '../../helpers/apiService';
 import Web3 from 'web3';
 
-export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
+export const ShoeFyAddress = "0x8F973d1C33194fe773e7b9242340C3fdB2453b49";
 export const ShoeFyNFTAddress = "0x72DbF51BC4Dc948DA21e6790b4935521f86483D1";
 export const NFTStakingAddress = "0x31831F9f0a5C95Ce7b0E547C7e9eb8442E92C760";
 
@@ -94,6 +94,7 @@ export class ShoefyNFTStaking {
         const userNFTs = [];
         const stakedNFTs = [];
 		this._balance = await this._shoeFyNFTContract.methods.balanceOf(this._wallet.currentAddress).call();
+
         for (let i = 0; i < this._balance; i++) {
             const tokenId = await this._shoeFyNFTContract.methods.tokenOfOwnerByIndex(this._wallet.currentAddress, i).call();
             const tokenURI = await this._shoeFyNFTContract.methods.tokenURI(tokenId).call();
@@ -108,6 +109,7 @@ export class ShoefyNFTStaking {
                 description: nftData.description
             })
         }
+		
         this._userNFTs = userNFTs;
         console.log("All NFTs", this._userNFTs);
 
