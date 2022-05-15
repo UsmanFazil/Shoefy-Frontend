@@ -41,6 +41,7 @@ export type StakingProps = {
   choosenOption:string;
   data:RowData;
 	currentTab?:string;
+  index?:number;
 };
 
 // Call API
@@ -246,7 +247,7 @@ class expandableComponent extends BaseComponent<
 
                       <div className="expand2">
                         <div className="e2_up"> 
-                        Lockup Duration
+                        Lockup Duration{this.props.index}
                      
                         </div>
                         <div className="e2_down">
@@ -277,7 +278,7 @@ class expandableComponent extends BaseComponent<
                   >
                     <div className="col-md-12 d-flex">
                       <div className="d-flex flex-column flex-fill ">
-                        <CardContainerComponentMain choosenOption={this.props.choosenOption}  title={title}  currentTab={this.props.currentTab} />
+                        <CardContainerComponentMain index={this.props.index} choosenOption={this.props.choosenOption}  title={title}  currentTab={this.props.currentTab} />
                       </div>
                     </div>
                   </div>

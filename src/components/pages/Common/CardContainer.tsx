@@ -77,6 +77,7 @@ export type StakingProps = {
   choosenOption: string;
   currentTab?: string;
   title?: string;
+  index?:number;
 };
 
 // Call API
@@ -125,6 +126,9 @@ class CardContainer extends BaseComponent<
   confirmStake() {}
 
   findImage() {
+
+    const currentIndex = this.props.index;
+    console.log("Valye if index",currentIndex);
     const CommonCategory = [ CommonPegasus,CommonPhoenix,CommonTaurus,CommonWhale];
 
     const UniqueCategory = [UniquePegasus,UniquePhoenix,UniqueTaurus,UniqueWhell];
@@ -143,11 +147,33 @@ class CardContainer extends BaseComponent<
 
     const ImageCategory = this.props.title;
 
-    const keyWord = ["Common","Unique","Rare","Epic","Alien","legendary","Devil","God"]
+    switch(currentIndex){
+      case 0:
+        return CommonCategory;
+      case 1: 
+         return UniqueCategory;
+      case 2:
+        return RareCategory;
+      case 3: 
+        return EpicCategory;
+      case 4: 
+        return LegendaryCategory;
+      case 5:
+        return GodCategory;
+      case 6: 
+        return DevilCategory;
+      case 7:
+        return AlienCategory;
+      default:
+        return; 
+    }
+
 
   }
 
   render() {
+   const TestImage = this.findImage();
+   console.log("Value of testImage",TestImage)
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
     console.log("approveFlag value", this.state.approveFlag);
@@ -173,7 +199,7 @@ class CardContainer extends BaseComponent<
         <div className="row">
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : CommonPhoenix}
+              cardImage={mysterCheck ? Mystery : TestImage[0]}
               cardTitle={mysterCheck ? "Character" : "Phoenix"}
               cardType="common"
               cardSubtitle={mysterCheck ? "Mystery" : "Fire"}
@@ -197,7 +223,7 @@ class CardContainer extends BaseComponent<
 
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : CommonTaurus}
+              cardImage={mysterCheck ? Mystery : TestImage[1]}
               cardTitle={mysterCheck ? "Character" : "Taurus"}
               cardType="common"
               cardSubtitle={mysterCheck ? "Mystery" : "Earth"}
@@ -276,7 +302,7 @@ class CardContainer extends BaseComponent<
         <div className="row">
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : CommonPegasus}
+              cardImage={mysterCheck ? Mystery : TestImage[2]}
               cardTitle={mysterCheck ? "Character" : "Pegasus"}
               cardType="common"
               cardSubtitle={mysterCheck ? "Mystery" : "Wind"}
@@ -300,7 +326,7 @@ class CardContainer extends BaseComponent<
 
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : CommonWhale}
+              cardImage={mysterCheck ? Mystery : TestImage[3]}
               cardTitle={mysterCheck ? "Character" : "Whale"}
               cardType="common"
               cardSubtitle={mysterCheck ? "Mystery" : "Water"}

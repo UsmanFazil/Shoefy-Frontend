@@ -585,10 +585,10 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                 </div>
                   
                 {/* General Farming */}
-                {!this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
 
                 {/* Rapid Farming */}
-                {this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
                 
               </div>
             </div>
