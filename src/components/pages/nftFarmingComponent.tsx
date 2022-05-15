@@ -39,7 +39,8 @@ import "../shellNav.icons.css";
 
 import mark from "../../../src/images/mark.png";
 
-export type StakingProps = {};
+export type StakingProps = {
+};
 
 // Call API
 
@@ -74,6 +75,7 @@ export type FarmingState = {
   approveFlag: boolean;
   isModelOpen: boolean;
   chooseButton?:string;
+  currentTab?:string;
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -89,15 +91,11 @@ const PulseDiv = styled.div`
   animation: infinite 5s ${PulseAnimation};
 `;
 
-class nftFarmingComponent extends BaseComponent<
-  StakingProps & WithTranslation,
-  FarmingState
-> {
+class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,FarmingState> {
   private _timeout: any = null;
 
   constructor(props: StakingProps & WithTranslation) {
     super(props);
-
     this.connectWallet = this.connectWallet.bind(this);
     this.disconnectWallet = this.disconnectWallet.bind(this);
 
@@ -109,7 +107,8 @@ class nftFarmingComponent extends BaseComponent<
       chooseButton:'General Farming Pools',
       expandingRow:[],
       data:[],
-      show:false
+      show:false,
+      currentTab:"general"
     };
   }
 
@@ -148,6 +147,7 @@ class nftFarmingComponent extends BaseComponent<
         this.setState({ data:data });
         if (hash =='rapid'){
         this.setState({ expandingRow:data.ExpandingRapidRow });
+        this.setState({ currentTab:'rapid' });
         }else{
         this.setState({ expandingRow:data.ExpandingRow });
         }
@@ -276,6 +276,7 @@ class nftFarmingComponent extends BaseComponent<
     location.replace("/nftFarming#rapid");
     this.setState({ expandingRow:this.state.data.ExpandingRapidRow });
     this.setState({ show: !this.state.show});
+    this.setState({ currentTab:'rapid' });
   }
 
   onGeneral(){
@@ -284,6 +285,8 @@ class nftFarmingComponent extends BaseComponent<
     console.log("Value of rapid",window.location.href);
     this.setState({ expandingRow:this.state.data.ExpandingRow });
     this.setState({ show: !this.state.show});
+    this.setState({ currentTab:'general' });
+
   }
 
   render() {
@@ -559,7 +562,8 @@ class nftFarmingComponent extends BaseComponent<
                       this.confirmStake(" General Farming Pools")
                     }}
                   >
-                    General Farming Pools
+                    {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
+                    
                   </button>
 
                   <button
@@ -575,14 +579,16 @@ class nftFarmingComponent extends BaseComponent<
                     type="button"
                     onClick={async () => this.confirmStake("Your Farms")}
                   >
-                    Your Farms
+                    {/* {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'} */}
+                    {this.state.currentTab === 'rapid' ? 'Your Farms':'Your Farms'}
                   </button>
                 </div>
+                  
+                {/* General Farming */}
+                {!this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
 
-                {!this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
-
-
-                {this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title} choosenOption={this.state.chooseButton}/>))}
+                {/* Rapid Farming */}
+                {this.state.show && this.state.expandingRow.map((item)=>(<ExpandableComponentMain data={item} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
                 
               </div>
             </div>

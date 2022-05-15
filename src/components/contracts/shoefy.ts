@@ -68,22 +68,29 @@ export class Shoefy {
 		this.stake2 = this.stake2.bind(this);
 	}
 
+
+	// Dynamic loading of General Farming
+	// need this
 	get contract(): Contract {
 		return this._contract;
 	}
 
+	// need this
 	get wallet(): Wallet {
 		return this._wallet;
 	}
 
+	// need this
 	get balance(): number {
 		return this._balance;
 	}
 
+	// need this
 	get balance_eth(): string {
 		return this._balance_eth;
 	}
 
+	// need this
 	get stakedBalance(): number {
 		return this._stake;
 	}
@@ -104,6 +111,7 @@ export class Shoefy {
 		return this._locktime;
 	}
 
+	// need this 
 	get allowance(): number {
 		return this._allowance
 	}
@@ -144,6 +152,7 @@ export class Shoefy {
 		return this._tokencaps2;
 	}
 
+	// Need this
 	async approve(amount: number): Promise<void> {
 		let flag = await this._shoeFyContract.methods.approve(StakingAddress, amount).send({ 'from': this._wallet.getAddress() });
 		console.log("Value of _shoeFyContract approve",this._shoeFyContract)
@@ -165,6 +174,10 @@ export class Shoefy {
 		}
 	}
 
+	// Need this
+	//farmGeneral(bytes32 category_, uint256 farmAmount_)
+    //farmRapid(bytes32 category_, uint256 farmAmount_)
+	
 	async stake(amount: number): Promise<void> {
 		await this.refresh();
 

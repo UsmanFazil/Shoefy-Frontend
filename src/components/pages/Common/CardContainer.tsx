@@ -16,17 +16,67 @@ import { Modal } from "./Modal/Modal.component";
 import Model from "./Modal//Model";
 import { ViewNftcomponent } from "./Modal/ViewNftcomponent";
 
-import CommonWhale from "./ExpandableImage/CommonWhale.svg";
-import CommonTaurus from "./ExpandableImage/CommonTaurus.svg";
-import CommonPhoenix from "./ExpandableImage/CommonPhoenix.svg";
-import CommonPegasus from "./ExpandableImage/CommonPegasus.svg";
+// import CommonWhale from "./ExpandableImage/CommonWhale.svg";
+// import CommonTaurus from "./ExpandableImage/CommonTaurus.svg";
+// import CommonPhoenix from "./ExpandableImage/CommonPhoenix.svg";
+// import CommonPegasus from "./ExpandableImage/CommonPegasus.svg";
 import Mystery from "./ExpandableImage/Mystery.svg";
+
+// Common Farming Images
+import CommonPegasus from "./ExpandableImage/Preview/01COMMON/COMMON_Pegasus.png";
+import CommonPhoenix from "./ExpandableImage/Preview/01COMMON/COMMON_Phoenix.png";
+import CommonTaurus from "./ExpandableImage/Preview/01COMMON/COMMON_Taurus.png";
+import CommonWhale from "./ExpandableImage/Preview/01COMMON/COMMON_Whale.png";
+
+//Unique Farming Images
+import UniquePegasus from "./ExpandableImage/Preview/02UNIQUE/UNIQUE_pegasus.png";
+import UniquePhoenix from "./ExpandableImage/Preview/02UNIQUE/UNIQUE_PHOENIX.png";
+import UniqueTaurus from "./ExpandableImage/Preview/02UNIQUE/UNIQUE_TAURUS.png";
+import UniqueWhell from "./ExpandableImage/Preview/02UNIQUE/UNIQUE_whell.png";
+
+//Rare Farming Images
+import RarePegasus from "./ExpandableImage/Preview/03RARE/RARE_pegasus.png";
+import RareTaurus from "./ExpandableImage/Preview/03RARE/RARE_taurus.png";
+import RarePhoenix from "./ExpandableImage/Preview/03RARE/RARE_phoenix.png";
+import Rarehale from "./ExpandableImage/Preview/03RARE/RARE_whale.png";
+
+//Epic Farming Images
+import EPIC_Pegasus from "./ExpandableImage/Preview/04EPIC/EPIC_Pegasus.png";
+import EPIC_Phoenix from "./ExpandableImage/Preview/04EPIC/EPIC_Phoenix.png";
+import EPIC_Taurus from "./ExpandableImage/Preview/04EPIC/EPIC_Taurus.png";
+import EPIC_Whale from "./ExpandableImage/Preview/04EPIC/EPIC_Whale.png";
+
+// Legendary Farming
+import LEGENDARY_pegasus from "./ExpandableImage/Preview/05LEGENDARY/LEGENDARY_pegasus.png";
+import LEGENDARY_phoenix from "./ExpandableImage/Preview/05LEGENDARY/LEGENDARY_phoenix.png";
+import LEGENDARY_taurus from "./ExpandableImage/Preview/05LEGENDARY/LEGENDARY_taurus.png";
+import LEGENDARY_whale from "./ExpandableImage/Preview/05LEGENDARY/LEGENDARY_whale.png";
+
+// ALIEN MYTHIC Farming
+import ALIEN_MYTHIC_PHOENIX from "./ExpandableImage/Preview/06ALIENMYTHIC/ALIEN_MYTHIC_PHOENIX.png";
+import ALIEN_MYTHIC_TAURUS from "./ExpandableImage/Preview/06ALIENMYTHIC/ALIEN_MYTHIC_TAURUS.png";
+import ALIEN_MYTHIC_PEGASUS from "./ExpandableImage/Preview/06ALIENMYTHIC/ALIEN_MYTHIC_PEGASUS.png";
+import ALIEN_MYTHIC_WHALE from "./ExpandableImage/Preview/06ALIENMYTHIC/ALIEN_MYTHIC_WHALE.png";
+
+// DEVIL MYTHIC Farming
+import DEVIL_MYTHIC_PHOENIX from "./ExpandableImage/Preview/07MYTHICDEVIL/DEVIL_Mythic_Pegasus.png";
+import DEVIL_MYTHIC_TAURUS from "./ExpandableImage/Preview/07MYTHICDEVIL/DEVIL_Mythic_Phoenix.png";
+import DEVIL_MYTHIC_PEGASUS from "./ExpandableImage/Preview/07MYTHICDEVIL/DEVIL_Mythic_Taurus.png";
+import DEVIL_MYTHIC_WHALE from "./ExpandableImage/Preview/07MYTHICDEVIL/DEVIL_Mythic_Whale.png";
+
+// GOD MYTHIC Farming
+import GOD_MYTHIC_PHOENIX from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_PEGASUS.png";
+import GOD_MYTHIC_TAURUS from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_PHOENIX.png";
+import GOD_MYTHIC_PEGASUS from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_TAURUS.png";
+import GOD_MYTHIC_WHALE from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_WHALE.png";
 
 import Card from "./Card";
 import "./CardContainer.css";
 
 export type StakingProps = {
   choosenOption: string;
+  currentTab?: string;
+  title?: string;
 };
 
 // Call API
@@ -42,6 +92,7 @@ export type StakingState = {
   approveFlag: boolean;
   isModelOpen: boolean;
   choosenOpenModel: boolean;
+  FarmingArray: any;
 };
 
 class CardContainer extends BaseComponent<
@@ -72,6 +123,30 @@ class CardContainer extends BaseComponent<
   };
 
   confirmStake() {}
+
+  findImage() {
+    const CommonCategory = [ CommonPegasus,CommonPhoenix,CommonTaurus,CommonWhale];
+
+    const UniqueCategory = [UniquePegasus,UniquePhoenix,UniqueTaurus,UniqueWhell];
+
+    const RareCategory = [RarePegasus, RareTaurus, RarePhoenix, Rarehale];
+
+    const EpicCategory = [EPIC_Pegasus, EPIC_Phoenix, EPIC_Taurus, EPIC_Whale];
+
+    const LegendaryCategory = [ LEGENDARY_pegasus, LEGENDARY_phoenix, LEGENDARY_taurus, LEGENDARY_whale, ];
+
+    const AlienCategory = [ALIEN_MYTHIC_PHOENIX, ALIEN_MYTHIC_TAURUS,ALIEN_MYTHIC_PEGASUS,ALIEN_MYTHIC_WHALE];
+
+    const DevilCategory = [ DEVIL_MYTHIC_PHOENIX, DEVIL_MYTHIC_TAURUS, DEVIL_MYTHIC_PEGASUS,DEVIL_MYTHIC_WHALE];
+  
+    const GodCategory = [GOD_MYTHIC_PHOENIX, GOD_MYTHIC_TAURUS, GOD_MYTHIC_PEGASUS,GOD_MYTHIC_WHALE ];
+
+    const ImageCategory = this.props.title;
+
+    const keyWord = ["Common","Unique","Rare","Epic","Alien","legendary","Devil","God"]
+
+  }
+
   render() {
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
@@ -83,6 +158,11 @@ class CardContainer extends BaseComponent<
       "Value of choosenOption test check",
       this.props.choosenOption === "Your Farms"
     );
+
+    const testTitle = this.props.title;
+    let myArray = testTitle.split(" ");
+
+    console.log("Value of myArray:::", myArray);
 
     return (
       // className={choosenOption ==="Your Farms"
@@ -100,18 +180,19 @@ class CardContainer extends BaseComponent<
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
 
-          {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>)}
-
+            {mysterCheck && (
+              <div className="col-sm-6 col-md-6 col-lg-12">
+                <button
+                  type="button"
+                  className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                  onClick={async () => {
+                    this.toggleModal();
+                  }}
+                >
+                  Choose NFT
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="col-sm-12 col-md-6 col-lg-3">
@@ -123,8 +204,9 @@ class CardContainer extends BaseComponent<
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
 
-         {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
-              <button
+            {mysterCheck && (
+              <div className="col-sm-6 col-md-6 col-lg-12">
+                <button
                 type="button"
                 className="btn btn-outline-Choose NFT btn-block white__button mt-2"
                 onClick={async () => {
@@ -133,7 +215,8 @@ class CardContainer extends BaseComponent<
               >
                 Choose NFT
               </button>
-            </div>)}
+              </div>
+            )}
           </div>
 
           {/* Stake and Approve */}
@@ -188,7 +271,6 @@ class CardContainer extends BaseComponent<
           </div>
         </div>
 
-      
         {/* Second Row */}
 
         <div className="row">
@@ -201,8 +283,9 @@ class CardContainer extends BaseComponent<
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
 
-           {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
-              <button
+            {mysterCheck && (
+              <div className="col-sm-6 col-md-6 col-lg-12">
+                <button
                 type="button"
                 className="btn btn-outline-Choose NFT btn-block white__button mt-2"
                 onClick={async () => {
@@ -211,8 +294,8 @@ class CardContainer extends BaseComponent<
               >
                 Choose NFT
               </button>
-            </div>)}
-
+              </div>
+            )}
           </div>
 
           <div className="col-sm-12 col-md-6 col-lg-3">
@@ -224,18 +307,19 @@ class CardContainer extends BaseComponent<
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
 
-             {  mysterCheck && (<div className="col-sm-6 col-md-6 col-lg-12">
-              <button
-                type="button"
-                className="btn btn-outline-Choose NFT btn-block white__button mt-2"
-                onClick={async () => {
-                  this.toggleModal();
-                }}
-              >
-                Choose NFT
-              </button>
-            </div>)}
-
+            {mysterCheck && (
+              <div className="col-sm-6 col-md-6 col-lg-12">
+                <button
+                  type="button"
+                  className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                  onClick={async () => {
+                    this.toggleModal();
+                  }}
+                >
+                  Choose NFT
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Stake and Approve */}

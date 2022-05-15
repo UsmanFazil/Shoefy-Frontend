@@ -11,7 +11,9 @@ import AnimatedNumber from 'animated-number-react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-export type StakingProps = {};
+export type StakingProps = {
+};
+
 export type StakingState = {
 	nftStaking?: ShoefyNFTStaking,
 	wallet?: Wallet,
