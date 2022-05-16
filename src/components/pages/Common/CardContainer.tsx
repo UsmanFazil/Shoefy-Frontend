@@ -70,6 +70,8 @@ import GOD_MYTHIC_TAURUS from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_
 import GOD_MYTHIC_PEGASUS from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_TAURUS.png";
 import GOD_MYTHIC_WHALE from "./ExpandableImage/Preview/08MYTHICGOD/GOD_MYTHIC_WHALE.png";
 
+import NoDataAvalible from "./ExpandableImage/NoDataAvalible.svg"
+
 import Card from "./Card";
 import "./CardContainer.css";
 
@@ -78,6 +80,7 @@ export type StakingProps = {
   currentTab?: string;
   title?: string;
   index?:number;
+  nftType?:string
 };
 
 // Call API
@@ -128,7 +131,7 @@ class CardContainer extends BaseComponent<
   findImage() {
 
     const currentIndex = this.props.index;
-    console.log("Valye if index",currentIndex);
+
     const CommonCategory = [ CommonPegasus,CommonPhoenix,CommonTaurus,CommonWhale];
 
     const UniqueCategory = [UniquePegasus,UniquePhoenix,UniqueTaurus,UniqueWhell];
@@ -180,28 +183,21 @@ class CardContainer extends BaseComponent<
 
     const mysterCheck = this.props.choosenOption === "Your Farms";
 
-    console.log(
-      "Value of choosenOption test check",
-      this.props.choosenOption === "Your Farms"
-    );
-
-    const testTitle = this.props.title;
-    let myArray = testTitle.split(" ");
-
-    console.log("Value of myArray:::", myArray);
-
     return (
-      // className={choosenOption ==="Your Farms"
-      <div className="card_container">
-        {/* cardImage, cardTitle, cardType, cardSubtitle,  */}
-        {/* <Model/> */}
 
+      <div>
+      <div className={mysterCheck ? " " : "card_container" }>
+        {/* cardImage, cardTitle, cardType, cardSubtitle,  */}
+        
+        {/* General Farming Pools Option */}
+        {this.props.choosenOption != "Your Farms" &&
+        <div>
         <div className="row">
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : TestImage[0]}
+              cardImage={TestImage[0]}
               cardTitle={mysterCheck ? "Character" : "Phoenix"}
-              cardType="common"
+              cardType={this.props.nftType}
               cardSubtitle={mysterCheck ? "Mystery" : "Fire"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
@@ -223,9 +219,9 @@ class CardContainer extends BaseComponent<
 
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : TestImage[1]}
+              cardImage={TestImage[1]}
               cardTitle={mysterCheck ? "Character" : "Taurus"}
-              cardType="common"
+              cardType={this.props.nftType}
               cardSubtitle={mysterCheck ? "Mystery" : "Earth"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
@@ -302,9 +298,9 @@ class CardContainer extends BaseComponent<
         <div className="row">
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : TestImage[2]}
+              cardImage={TestImage[2]}
               cardTitle={mysterCheck ? "Character" : "Pegasus"}
-              cardType="common"
+              cardType={this.props.nftType}
               cardSubtitle={mysterCheck ? "Mystery" : "Wind"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
@@ -326,9 +322,9 @@ class CardContainer extends BaseComponent<
 
           <div className="col-sm-12 col-md-6 col-lg-3">
             <Card
-              cardImage={mysterCheck ? Mystery : TestImage[3]}
+              cardImage={TestImage[3]}
               cardTitle={mysterCheck ? "Character" : "Whale"}
-              cardType="common"
+              cardType={this.props.nftType}
               cardSubtitle={mysterCheck ? "Mystery" : "Water"}
               backgroundColor={mysterCheck ? "Mystery" : ""}
             />
@@ -352,17 +348,21 @@ class CardContainer extends BaseComponent<
           <div className="col-sm-0 col-md-2 col-lg-3"></div>
 
           <div className="col-sm-0 col-md-2 col-lg-3">
-            {/* <Card
-              cardImage={Mystery}
-              cardTitle="Character"
-              cardType="common"
-              cardSubtitle="Element"
-              backgroundColor= "Mystery"
-            /> */}
 
             {/* <Model/> */}
           </div>
+        
         </div>
+        </div>
+          }
+
+          {
+            this.props.choosenOption === "Your Farms" &&
+            <div className="">
+                <img src={NoDataAvalible} alt="Device" className="noDataAvalible" />
+            </div>
+          }
+
 
         <Modal
           title={"You have successfully harvested X number(s) of common sNFTs"}
@@ -378,6 +378,9 @@ class CardContainer extends BaseComponent<
           onClose={this.toggleModal2}
         /> */}
       </div>
+      </div>
+
+      // NoDataAvalible
     );
   }
 }

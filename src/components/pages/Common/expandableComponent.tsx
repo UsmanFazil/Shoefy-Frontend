@@ -166,6 +166,21 @@ class expandableComponent extends BaseComponent<
     }
   }
 
+  find_type(title){
+
+    const keyWord = ["Common","Unique","Rare","Epic","Legend","Devil","God","Alien"];
+    let nftType;
+
+    for (let i = 0; i<=keyWord.length-1 ; i++){
+        const val = title.indexOf(keyWord[i]);
+        if(val != -1){
+           nftType = keyWord[i]
+           break
+        }
+    }
+    return nftType;
+  }
+
   add_border() {}
 
   render() {
@@ -211,7 +226,7 @@ class expandableComponent extends BaseComponent<
     const t: TFunction<"translation"> = this.readProps().t;
 	  let test = t(title);
 
-    return (
+      return (
       <div>
         <div className="content-wrapper">
           <div className="expanding-staking-container">
@@ -247,7 +262,7 @@ class expandableComponent extends BaseComponent<
 
                       <div className="expand2">
                         <div className="e2_up"> 
-                        Lockup Duration{this.props.index}
+                        Lockup Duration
                      
                         </div>
                         <div className="e2_down">
@@ -278,7 +293,8 @@ class expandableComponent extends BaseComponent<
                   >
                     <div className="col-md-12 d-flex">
                       <div className="d-flex flex-column flex-fill ">
-                        <CardContainerComponentMain index={this.props.index} choosenOption={this.props.choosenOption}  title={title}  currentTab={this.props.currentTab} />
+                        <CardContainerComponentMain index={this.props.index} nftType={this.find_type(title)} choosenOption={this.props.choosenOption}  title={title}  currentTab={this.props.currentTab} />
+
                       </div>
                     </div>
                   </div>
