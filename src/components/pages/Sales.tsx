@@ -279,8 +279,6 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
                         <Footer />
                     </div>
                 </div>
-                {/* <div className="comingtitle">COMING SOON</div> */}
-
             </div>
         );
     }

@@ -41,7 +41,6 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
     }
 
     async componentDidMount() {
-        console.log("Value of useLocation",useLocation)
         if (window.ethereum) {
             const accounts = await window.ethereum
                 .request({ method: 'eth_accounts' })

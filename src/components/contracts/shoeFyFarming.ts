@@ -17,19 +17,127 @@ export class ShoefyFarming{
 	private readonly _contract: Contract;
 	private readonly _shoeFyContract: Contract;
 	private readonly _farmingContract: Contract;
+	private _balance_eth: string = '';
 
-    private _balance: number = 0;
 	private _stake: number = 0;
+	private _stake2: any = [];
 	private _allowance: number = 0;
+	private _allowance2: number = 0;
+    private _balance: number = 0;
 
     constructor(wallet: Wallet) {
 		this._wallet = wallet;
 		// this._stakingContract = wallet.connectToContract(StakingAddress, require('./staking.abi.json'));
 		this._shoeFyContract = wallet.connectToContract(ShoeFyAddress[this._wallet.getChainId()], require('./shoefy.abi.json'));
-		this._farmingContract = wallet.connectToContract(FarmingAddress[this._wallet.getChainId()], require('./shoeFyFarming.abi.json'));
-        
+		this._farmingContract = wallet.connectToContract(FarmingAddress, require('./shoeFyFarming.abi.json'));
+		console.log("Value of _FarmingContract",this._farmingContract)
 	}
 
+// Dynamic loading of General Farming
+	// need this
+	get contract(): Contract {
+		return this._contract;
+	}
+
+	// need this
+	get wallet(): Wallet {
+		return this._wallet;
+	}
+
+	// need this
+	get balance(): number {
+		return this._balance;
+	}
+
+	// need this
+	get balance_eth(): string {
+		return this._balance_eth;
+	}
+
+	// need this
+	get stakedBalance(): number {
+		return this._stake;
+	}
+
+	// need this 
+	get allowance(): number {
+		return this._allowance
+	}
+
+	get allowance2(): number {
+		return this._allowance2
+	}
+	
+	get stakedBalance2(): any {
+		return this._stake2;
+	}
+
+	// Need this
+	async approve(amount: string): Promise<void> {
+	console.log("Value of shoefyStaking approve:::",amount);
+	let flag = await this._shoeFyContract.methods.approve(FarmingAddress, amount).send({ 'from': this._wallet.getAddress() });
+	console.log("Value of _shoeFyContract approve",this._shoeFyContract)
+	return flag;
+	}
+
+	async stakefarmGeneral(amount: number,category: string): Promise<void> {
+		await this.refresh();
+		if (this._balance >= amount) {
+			await this._farmingContract.methods.farmGeneral(category,web3.toWei(String(amount), 'ether')).send({ 'from': this._wallet.getAddress() });
+		}
+		else {
+			throw 'Your shoefy balance is not sufficient to stake this amount';
+		}
+	}
+	
+	async stakefarmRapid(amount: number, category: string): Promise<void> {
+		await this.refresh();
+		if (this._balance >= amount) {
+			await this._farmingContract.methods.farmRapid(category,web3.toWei(String(amount), 'ether')).send({ 'from': this._wallet.getAddress() });
+		}
+		else {
+			throw 'Your shoefy balance is not sufficient to stake this amount';
+		}
+	}	
+	
+	async stake(amount: number): Promise<void> {
+		await this.refresh();
+
+		if (this._balance >= amount) {
+			await this._farmingContract.methods.stakeIn(web3.toWei(String(amount), 'ether')).send({ 'from': this._wallet.getAddress() });
+		}
+		else {
+			throw 'Your shoefy balance is not sufficient to stake this amount';
+		}
+	}
+
+	async refresh(): Promise<void> {
+		let web3 = new Web3(window.ethereum);
+		let balance_eth = await web3.eth.getBalance(this._wallet.getAddress());
+
+		//Math to 3 decimals
+		const truncateByDecimalPlace = (value, numDecimalPlaces) =>
+		Math.trunc(value * Math.pow(10, numDecimalPlaces)) / Math.pow(10, numDecimalPlaces)
+
+		this._balance_eth = parseFloat((web3.utils.fromWei(balance_eth, "ether"))).toFixed(3);
+
+		this._balance = Math.floor(await this._shoeFyContract.methods.balanceOf(this._wallet.getAddress()).call() / (10 ** 12)) / (10 ** 6);
+
+		console.log("Value of balance",this._balance)
+		this._allowance2 = await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), FarmingAddress).call() / (10 ** 18);
+		console.log("Alloence of the doc",this._allowance2 )
+
+		// parseInt
+		// const stakers = await this._staking2Contract.methods.getStakeData(this._wallet.getAddress()).call();
+		// const time = await this._staking2Contract.methods.getblocktime().call();
+		// const fees = await this._staking2Contract.methods.totalFee().call() / 1;
+		// const claims = await this._staking2Contract.methods.totalreward.call().call() / Math.pow(10, 18);
+
+		// for (let i = 0; i < 3; i++) {
+		// 	this._unstakable[i] = -1;
+		// 	this._stake2[i] = 0;
+		// }
+	}
 
 
 }

@@ -132,6 +132,7 @@ class Dashboard extends BaseComponent<DashboardProps & WithTranslation, Dashboar
     private async updateOnce(): Promise<boolean> {
         const shoefy = this.readState().shoefy;
 
+        console.log("value inside updateOnce",this.props.wallet)
         this.updateState({
             address: this.props.wallet._address,
             accountEllipsis: this.props.wallet._address ? `${this.props.wallet._address.substring(0, 4)}...${this.props.wallet._address.substring(this.props.wallet._address.length - 4)}` : '___'

@@ -20,8 +20,6 @@ class Card extends Component<CardProps> {
     const { cardImage, cardTitle, cardType, cardSubtitle, children, backgroundColor} = this.props;
     const backgroundColorcheck = (backgroundColor != "") 
 
-    console.log("Value of colorful check and backgound",backgroundColor,backgroundColorcheck)
-    
     return (
       <>
              <div className={backgroundColorcheck ? "card mt-5 colorful_card": "card mt-5 "} >

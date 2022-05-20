@@ -137,7 +137,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
   async componentDidMount() {
     const urlValue = window.location.hash;
     const hash = urlValue.replace("#", "");
-    console.log("Hash value1", hash);
     this.setState({ activeTab: hash });
 
     fetch("./locales/en/translation.json")
@@ -152,7 +151,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         this.setState({ expandingRow:data.ExpandingRow });
         }
 
-        console.log("value of data", data);
       });
 
     if (window.ethereum) {
@@ -194,12 +192,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         if (resetCt) {
           this.updateState({
             address: this.props.wallet._address,
-            balance: shoefy.balance,
+            balance: shoefy.balance
           });
         } else {
           this.updateState({
             address: this.props.wallet._address,
-            balance: shoefy.balance,
+            balance: shoefy.balance
           });
         }
       } catch (e) {
@@ -228,7 +226,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         shoefy: shoefy,
         wallet: wallet,
         looping: true,
-        pending: false,
+        pending: false
       });
 
       this.updateOnce(true).then();
@@ -282,15 +280,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
   onGeneral(){
     this.setState({ activeTab: "general" });
     location.replace("/nftFarming#general");
-    console.log("Value of rapid",window.location.href);
     this.setState({ expandingRow:this.state.data.ExpandingRow });
     this.setState({ show: !this.state.show});
     this.setState({ currentTab:'general' });
-
   }
 
   render() {
-    console.log(this.state.isModelOpen);
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
     let test = t("ExpandingRow");
@@ -343,7 +338,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                 </NavLink>
               </li>
               <li className="nav_letter">
-                <NavLink className="link_letter" to="nftFarming">
+                <NavLink className="link_letter" to="nftFarming#general">
                   Farm
                 </NavLink>
               </li>
@@ -556,7 +551,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                       color: "white",
                       margin: "0px 16px",
                     }}
-                    disabled={state.pending}
                     type="button"
                     onClick={async () => {
                       this.confirmStake(" General Farming Pools")
@@ -585,10 +579,10 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                 </div>
                   
                 {/* General Farming */}
-                {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
 
                 {/* Rapid Farming */}
-                {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
                 
               </div>
             </div>

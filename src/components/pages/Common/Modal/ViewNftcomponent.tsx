@@ -19,7 +19,6 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
   children,
 }) => {
   const outsideRef = React.useRef(null);
-  console.log("Value of isOpen", isOpen);
   const handleCloseOnOverlay = (
     e: React.MouseEvent<HTMLElement, MouseEvent>
   ) => {
