@@ -235,6 +235,7 @@ class expandableComponent extends BaseComponent<
                             choosenOption={this.props.choosenOption}
                             title={title}
                             currentTab={this.props.currentTab}
+                            stakeAmount= {stakeAmount}
                           />
                         </div>
                       </div>

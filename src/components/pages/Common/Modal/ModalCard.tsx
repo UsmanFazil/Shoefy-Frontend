@@ -5,13 +5,13 @@ interface CardProps {
     cardTitle: string;
     cardType:string;
     cardSubtitle:string;
-    backgroundColor?:string;
+    // backgroundColor?:string;
   }
 
 class Card extends Component<CardProps> {
   render() {
-    const { cardImage, cardTitle, cardType, cardSubtitle, children, backgroundColor} = this.props;
-    const backgroundColorcheck = (backgroundColor != "") 
+    const { cardImage, cardTitle, cardType, cardSubtitle } = this.props;
+    const backgroundColorcheck = "#030843"
 
     return (
       <>

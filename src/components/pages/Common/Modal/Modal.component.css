@@ -35,10 +35,26 @@
 
 	.modal__box {
 		position: relative;
-		width: 863px;
+		width: 766px;
 		height: 544px;
 		margin: 0 10%;
 		padding: 112px;
+		box-sizing: border-box;
+		border-radius: 10px;
+		background-color: #030843;
+		cursor: auto;
+	}
+
+	/* width: 445px;
+    height: 628px; */
+
+	.modal__nft__box {
+		position: relative;
+		width: 445px;
+        height: 628px;
+		margin: 0 10%;
+		padding: 20px 80px 80px 20px;
+		/* TRBL */
 		box-sizing: border-box;
 		border-radius: 10px;
 		background-color: #030843;
@@ -92,7 +108,7 @@
 	}
 
 	.image__container{
-	padding-left: 164px;
+	padding-left: 125px;
 	}
 
 	.modal__close {

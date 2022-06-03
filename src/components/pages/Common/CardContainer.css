@@ -70,7 +70,6 @@ body {
 }
 
 *{
-	/* border: 1px solid; */
 }
 
 .test_container{
@@ -110,6 +109,15 @@ border-radius: 18px;
 	background: #08F2F1 !important;
 	border: 1px solid #08F2F1;
 	color: #04011C !important;
+}
+
+.skyblue__button{
+	background: #08F2F1 !important;
+	border: 1px solid #08F2F1;
+	color: #04011C !important;
+	box-sizing: border-box;
+	border-radius: 8px;
+
 }
 
 .pink__button{
@@ -199,6 +207,86 @@ color: #F4F5F6;
 	box-sizing: border-box;
 }
 
+.card__nft__title {
+	position: absolute;
+	width: 94px;
+	height: 30px;
+	left: 11px;
+	top: 238px;
+	padding: 5px 16px;
+	background: linear-gradient(152.78deg, #FFBBF8 0%, #BEFFFB 100%);
+	text-transform: uppercase;
+	border-radius: 5px;
+	border: 2px solid #ffffff;
+	color: #141416;
+	box-sizing: border-box;
+}
+
+.card__nft__img {
+	text-align: center;
+	background: #030843;
+	position: absolute;
+	height: 253px;
+	left: 0%;
+	right: 0%;
+	top: 0px;
+	border-radius: 12px 12px 0px 0px;
+}
+
+.card_nft {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 331px;
+    height: 466px;
+    cursor: pointer;
+    position: relative;
+    background-color: #030843;
+}
+
+.footer_nft_top_tag {
+	position: absolute;
+	height: 24px;
+	left: 12px;
+	top: 280px;
+
+	font-family: "Montserrat";
+	font-style: normal;
+	font-weight: 700;
+	font-size: 16px;
+	line-height: 24px;
+	/* identical to box height, or 150% */
+
+	/* Neutrals/1 */
+	color: #ffffff;
+}
+
+
+.footer_nft_bottom_tag {
+	position: absolute;
+	/* width: 55px; */
+	/* height: 20px; */
+	left: 12px;
+	top: 304px;
+	
+	/* Caption 2 (Bold) */
+	
+	font-family: 'Montserrat';
+	font-style: normal;
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 20px;
+	/* identical to box height, or 167% */
+	/* Neutrals/3 */
+	color: #ffffff;
+}
+
+.ImageBoarder{
+	border:1px solid linear-gradient(152.78deg, #FFBBF8 0%, #BEFFFB 100%);
+}
+
 .card__text {
 	font-weight: 700;
 	font-size: 12px;
@@ -236,7 +324,7 @@ color: #F4F5F6;
 
 .footer_bottom_tag {
 	position: absolute;
-	width: 55px;
+	/* width: 55px; */
 	height: 20px;
 	left: 12px;
 	top: 304px;
@@ -249,12 +337,12 @@ color: #F4F5F6;
 	font-size: 12px;
 	line-height: 20px;
 	/* identical to box height, or 167% */
-	
-	
 	/* Neutrals/3 */
+	color: #141416;
 	
-	color: #353945;
 }
+
+
 
 @media (max-width: 992px) {
 	.card_container {

@@ -152,10 +152,13 @@
 	text-align: right;
 }
 
-/*.nftfarming-container .staking-body>div {
-	padding-top: 20px;
-	padding-bottom: 20px;
-}*/
+.btn-pink{
+	background-color: #CF3279 !important;
+}
+
+.btn-lightgrey{
+	background-color: #120059;
+}
 
 .nftfarming-container input::-webkit-outer-spin-button,
 .nftfarming-container input::-webkit-inner-spin-button {

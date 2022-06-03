@@ -10,7 +10,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC"
 };
 
-export const FarmingAddress = "0x76018d4b5C1410D75c8Ce847c0d576236EA53aA0";
+export const FarmingAddress = "0x005152D60516D761112A284ec623FB72d6FE12E0";
 
 export class ShoefyFarming{
     private readonly _wallet: Wallet;
@@ -80,6 +80,9 @@ export class ShoefyFarming{
 	return flag;
 	}
 
+	// farmNFT(bytes32 category_, uint256 farmAmount_, bool generalFarm_)
+	// harvestNFT(uint256[] memory farmIds_,string[] memory tokenURIs_,bytes[] memory signatures_,bool generalFarm_)
+
 	async stakefarmGeneral(amount: number,category: string): Promise<void> {
 		await this.refresh();
 		if (this._balance >= amount) {
@@ -99,6 +102,8 @@ export class ShoefyFarming{
 			throw 'Your shoefy balance is not sufficient to stake this amount';
 		}
 	}	
+
+
 	
 	async stake(amount: number): Promise<void> {
 		await this.refresh();

@@ -76,6 +76,7 @@ export type FarmingState = {
   isModelOpen: boolean;
   chooseButton?:string;
   currentTab?:string;
+  selected?:boolean;
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -108,7 +109,8 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       expandingRow:[],
       data:[],
       show:false,
-      currentTab:"general"
+      currentTab:"general",
+      selected:false
     };
   }
 
@@ -118,8 +120,13 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
   async confirmStake(step): Promise<void> {
 
+    if(step === "Your Farms"){
+      this.setState({selected: true})
+    }else{
+      this.setState({selected: false})
+    }
+
     this.setState({ chooseButton: step });
-    // this.setState({ show: !this.state.show});
 
   }
 
@@ -544,24 +551,30 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
                 <div className="d-flex justify-content-left button-row margin_top">
                   <button
-                    className="btn btn-md link-dark"
+                    className={!this.state.selected? "btn btn-md link-dark btn-pink" : "btn btn-md link-dark"}
                     style={{
                       width: "213px",
-                      backgroundColor: "#CF3279",
+                      backgroundColor: "#120059",
                       color: "white",
                       margin: "0px 16px",
                     }}
                     type="button"
                     onClick={async () => {
-                      this.confirmStake(" General Farming Pools")
+                      this.confirmStake("General Farming Pools")
                     }}
                   >
                     {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
                     
                   </button>
+                  {/* .btn-pink{
+	background-color: #CF3279;
+}
 
+.btn-lightgrey{
+	background-color: #120059;
+} */}
                   <button
-                    className="btn btn-md link-dark"
+                    className={this.state.selected? "btn btn-md link-dark btn-pink" : "btn btn-md link-dark"}
                     style={{
                       width: "130px",
                       height: "40px",

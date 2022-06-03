@@ -57,7 +57,9 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 	constructor(props: StakingProps & WithTranslation) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			
+		};
 	}
 
 	handleError(error) {
