@@ -80,10 +80,12 @@ export class ShoefyNFTStaking {
 			throw 'Your staked shoefy balance is not sufficient to unstake this id';
 		}
 	}
+
 	async claim(): Promise<void> {
 		await this._nftStakingContract.methods.claimStakingRewards().send({'from': this._wallet.currentAddress});
 		await this.refresh();
 	}
+	
 	async refresh(): Promise<void> {
 		let web3 = new Web3(window.ethereum);
 		let balance_eth = await web3.eth.getBalance(this._wallet.currentAddress);
@@ -98,6 +100,7 @@ export class ShoefyNFTStaking {
         for (let i = 0; i < this._balance; i++) {
             const tokenId = await this._shoeFyNFTContract.methods.tokenOfOwnerByIndex(this._wallet.currentAddress, i).call();
             const tokenURI = await this._shoeFyNFTContract.methods.tokenURI(tokenId).call();
+			console.log("Value of tokenAPICall",tokenURI)
             const nftData = await requestAPICall(tokenURI).then(res => {
                 // console.log('IPFS Data', res.data)
                 return res.data

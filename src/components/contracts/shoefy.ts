@@ -209,7 +209,6 @@ export class Shoefy {
 		this._balance = Math.floor(await this._shoeFyContract.methods.balanceOf(this._wallet.getAddress()).call() / (10 ** 12)) / (10 ** 6);
 
 		this._allowance2 = await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), Staking2Address[this.wallet.getChainId()]).call() / (10 ** 18);
-		console.log(this._allowance2);
 		const stakers = await this._staking2Contract.methods.getStakeData(this._wallet.getAddress()).call();
 		const time = await this._staking2Contract.methods.getblocktime().call();
 		const fees = await this._staking2Contract.methods.totalFee().call() / 1;

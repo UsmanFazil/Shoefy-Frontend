@@ -244,6 +244,7 @@
 	/* padding: 10px 0px 0px 10px; */
 	/* margin-bottom: 20px; */
 	flex-direction: column;
+	/* max-width: 1024px; */
 }
 
 .selected_each_element {

@@ -93,7 +93,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		this.disconnectWallet = this.disconnectWallet.bind(this);
 		this.state = {
 			approveFlag: false,
-			approveFlag1: false,
+			approveFlag1: false
 		};
 	}
 
@@ -433,6 +433,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		}
 
 	}
+	
 	setUnstakeValue(value) {
 		const v = Math.max(0, Math.min(+(value || 0), this.readState().stakedBalance));
 		this.updateState({

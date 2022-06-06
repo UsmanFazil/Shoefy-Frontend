@@ -226,7 +226,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       if (!result) {
         throw "The wallet connection was cancelled.";
       }
-      console.log(wallet);
       const shoefy = new Shoefy(wallet);
 
       this.updateState({
@@ -566,13 +565,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
                     
                   </button>
-                  {/* .btn-pink{
-	background-color: #CF3279;
-}
-
-.btn-lightgrey{
-	background-color: #120059;
-} */}
+                  
                   <button
                     className={this.state.selected? "btn btn-md link-dark btn-pink" : "btn btn-md link-dark"}
                     style={{

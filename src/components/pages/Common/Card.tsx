@@ -6,12 +6,16 @@ interface CardProps {
     cardType:string;
     cardSubtitle:string;
     backgroundColor?:string;
+    ChoosenOption?:string;
   }
 
 class Card extends Component<CardProps> {
   render() {
     const { cardImage, cardTitle, cardType, cardSubtitle, children, backgroundColor} = this.props;
+    
     const backgroundColorcheck = (backgroundColor != "") 
+
+   const Image = this.props.ChoosenOption == "Your Farms"? `data:image/png;base64,${cardImage}`: cardImage
 
     return (
       <>
@@ -19,7 +23,7 @@ class Card extends Component<CardProps> {
               {/* <div className="card__img"> */}
               <div className={backgroundColorcheck ? "card__img colorful_card": "card__img"}>
 
-                <img src={cardImage} alt="Device" />
+                <img src={Image} alt="Device" />
               </div>
               <span className="card__title card__text ">{cardType}</span>
               <div className="card__footer">

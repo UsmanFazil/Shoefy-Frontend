@@ -30,7 +30,7 @@ import { Modal } from "./Modal/Modal.component";
 import Model from "./Modal//Model";
 import { ViewNftcomponent } from "./Modal/ViewNftcomponent";
 
-import Web3 from 'web3';
+import Web3 from "web3";
 
 import Mystery from "./ExpandableImage/Mystery.svg";
 
@@ -90,12 +90,13 @@ import "./CardContainer.css";
 export type StakingProps = {
   choosenOption: string;
   currentTab?: string;
-  // wallet?: Wallet,
   title?: string;
   index?: number;
   nftType?: string;
   pending: boolean;
-  stakeAmount?:any
+  stakeAmount?: any;
+  CardData?: any;
+  userData?: any;
 };
 
 export type StakingState = {
@@ -123,10 +124,11 @@ export type StakingState = {
   ctPercentageStake?: number;
   ctValueStake?: number;
   ctValueStake2?: Array;
+  userData?: Array;
   pending?: boolean;
   approveFlag: boolean;
 
-  amount?:any
+  amount?: any;
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -146,19 +148,16 @@ class CardContainer extends BaseComponent<
   StakingProps & WithTranslation,
   StakingState
 > {
-  
   private _timeout: any = null;
   private _selectedNFT: any = [];
-  private nftData = [{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false}]
-
-  
-
+  private selectedItems = [];
 
   constructor(props: StakingProps & WithTranslation) {
     super(props);
 
     this.handleInputStake = this.handleInputStake.bind(this);
     this.connectWallet = this.connectWallet.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       approveFlag: false,
@@ -166,10 +165,21 @@ class CardContainer extends BaseComponent<
       isModelOpen: false,
       choosenOpenModel: false,
       harvestAmount: 0,
-      amount:0
+      userData: []
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.userData !== state.userData) {
+      //Change in props
+      return {
+        userData: props.userData,
+      };
+    }
+    return null; // No change to state
+  }
+
+  // userData
   toggleModal = () => {
     this.setState({ isModelOpen: !this.state.isModelOpen });
   };
@@ -178,82 +188,130 @@ class CardContainer extends BaseComponent<
     this.setState({ choosenOpenModel: !this.state.choosenOpenModel });
   };
 
-  selectNFT = (index) =>{
+  selectNFT = (index, data) => {
     try {
-      this._selectedNFT.push(index)
-      console.log("value of selectedNFT",this._selectedNFT)
-     this.setState({ harvestAmount: this._selectedNFT.length });
+      // let test = this._selectedNFT.splice(index,index,{
+      //   farmId: data.farmId,
+      //   assignedNFT: data.assignedNFT,
+      //   mintStatus: data.mintStatus,
+      // });
+      // console.log("Value of Troon:::removed", test);
+      // console.log("Value of Troon:::removednot", this.selectedItems);
 
+      // console.log("Value of Troon", data,index);
+      // const { farmId, assignedNFT, mintStatus } = data;
 
+      // if selectedItems == true then remove the index from array 
+      // else add
+      // if undefinde then add and false add 
+      this._selectedNFT.push({
+        farmId: data.farmId,
+        assignedNFT: data.assignedNFT,
+        mintStatus: data.mintStatus,
+      });
+      this.setState({ harvestAmount: this._selectedNFT.length });
+      this.selectedItems[index] = !this.selectedItems[index];
+      // check for false and true
+      if(this.selectedItems[index] === false || this.selectedItems[index] === undefined){
+        // this._selectedNFT.push({
+        //   farmId: data.farmId,
+        //   assignedNFT: data.assignedNFT,
+        //   mintStatus: data.mintStatus,
+        // });
+        // this.setState({ harvestAmount: this._selectedNFT.length });
+        // this.selectedItems[index] = !this.selectedItems[index];
+      }else{
+        // this._selectedNFT.splice(index,1);
+        // this.setState({ harvestAmount: this._selectedNFT.length });
+        // this.selectedItems[index] = !this.selectedItems[index];
+      }
+      
+     
     } catch (e) {
       this.handleError(e);
     }
-  }
+  };
 
   setStakeValue(step, value) {
     const r = this.readState().ShoefyFarming;
-    console.log("Value of rrr:::", value,step);
     if (!r) return;
 
-    // const test = this.props.stakeAmount;
-    // const newtest = new Number(test);
-
-    // console.log("Value of newtest", newtest);  
-
-    // console.log("Value of stakeAmount props",Number(this.props.stakeAmount));
-    console.log("Value of stakeAmount amount before",this.state.amount);
-
-    this.setState({amount:value})
+    console.log("Value of setStakeValue",step,value);
 
     const t = r.balance;
+    console.log("Value of setStakeValue t",t);
+
     const v = Math.max(0, Math.min(+(value || 0), r.balance));
-   
-      const temp = this.readState().ctValueStake2;
-      temp[step] = v;
-      this.updateState({
-        ctPercentageStake: Math.floor((100 * v) / t),
-        ctValueStake2: temp
-      });
-      // *parseInt(this.props.stakeAmount
-    this.setState({amount:temp[0]})
+
+    console.log("Value of setStakeValue",v);
+
+    const temp = this.readState().ctValueStake2;
+
+    console.log("Value of setStakeValue",temp);
+
+    temp[step] = v;
+
     
-    console.log("value of stakeAmount amount after",this.state.amount)
-    // console.log("value of temp",typeof(parseInt(this.props.stakeAmount)))
-    
-      console.log(
-        this.readState().ctValueStake2[0],
-        this.readState().ctValueStake2[1]
-      );
+    console.log("Value of setStakeValue",temp[step],value);
+
+    this.updateState({
+      ctPercentageStake: Math.floor((100 * v) / t),
+      ctValueStake2: temp,
+    });
+
+    console.log("value of tempState",temp[0])
+    this.setState({ amount: temp });
+
+    console.log(
+      this.readState().ctValueStake2[0],
+      this.readState().ctValueStake2[1]
+    );
+
   }
 
+
+  setStakeValue1(step, value) {
+		const r = this.readState().ShoefyFarming;
+		if (!r) return;
+
+		const t = r.balance;
+		const v = value
+		if (step == -1)
+			this.updateState({
+				ctPercentageStake: Math.floor(100 * v / t),
+				ctValueStake: v,
+			});
+		else {
+			const temp = this.readState().ctValueStake2;
+
+			temp[step] = v;
+			this.updateState({
+				ctPercentageStake: Math.floor(100 * v / t),
+				ctValueStake2: temp,
+			});
+			console.log(this.readState().ctValueStake2[0], this.readState().ctValueStake2[1]);
+		}
+    console.log("Updated ctValueStake2",this.state.ctValueStake2,this.state.ctValueStake)
+	}
+
   async confirmApprove(step): Promise<void> {
-		let web3 = new Web3(window.ethereum);
-		// let approve = parseFloat((web3.utils.fromWei(, "ether"))).toFixed(3);
-    
+    let web3 = new Web3(window.ethereum);
+
     const value = this.props.stakeAmount;
-    // console.log("value of value",value)
-    let newValue = (value.split(" ")[0] * this.state.amount)
+    let newValue = value.split(" ")[0] * this.state.amount;
 
-    const testvalue = newValue.toString()
-    console.log("dudas value1", testvalue)
+    const testvalue = newValue.toString();
 
-		let approve = ((web3.utils.toWei(testvalue, "ether")));
-    console.log("dudas value2", approve)
+    let approve = web3.utils.toWei(testvalue, "ether");
 
-
-    console.log("New value amount",newValue,testvalue,approve)
-    // console.log("value of test value",newValue[0]*this.state.amount); 
-
-    // text.split
     try {
       const state = this.readState();
       this.updateState({ pending: true });
-      this.setState({ approveFlag: !this.state.approveFlag });
       const flag = await state.ShoefyFarming.approve(approve);
 
       this.updateState({ pending: false });
+      this.setState({ approveFlag: !this.state.approveFlag });
       this.updateOnce(true).then();
-
     } catch (e) {
       this.updateState({ pending: false });
       this.handleError(e);
@@ -261,12 +319,8 @@ class CardContainer extends BaseComponent<
   }
 
   async confirmStake(currentTab): Promise<void> {
-    // document.getElementById("modalswitch3").click();
-
-    console.log("Value of shoefyStaking confirmStake:::", currentTab);
     const state = this.readState();
-    const byteValue = this.findImage("byte").toString;
-    console.log("returns the byte value for input", state.amount);
+    const byteValue = this.findImage("byte");
 
     if (currentTab === "general") {
       // Stake General NFT
@@ -275,10 +329,7 @@ class CardContainer extends BaseComponent<
         this.updateState({ pending: true });
 
         if (state.ctValueStake >= 0) {
-          await state.ShoefyFarming.stakefarmGeneral(
-            state.amount,
-            "0x3955032f1b4fd3485213d1c8a0e4ced5c0b5d4e9ffa466e04ca90c624d38a252"
-          );
+          await state.ShoefyFarming.stakefarmGeneral(state.amount, byteValue);
 
           document.getElementById("modalswitch2").click();
         } else {
@@ -299,10 +350,7 @@ class CardContainer extends BaseComponent<
         this.updateState({ pending: true });
 
         if (state.ctValueStake >= 0) {
-          await state.ShoefyFarming.stakefarmRapid(
-            state.amount,
-            byteValue
-          );
+          await state.ShoefyFarming.stakefarmRapid(state.amount, byteValue);
 
           document.getElementById("modalswitch2").click();
         } else {
@@ -319,15 +367,12 @@ class CardContainer extends BaseComponent<
     }
   }
 
-
   async confirmHarvest(currentTab): Promise<void> {
     // document.getElementById("modalswitch3").click();
 
-    console.log("Value of shoefyStaking confirmStake:::", currentTab);
     const state = this.readState();
     const byteValue = this.findImage("byte");
-    console.log("returns the byte value for input", byteValue);
-    
+
     this.toggleModal();
     // this.setState({harvestAmount:0})
     // this._selectedNFT = []
@@ -337,19 +382,16 @@ class CardContainer extends BaseComponent<
       // try {
       //   const state = this.readState();
       //   this.updateState({ pending: true });
-
       //   if (state.ctValueStake >= 0) {
       //     await state.ShoefyFarming.stakefarmGeneral(
       //       state.ctValueStake,
       //       byteValue
       //     );
-
       //     document.getElementById("modalswitch2").click();
       //   } else {
       //     NotificationManager.warning("Can't stake a negative amount.");
       //     return;
       //   }
-
       //   this.updateState({ pending: false });
       //   this.updateOnce(true).then();
       // } catch (e) {
@@ -361,19 +403,16 @@ class CardContainer extends BaseComponent<
       // try {
       //   const state = this.readState();
       //   this.updateState({ pending: true });
-
       //   if (state.ctValueStake >= 0) {
       //     await state.ShoefyFarming.stakefarmRapid(
       //       state.ctValueStake,
       //       byteValue
       //     );
-
       //     document.getElementById("modalswitch2").click();
       //   } else {
       //     NotificationManager.warning("Can't stake a negative amount.");
       //     return;
       //   }
-
       //   this.updateState({ pending: false });
       //   this.updateOnce(true).then();
       // } catch (e) {
@@ -384,18 +423,19 @@ class CardContainer extends BaseComponent<
   }
 
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
-    console.log("Value of updateOnce");
     const shoefyFarming = this.readState().ShoefyFarming;
+    const value = this.findImage();
 
     if (!!shoefyFarming) {
       try {
-        await shoefyFarming.refresh();
+        // await shoefyFarming.refresh(this.props.currentTab,this.props.index);
 
         if (resetCt) {
           this.updateState({
             ctPercentageStake: 0,
             ctValueStake: 0,
             ctValueStake2: [],
+            userData: shoefyFarming.userNFTs,
             address: this.props.wallet._address,
             balance: shoefyFarming.balance,
             stakedBalance: shoefyFarming.stakedBalance,
@@ -407,6 +447,7 @@ class CardContainer extends BaseComponent<
           this.updateState({
             address: this.props.wallet._address,
             balance: shoefyFarming.balance,
+            userData: shoefyFarming.userNFTs,
             stakedBalance: shoefyFarming.stakedBalance,
             stakedBalance2: shoefyFarming.stakedBalance2,
             allowance: shoefyFarming.allowance,
@@ -423,13 +464,16 @@ class CardContainer extends BaseComponent<
   }
 
   async connectWallet() {
+    // userData
     try {
+      const value = this.findImage();
       this.updateState({ pending: true });
       const wallet = this.props.wallet;
       const result = await wallet.connect();
-      console.log("Value of wallet:::CardContainer", wallet);
 
       const shoefyFarming = new ShoefyFarming(wallet);
+      // await shoefyFarming.refresh(this.props.currentTab,this.props.index);
+      this.setState({ userData: shoefyFarming.userNFTs });
 
       if (!result) {
         throw "The wallet connection was cancelled.";
@@ -450,17 +494,14 @@ class CardContainer extends BaseComponent<
   }
 
   handleInputStake(type, event) {
-    console.log(
-      "Value of handleInputStake",
-      type,
-      event.target.value.toString()
-    );
-    let temp = event.target.value.toString();
-    if (temp[0] === "0") event.target.value = temp.slice(1, temp.length);
-    this.setStakeValue(type, event.target.value);
-  }
+		let temp = event.target.value.toString();
+    console.log("value of temp:::",temp)
+		if (temp[0] === '0')
+			event.target.value = temp.slice(1, temp.length);
+		this.setStakeValue1(type, event.target.value);
+	}
 
-  findImage(contractType: string) {
+  findImage(contractType?: string) {
     const currentIndex = this.props.index;
 
     const categories = [
@@ -577,9 +618,9 @@ class CardContainer extends BaseComponent<
     }
   }
 
-  changeBackground(index:number) {
-    this.nftData[index].selected = !this.nftData[index].selected 
-}
+  changeBackground(index: number) {
+    this.nftData[index].selected = !this.nftData[index].selected;
+  }
 
   handleError(error) {
     ShellErrorHandler.handle(error);
@@ -603,6 +644,41 @@ class CardContainer extends BaseComponent<
     }
   }
 
+  getNFTdata = () => {
+    let nftData = this.props.userData;
+
+    if (nftData == undefined) {
+      return;
+    }
+
+    let currentData = [];
+
+    for (let i = 0; i <= nftData.length - 1; i++) {
+      currentData.push(nftData[i]);
+      console.log("Value of current nftData", currentData);
+    }
+
+    return currentData;
+  };
+
+  handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    // No longer need to cast to any - hooray for react!
+    this.setState({amount: e.target.value});
+    console.log("Value of amount",this.state.amount)
+  }
+
+
+  checkClassName = (data?: any) => {
+    const { farmId } = data;
+    let value = false;
+    for (let i = 0; i < this._selectedNFT; i++) {
+      if (farmId === data[i].farmId) {
+        value = true;
+      }
+    }
+    return value;
+  };
+
   render() {
     const TestImage = this.findImage();
     const state = this.readState();
@@ -610,29 +686,19 @@ class CardContainer extends BaseComponent<
     const mysterCheck = this.props.choosenOption === "Your Farms";
 
     const array = [{ image: "", type: "", lockperiod: "" }];
-    // const nftData = [
-    //   "Audi",
-    //   "Alfa Romeo",
-    //   "BMW",
-    //   "Citroen",
-    //   "Dacia",
-    //   "Ford",
-    //   "Mercedes",
-    //   "Peugeot",
-    //   "Porsche",
-    //   "VW",
-    // ];
+    const nftData = this.props.userData?.message?.result || [];
 
+    if (nftData.length > 0) {
+
+    }
 
     const lockPeriod = true;
-    // Todo
-    // const nftData = [ ];
- 
+
     return (
       <div>
         <div
           className={
-            mysterCheck && this.nftData.length <= 0 ? " " : "card_container"
+            mysterCheck && nftData.length <= 0 ? " " : "card_container"
           }
         >
           {/* General Farming Pools Option */}
@@ -670,7 +736,7 @@ class CardContainer extends BaseComponent<
                         }}
                       >
                         <label className="form-label right-label">
-                          Stake in multiples of {this.props.stakeAmount} 
+                          Stake in multiples of {this.props.stakeAmount}
                         </label>
                       </div>
                       <div className="maxValue">
@@ -678,14 +744,14 @@ class CardContainer extends BaseComponent<
                           type="number"
                           className="form-control form-control-lg"
                           onChange={(event) => this.handleInputStake(0, event)}
-                          value={state.ctValueStake2 || 0}
+                          value={state.amount || 0}
+                          // value={state.ctValueStake2 || 0}
+
                         />
                       </div>
 
-                      {/* <h1>{state.allowance2}</h1> */}
-
                       <div className="d-flex justify-content-center button-row margin_top">
-                        {/* {(state.allowance2 == 0) && ( */}
+                        {!state.approveFlag && (
                           <button
                             className="btn btn-md link-dark"
                             style={{
@@ -703,12 +769,10 @@ class CardContainer extends BaseComponent<
                               : t("staking.Farming.StakeTitle")
                               } */}
 
-                                { 
-                               t("staking.Farming.ApproveTitle")
-                               }
+                            {t("staking.Farming.ApproveTitle")}
                           </button>
-                       {/* )}  */}
-                        { state.allowance2 > 0 && ( 
+                        )}
+                        {state.approveFlag && (
                           <button
                             className="btn btn-md link-dark"
                             style={{
@@ -723,9 +787,9 @@ class CardContainer extends BaseComponent<
                               this.confirmStake(this.props.currentTab)
                             }
                           >
-                            { t("staking.Farming.StakeTitle")}
+                            {t("staking.Farming.StakeTitle")}
                           </button>
-                         )}
+                        )}
                       </div>
 
                       <div
@@ -735,9 +799,27 @@ class CardContainer extends BaseComponent<
                         }}
                       >
                         <label className="golden-label">
-                          One user can farm max. 10 common sNFTs{state.amount}
-                          {this.props.stakeAmount}
+                          One user can farm max. 10 common sNFTs
                         </label>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <a
+                          onClick={() =>
+                            this.setState({
+                              approveFlag: !this.state.approveFlag,
+                            })
+                          }
+                        >
+                          <label className="golden-label">
+                            Already approved stake tokens
+                          </label>
+                        </a>
                       </div>
                     </form>
                   </div>
@@ -777,40 +859,55 @@ class CardContainer extends BaseComponent<
             </div>
           )}
 
+          {/* Dynamic data  */}
           {this.props.choosenOption === "Your Farms" && (
             <div>
-              {this.nftData.length > 0 ? (
+              {nftData.length > 0 ? (
                 <div>
                   <div className="row">
-                    {this.nftData.slice(0, 2).map((car, index) => {
+                    {nftData.slice(0, 2).map((data, index) => {
                       return (
-                            
-                        <div className="col-sm-12 col-md-6 col-lg-3" key={index}>
+                        <div
+                          // className="col-sm-12 col-md-6 col-lg-3"
+                          className={nftData.length ==1? "col-sm-12 col-md-6 col-lg-6":"col-sm-12 col-md-6 col-lg-3"}
+                          key={index}
+                        >
                           {/* {nftData[index]} */}
-                          {index}
-                          <Card cardImage={!lockPeriod ? Mystery : [TestImage[index]]}
-                            cardTitle={!lockPeriod ? "Character":"Phoenix"  }
+                          <Card
+                            cardImage={
+                              !lockPeriod
+                                ? Mystery
+                                : nftData[0]?.image || Mystery
+                            }
+                            cardTitle={!lockPeriod ? "Character" : "Phoenix"}
                             cardType={this.props.nftType}
                             cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
                             backgroundColor={!lockPeriod ? "Mystery" : ""}
+                            ChoosenOption={this.props.choosenOption}
                           />
+                          {/* image, farmId, assignedNFT, mintStatus if mint is Complete */}
+                          {/* className="btn btn-outline-Choose NFT btn-block white__button mt-2" */}
+                          {/* {nftData[index]?.mintStatus === "Completed" && (
+                          className={nftData.length ==1? "className="col-sm-6 col-md-6 col-lg-6":"className="col-sm-6 col-md-6 col-lg-12"} */}
 
-                          {lockPeriod && (
-                            <div className="col-sm-6 col-md-6 col-lg-12">
-                              <button
+                            <div className={nftData.length ==1? "col-sm-6 col-md-6 col-lg-6":"col-sm-6 col-md-6 col-lg-12"}>
+                              {nftData[index]?.mintStatus === "Completed" &&(<button
                                 type="button"
                                 // this.changeBackground(index)?
-                                className={"btn btn-outline-Choose NFT btn-block skyblue__button mt-2"}
-
+                                className={
+                                  this.selectedItems[index]
+                                    ? "btn btn-outline-Choose NFT btn-block skyblue__button mt-2"
+                                    : "btn btn-outline-Choose NFT btn-block white__button mt-2"
+                                }
                                 // className={`${this.changeBackground(index)? "":""}` }
                                 onClick={async () => {
-                                  this.selectNFT(index);
+                                  this.selectNFT(index, data);
                                 }}
                               >
                                 Choose NFT
-                              </button>
+                              </button>)}
                             </div>
-                          )}
+                          
                         </div>
                       );
                     })}
@@ -880,29 +977,38 @@ class CardContainer extends BaseComponent<
                   </div>
 
                   {/* Second Row */}
-                  {this.nftData.length > 2 && (
+                  {nftData.length > 2 && (
                     <div className="row">
-                      {this.nftData.slice(2, 6).map((car, index) => {
+                      {nftData.slice(2, 6).map((data, index) => {
                         return (
-                          <div className="col-sm-12 col-md-6 col-lg-3" key={index}>
+                          <div
+                            className={nftData.length ==1? "col-sm-12 col-md-6 col-lg-6":"col-sm-12 col-md-6 col-lg-3"}
+                            key={index}
+                          >
                             {/* {nftData[index + 2]} */}
                             <Card
                               cardImage={
                                 !lockPeriod ? Mystery : [TestImage[index]]
                               }
-                              cardTitle={!lockPeriod ? "Character":"Phoenix"  }
+                              cardTitle={!lockPeriod ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
                               cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
                               backgroundColor={!lockPeriod ? "Mystery" : ""}
+                              ChoosenOption={this.props.choosenOption}
                             />
 
-                            {lockPeriod && (
-                              <div className="col-sm-6 col-md-6 col-lg-12">
+                            {nftData[index + 2]?.mintStatus === "Completed" && (
+                            <div className={nftData.length ==1? "col-sm-6 col-md-6 col-lg-6":"col-sm-6 col-md-6 col-lg-12"}>
+
                                 <button
                                   type="button"
-                                  className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                                  className={
+                                    this.selectedItems[index + 2]
+                                      ? "btn btn-outline-Choose NFT btn-block skyblue__button mt-2"
+                                      : "btn btn-outline-Choose NFT btn-block white__button mt-2"
+                                  }
                                   onClick={async () => {
-                                    this.selectNFT(index+2)
+                                    this.selectNFT(index + 2, data);
                                   }}
                                 >
                                   Choose NFT
@@ -916,29 +1022,40 @@ class CardContainer extends BaseComponent<
                   )}
 
                   {/* Third Row */}
-                  {this.nftData.length > 6 && (
+                  {nftData.length > 6 && (
                     <div className="row">
-                      {this.nftData.slice(6, 10).map((car, index) => {
+                      {nftData.slice(6, 10).map((data, index) => {
                         return (
-                          <div className="col-sm-12 col-md-6 col-lg-3" key={index}>
+                          <div
+                          className={nftData.length ==1? "col-sm-12 col-md-6 col-lg-6":"col-sm-12 col-md-6 col-lg-3"}
+
+                            key={index}
+                          >
                             {/* {nftData[index + 6]} */}
 
                             <Card
                               cardImage={
                                 !lockPeriod ? Mystery : [TestImage[index]]
                               }
-                              cardTitle={!lockPeriod ? "Character":"Phoenix"  }
+                              cardTitle={!lockPeriod ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
                               cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
                               backgroundColor={!lockPeriod ? "Mystery" : ""}
+                              ChoosenOption={this.props.choosenOption}
                             />
-                            {lockPeriod && (
-                              <div className="col-sm-6 col-md-6 col-lg-12">
+
+                            {nftData[index + 6]?.mintStatus === "Completed" && (
+                            <div className={nftData.length ==1? "col-sm-6 col-md-6 col-lg-6":"col-sm-6 col-md-6 col-lg-12"}>
+
                                 <button
                                   type="button"
-                                  className="btn btn-outline-Choose NFT btn-block white__button mt-2"
+                                  className={
+                                    this.selectedItems[index + 6]
+                                      ? "btn btn-outline-Choose NFT btn-block skyblue__button mt-2"
+                                      : "btn btn-outline-Choose NFT btn-block white__button mt-2"
+                                  }
                                   onClick={async () => {
-                                    this.selectNFT(index+6);
+                                    this.selectNFT(index + 6, data);
                                   }}
                                 >
                                   Choose NFT
@@ -964,9 +1081,7 @@ class CardContainer extends BaseComponent<
           )}
 
           <Modal
-            title={
-              `You have successfully harvested ${this.state.harvestAmount} number(s) of common sNFTs`
-            }
+            title={`You have successfully harvested ${this.state.harvestAmount} number(s) of common sNFTs`}
             isOpen={this.state.isModelOpen}
             onClose={this.toggleModal}
           >
@@ -974,14 +1089,10 @@ class CardContainer extends BaseComponent<
           </Modal>
 
           <ViewNftcomponent
-         title={
-              `You have successfully harvested ${this.state.harvestAmount} number(s) of common sNFTs`
-            }
+            title={`You have successfully harvested ${this.state.harvestAmount} number(s) of common sNFTs`}
             isOpen={this.state.choosenOpenModel}
             onClose={this.toggleModal2}
-          
-          
-        />
+          />
         </div>
         <NotificationContainer />
       </div>
