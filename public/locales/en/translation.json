@@ -1,0 +1,140 @@
+{
+    "nav": {
+        "home": "Home",
+        "shoefyStaking": "ShoeFy Staking",
+        "nftStaking": "NFT Staking",
+        "swap": "Swap",
+        "farm": "Farm",
+        "staking": "Staking",
+        "lottery": "Lottery",
+        "faq": "FAQ",
+        "coinmarketcap": "CoinMarketCap",
+        "coingecko": "CoinGecko",
+        "buyonpancakeswap": "Buy on PancakeSwap",
+        "buyonwhitebit": "Buy on WhiteBIT",
+        "viewonbscscan": "View on BSCscan",
+        "copyright": "ShoeFy Staking 2021+"
+    },
+    
+    "staking": {
+        "connect_wallet": "Connect Wallet",
+        "disconnect_wallet": "Disconnect Wallet",
+        "paragraph1": "Using ShoeFy staking, you can easily earn more ShoeFy tokens over time while the blockchain is running. Planning to hold ShoeFy tokens to help our planet? Earn more while doing so and collect your passive income.",
+        "paragraph2": "In order to stake ShoeFy tokens, you need to connect your browser wallet (such as <1>Metamask</1>) and <1>Switch to the Binance Smart Chain</1>",
+        "your_info": {
+            "title": "Your Information",
+            "wallet_address": "Wallet address",
+            "connect_wallet": "Please connect your wallet",
+            "tradeable": "Balance Amount (SHOE)",
+            "staked": "TVL (SHOE)",
+            "claimed": "Total Claimed (SHOE)",
+            "locked": "Total Locked",
+            "pending_rewards": "Pending rewards (SHOE)",
+            "staking_period": "Staking Period",
+            "apr": "APR"
+        },
+        "stake": {
+            "title": "Stake",
+            "percentage": "Percentage of tokens to stake:",
+            "amount": "Amount of tokens to stake:",
+            "claim_rewards": "Claim rewards"
+        },
+        "unstake": {
+            "title": "Unstake",
+            "percentage": "Percentage of tokens to unstake:",
+            "amount": "Amount of tokens to unstake:",
+            "claim_rewards": "Claim rewards"
+        },
+        "Farming": {
+            "ApproveTitle": "Approve",
+            "StakeTitle": "Stake",
+            "HarvestTitle": "Harvest",
+            "ChooseTitle":"Choose NFT"
+        }
+    },
+
+    "NFTFarming": {
+        "GeneralFarming": {
+            "title": "General Farming",
+            "description": "Stake your SHOE tokens to farm sNFTs of your choice",
+            "amount": "Amount of tokens to stake:",
+            "claim_rewards": "Claim rewards"
+        },
+        "RapidFarming": {
+            "title": "Rapid Farming",
+            "description": "Stake extra SHOE tokens to farm sNFTs of your choice in a short duration",
+            "amount": "Amount of tokens to unstake:",
+            "claim_rewards": "Claim rewards"
+        }
+    },
+    "ExpandingRow": [
+            {
+                "title":"Common sNFT",
+                "Image_Path":"Common_pop",
+                "stakeAmount": "2000 SHOE",
+                "lockUpDuration": "60 Days"
+            },
+            {
+                "title":"Unique sNFT",
+                "Image_Path":"Unique",
+                "stakeAmount": "4000 SHOE",
+                "lockUpDuration": "90 Days"
+            },
+            {
+                "title":"Rare sNFT",
+                "Image_Path":"Rare",
+                "stakeAmount": "9000 SHOE",
+                "lockUpDuration": "120 Days"
+            },
+            {
+                "title":"Epic sNFT",
+                "Image_Path":"Epic",
+                "stakeAmount": "15000 SHOE",
+                "lockUpDuration": "150 Days"
+            },
+            {
+                "title":"Legendary sNFT",
+                "Image_Path":"Legendary",
+                "stakeAmount": "20000 SHOE",
+                "lockUpDuration": "180 Days"
+            },
+            {
+                "title":"Mythic God sNFT",
+                "Image_Path":"MythicGodsNFT",
+                "stakeAmount": "25000 SHOE",
+                "lockUpDuration": "210 Days"
+            },
+            {
+                "title":"Mythic Devil sNFT",
+                "Image_Path":"MythicDevilsNFT",
+                "stakeAmount": "30000 SHOE",
+                "lockUpDuration": "240 Days"
+            },
+           {
+                "title":"Mythic Alien sNFT",
+                "Image_Path":"MythicAliensNFT",
+                "stakeAmount": "35000 SHOE",
+                "lockUpDuration": "270 Days"
+            }  
+        ],
+        "ExpandingRapidRow": [
+            {
+                "title":"Common sNFT",
+                "Image_Path":"Common_pop",
+                "stakeAmount": "4000 SHOE",
+                "lockUpDuration": "20 Days"
+            },
+            {
+                "title":"Unique sNFT",
+                "Image_Path":"Unique",
+                "stakeAmount": "8000 SHOE",
+                "lockUpDuration": "40 Days"
+            },
+            {
+                "title":"Rare sNFT",
+                "Image_Path":"Rare",
+                "stakeAmount": "16000 SHOE",
+                "lockUpDuration": "60 Days"
+            }
+        ]
+}
