@@ -411,7 +411,7 @@ class expandableComponent extends BaseComponent<
                         className="expand3"
                         onClick={() => this.show_detail(3,value)}
                       >
-                        <span>{detail[7]} </span>
+                        <span>{detail[7]}  </span>
                         {/* {value} */}
                         <img src={green_down} width="14px" height="8px"></img>
                       </div>

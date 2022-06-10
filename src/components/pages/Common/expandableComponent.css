@@ -320,6 +320,10 @@
 	color: var(--color-green-text);
 }
 
+.expand3:hover{
+	cursor: pointer;
+}
+
 .expand3 > img {
 	margin-left: 5px;
 	color: var(--color-green-text);

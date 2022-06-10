@@ -962,7 +962,6 @@ class CardContainer extends BaseComponent<
                             key={index}
                           >
                             {/* {nftData[index + 6]} */}
-
                             <Card
                              cardImage={
                               !lockPeriod

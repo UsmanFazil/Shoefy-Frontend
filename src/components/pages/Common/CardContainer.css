@@ -160,6 +160,10 @@ color: #F4F5F6;
 	color: #DFA920 !important;
 }
 
+.golden-label:hover{
+	cursor: pointer;
+}	
+
 /* .card:hover {
 	background-color: var(--color-card-hover);
 } */
