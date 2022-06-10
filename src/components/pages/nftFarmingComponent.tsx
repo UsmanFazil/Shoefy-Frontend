@@ -8,7 +8,10 @@ import { withWallet } from "../walletContext";
 import { Modal } from "./Common/Modal/Modal.component";
 // import data from "public/locales/en/translation.json";
 
+import {ShoefyFarming } from "../contracts/shoeFyFarming";
+
 import { Shoefy } from "../contracts/shoefy";
+
 import {
   WithTranslation,
   withTranslation,
@@ -28,7 +31,6 @@ import { NavLink}  from "react-router-dom";
 import ExpandableComponentMain from "./Common/expandableComponent";
 
 //  "./Model";
-import ModelComponentMain from "./Common/Model";
 import "./nftFarmingComponent.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,7 +45,6 @@ export type StakingProps = {
 };
 
 // Call API
-
 export interface RowData{
   title:string,
   Image_Path:string,
@@ -61,6 +62,7 @@ interface TableView {
 export type FarmingState = {
   data: TableView[];
   shoefy?: Shoefy;
+  ShoefyFarming?: ShoefyFarming;
   wallet?: Wallet;
   looping?: boolean;
   expandingRow:RowData[];
@@ -73,7 +75,6 @@ export type FarmingState = {
   // values pending to be set
   pending?: boolean;
   approveFlag: boolean;
-  isModelOpen: boolean;
   chooseButton?:string;
   currentTab?:string;
   selected?:boolean;
@@ -94,6 +95,16 @@ const PulseDiv = styled.div`
 
 class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,FarmingState> {
   private _timeout: any = null;
+  private _categories: Array<string> = [
+    "COMMON",
+    "UNIQUE",
+    "RARE",
+    "EPIC",
+    "LEGENDARY",
+    "MYTHICGOD",
+    "MYTHICDEVIL",
+    "MYTHICALIEN"
+  ]
 
   constructor(props: StakingProps & WithTranslation) {
     super(props);
@@ -104,13 +115,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       approveFlag: false,
       approveFlag1: false,
       activeTab: " ",
-      isModelOpen: false,
       chooseButton:'General Farming Pools',
       expandingRow:[],
       data:[],
       show:false,
       currentTab:"general",
-      selected:false
+      selected:false,
     };
   }
 
@@ -120,14 +130,42 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
   async confirmStake(step): Promise<void> {
 
-    if(step === "Your Farms"){
-      this.setState({selected: true})
-    }else{
+    const urlValue = window.location.hash;
+    const hash = urlValue.replace("#", "");
+
+    console.log("Value of confirmStake",step,hash)
+
+
+  
+    if(step === "Pools" && hash === 'general'){
+      // this.setState({selected: true})
+      // {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'}
+      // {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
+
       this.setState({selected: false})
+      
+      this.setState({ chooseButton:  'General Farming Pools' });
+
     }
 
-    this.setState({ chooseButton: step });
+    if( step === "Pools" && hash === 'rapid'){
+      this.setState({selected: false})
+      this.setState({ chooseButton: 'Rapid Farming Pools' });
 
+    }
+
+    if( step === "Farms" && hash === 'general'){
+      this.setState({selected: true})
+      
+      this.setState({ chooseButton: 'Your Farms' });
+
+    }
+
+    if( step === "Farms" && hash === 'rapid'){
+      this.setState({selected: true})
+
+      this.setState({ chooseButton:  'Your Rapid Farms'});
+    }
   }
 
   componentWillUnmount() {
@@ -137,11 +175,8 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.updateState({ shoefy: null, looping: false });
   }
 
-  toggleModal = () => {
-    this.setState({ isModelOpen: !this.state.isModelOpen });
-  };
-
   async componentDidMount() {
+    
     const urlValue = window.location.hash;
     const hash = urlValue.replace("#", "");
     this.setState({ activeTab: hash });
@@ -157,8 +192,8 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         }else{
         this.setState({ expandingRow:data.ExpandingRow });
         }
-
       });
+
 
     if (window.ethereum) {
       const accounts = await window.ethereum.request({
@@ -172,9 +207,49 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         );
         if (chainid === 56 || chainid === 4 || chainid === 97)
           this.props.wallet.setChainId(Number(chainid));
-        this.connectWallet();
+          this.connectWallet();
       }
     }
+  }
+
+  async componentDidUpdate(prevProps, prevState){
+
+    const urlValue = window.location.hash;
+    const hash = urlValue.replace("#", "");
+
+    if(prevState.currentTab != hash){
+      if(hash == 'rapid'){
+            // this.callApi(hash,this._categories.slice(0, 3))
+      }else{
+          //  this.callApi(hash,this._categories)
+      }
+    }
+  }
+
+  async callApi(currentTitle:string,categories:Array<string>){
+
+    const wallet = this.props.wallet;
+    const shoefyFarming = new ShoefyFarming(wallet);
+
+    let _currentTitle = currentTitle;
+   
+    if(_currentTitle == ' '){
+      _currentTitle = 'general'
+    }
+    
+    let test = []
+    if (typeof(shoefyFarming) != undefined) {
+      try {
+
+        for (const element of categories) {
+          let resp = await shoefyFarming.apiCall(_currentTitle,element);   
+          test.push(resp);       
+        }
+        
+      } catch (e) {
+        console.warn("Unable to update staking status", e);
+      }
+    }  
 
   }
 
@@ -183,7 +258,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     const cont = await self.updateOnce.call(self);
 
     if (cont) {
-      this._timeout = setTimeout(async () => await self.loop.call(self), 1000);
+      this._timeout = setTimeout(async () => await self.loop.call(self), 10000);
     }
   }
 
@@ -244,6 +319,10 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     }
   }
 
+  fun(index,title){
+    console.log("Value of fun:::",index,title);
+  }
+
   async disconnectWallet() {
     try {
       this.updateState({ pending: true });
@@ -267,20 +346,13 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     }
   }
 
-  show_detail(index) {
-    if (this.state["flag" + index] == false)
-      this.setState({ ["flag" + index]: true });
-    else {
-      this.setState({ ["flag" + index]: false });
-    }
-  }
-
   onRapid(){
     this.setState({ activeTab: "rapid" });
     location.replace("/nftFarming#rapid");
     this.setState({ expandingRow:this.state.data.ExpandingRapidRow });
     this.setState({ show: !this.state.show});
     this.setState({ currentTab:'rapid' });
+    // this.callApi("rapid",this._categories.slice(0, 3))
   }
 
   onGeneral(){
@@ -288,8 +360,21 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     location.replace("/nftFarming#general");
     this.setState({ expandingRow:this.state.data.ExpandingRow });
     this.setState({ show: !this.state.show});
-    this.setState({ currentTab:'general' });
+    this.setState({ currentTab:'general'});
+    // this.callApi("general",this._categories)
   }
+
+  // parsePropData(index:number):Array<any>{
+
+  //   if(this.state.propData.length === 0){
+  //       console.log("Value of parsePropData:::",index);  
+  //       return [];
+  //   }else{
+        
+  //       console.log("Value of propData:::DataPresent",this.state.propData,index)
+  //   } 
+
+  // }
 
   render() {
     const state = this.readState();
@@ -344,7 +429,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                 </NavLink>
               </li>
               <li className="nav_letter">
-                <NavLink className="link_letter" to="nftFarming#general">
+                <NavLink className="link_letter" to="nftFarming#general" onClick={() => this.callApi('general',this._categories)}>
                   Farm
                 </NavLink>
               </li>
@@ -445,7 +530,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                             onClick={() => this.onRapid()
                           }
                           >
-                            {t("NFTFarming.RapidFarming.title")} 
+                            {t("NFTFarming.RapidFarming.title")}
                             {/* there */}
                           </a>
                         </li>
@@ -488,7 +573,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                                     }
                                     className="staking-info"
                                   >
-                                    0 ShoeFy don't know 1
                                   </AnimatedNumber>
                                 </div>
                               </div>
@@ -509,7 +593,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                           <div className="col-md-12 d-flex">
                             <div className="shadow d-flex flex-column flex-fill gradient-card primary user-info mt-5">
                               <h1 className="user-info-title">
-                                {t("NFTFarming.RapidFarming.title")}
+                                {t("NFTFarming.RapidFarming.title")} 
                               </h1>
 
                               <p>
@@ -546,8 +630,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                   </div>
                 </FadeInRightDiv>
 
-                {/* <ModelComponentMain/> */}
-
                 <div className="d-flex justify-content-left button-row margin_top">
                   <button
                     className={!this.state.selected? "btn btn-md link-dark btn-pink" : "btn btn-md link-dark"}
@@ -559,7 +641,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     }}
                     type="button"
                     onClick={async () => {
-                      this.confirmStake("General Farming Pools")
+                      this.confirmStake("Pools")
                     }}
                   >
                     {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
@@ -577,19 +659,52 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     }}
                     disabled={state.pending}
                     type="button"
-                    onClick={async () => this.confirmStake("Your Farms")}
+                    onClick={async () => this.confirmStake("Farms")}
                   >
                     {/* {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'} */}
-                    {this.state.currentTab === 'rapid' ? 'Your Farms':'Your Farms'}
+                    {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'}
                   </button>
                 </div>
+
+                {this.state.chooseButton}
+{/* 
+    // 'General Farming Pools'
+    // 'Rapid Farming Pools'
+    // 'Your Farms' 
+    // 'Your Rapid Farms' */}
+
+{/* {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
+
+{/* Rapid Farming */}
+{/* {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
                   
                 {/* General Farming */}
-                {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {/* General Farming Pool */}
+                {/* !this.state.show */}
+                {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
+                
+                {/* General Farming */}
+                {/* Your Farms */}
+                {/* !this.state.show */}
+                {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
+
+
+                {/*  */}
+                {/* {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain fun={this.fun(index,item.title)} data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
 
                 {/* Rapid Farming */}
-                {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))}
+                {/* General */}
+                {/* {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
                 
+                {/* Rapid */}
+                {/* this.state.show */}
+                {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
+                {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
+                
+                
+
+                
+
               </div>
             </div>
             <NotificationContainer />

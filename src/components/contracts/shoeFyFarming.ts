@@ -132,9 +132,40 @@ export class ShoefyFarming {
 		}
 	}
 
-	async refresh(tabtype?: string, _categoryType?: string): Promise<void> {
-		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
+	async apiCall(tabtype?: string, _categoryType?: string):Promise<any>{
 
+		if (tabtype == undefined || _categoryType == undefined){
+			return
+		}
+
+		console.log("I am running:::",tabtype,_categoryType)
+		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
+		let web3 = new Web3(window.ethereum);
+		const userAddress = this._wallet.getAddress();
+
+		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
+
+		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
+			"/category/" +
+			_categoryType
+		}`;
+
+		const returnData =[];
+
+		try {
+			this._userNFTs = await requestAPICall(URL).then((res) => {
+				console.log("sending to backend request", res.data);
+				return res.data;
+			});
+			return this._userNFTs;
+
+		} catch (err) {
+			console.log("Value from expandableComponent inside fetchData", err);
+		}
+	}
+
+	async refresh(): Promise<void> {
+	
 		let web3 = new Web3(window.ethereum);
 		let balance_eth = await web3.eth.getBalance(this._wallet.getAddress());
 
@@ -147,42 +178,18 @@ export class ShoefyFarming {
 			web3.utils.fromWei(balance_eth, "ether")
 		).toFixed(3);
 
-		this._balance =
-			Math.floor(
+		this._balance = Math.floor(
 				(await this._shoeFyContract.methods
 					.balanceOf(this._wallet.getAddress())
 					.call()) /
 					10 ** 12
 			) /
 			10 ** 6;
+
 		this._allowance2 =
-			(await this._shoeFyContract.methods
-				.allowance(this._wallet.getAddress(), FarmingAddress)
-				.call()) /
-			10 ** 18;
+			(await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), FarmingAddress).call()) /10 ** 18;
 
-		const userAddress = this._wallet.getAddress();
-		const apiURL =
-			"http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
-
-		const URL = `${
-			apiURL +
-			testAddress +
-			"/typeNFT/" +
-			tabtype +
-			"/category/" +
-			_categoryType
-		}`;
-
-		try {
-			this._userNFTs = await requestAPICall(URL).then((res) => {
-				console.log("sending to backend request", res.data);
-				return res.data;
-			});
-		} catch (err) {
-			console.log("Value from expandableComponent inside fetchData", err);
-		}
-
+		
 		// const nftData = await requestAPICall(tokenURI).then(res => {
 		// 	// console.log('IPFS Data', res.data)
 		// 	return res.data

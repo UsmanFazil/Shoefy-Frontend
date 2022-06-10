@@ -97,6 +97,7 @@ export type StakingProps = {
   stakeAmount?: any;
   CardData?: any;
   userData?: any;
+  farmingData?:any;
 };
 
 export type StakingState = {
@@ -115,7 +116,6 @@ export type StakingState = {
   stakedBalance2?: Array;
   allowance: number;
   allowance2: number;
-
   isModelOpen: boolean;
   choosenOpenModel: boolean;
   FarmingArray: any;
@@ -127,7 +127,6 @@ export type StakingState = {
   userData?: Array;
   pending?: boolean;
   approveFlag: boolean;
-
   amount?: any;
 };
 
@@ -156,7 +155,6 @@ class CardContainer extends BaseComponent<
     super(props);
 
     this.handleInputStake = this.handleInputStake.bind(this);
-    this.connectWallet = this.connectWallet.bind(this);
     this.handleChange = this.handleChange.bind(this);
 
     this.state = {
@@ -165,18 +163,12 @@ class CardContainer extends BaseComponent<
       isModelOpen: false,
       choosenOpenModel: false,
       harvestAmount: 0,
-      userData: []
+      userData: [],
+      ctValueStake2:0,
+      amount:'',
+      choosenOption:''
+      // farmingData:[]
     };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.userData !== state.userData) {
-      //Change in props
-      return {
-        userData: props.userData,
-      };
-    }
-    return null; // No change to state
   }
 
   // userData
@@ -225,8 +217,6 @@ class CardContainer extends BaseComponent<
         // this.setState({ harvestAmount: this._selectedNFT.length });
         // this.selectedItems[index] = !this.selectedItems[index];
       }
-      
-     
     } catch (e) {
       this.handleError(e);
     }
@@ -241,7 +231,7 @@ class CardContainer extends BaseComponent<
     const t = r.balance;
     console.log("Value of setStakeValue t",t);
 
-    const v = Math.max(0, Math.min(+(value || 0), r.balance));
+    const v = value;
 
     console.log("Value of setStakeValue",v);
 
@@ -251,7 +241,6 @@ class CardContainer extends BaseComponent<
 
     temp[step] = v;
 
-    
     console.log("Value of setStakeValue",temp[step],value);
 
     this.updateState({
@@ -269,32 +258,7 @@ class CardContainer extends BaseComponent<
 
   }
 
-
-  setStakeValue1(step, value) {
-		const r = this.readState().ShoefyFarming;
-		if (!r) return;
-
-		const t = r.balance;
-		const v = value
-		if (step == -1)
-			this.updateState({
-				ctPercentageStake: Math.floor(100 * v / t),
-				ctValueStake: v,
-			});
-		else {
-			const temp = this.readState().ctValueStake2;
-
-			temp[step] = v;
-			this.updateState({
-				ctPercentageStake: Math.floor(100 * v / t),
-				ctValueStake2: temp,
-			});
-			console.log(this.readState().ctValueStake2[0], this.readState().ctValueStake2[1]);
-		}
-    console.log("Updated ctValueStake2",this.state.ctValueStake2,this.state.ctValueStake)
-	}
-
-  async confirmApprove(step): Promise<void> {
+  async confirmApprove(): Promise<void> {
     let web3 = new Web3(window.ethereum);
 
     const value = this.props.stakeAmount;
@@ -311,6 +275,7 @@ class CardContainer extends BaseComponent<
 
       this.updateState({ pending: false });
       this.setState({ approveFlag: !this.state.approveFlag });
+      
       this.updateOnce(true).then();
     } catch (e) {
       this.updateState({ pending: false });
@@ -328,7 +293,16 @@ class CardContainer extends BaseComponent<
         const state = this.readState();
         this.updateState({ pending: true });
 
-        if (state.ctValueStake >= 0) {
+      
+        if (state.amount > 0) {
+
+          if(state.amount > 10){
+            NotificationManager.warning("One user can farm max. 10 common sNFTs");
+            this.updateState({ pending: false });
+            this.setState({amount:0})
+            return
+          }
+  
           await state.ShoefyFarming.stakefarmGeneral(state.amount, byteValue);
 
           document.getElementById("modalswitch2").click();
@@ -338,6 +312,7 @@ class CardContainer extends BaseComponent<
         }
 
         this.updateState({ pending: false });
+        this.setState({amount:0})
         this.updateOnce(true).then();
       } catch (e) {
         this.updateState({ pending: false });
@@ -349,16 +324,25 @@ class CardContainer extends BaseComponent<
         const state = this.readState();
         this.updateState({ pending: true });
 
-        if (state.ctValueStake >= 0) {
-          await state.ShoefyFarming.stakefarmRapid(state.amount, byteValue);
+        if (state.amount >= 0) {
 
+          if(state.amount > 10){
+            NotificationManager.warning("One user can farm max. 10 common sNFTs");
+            this.updateState({ pending: false });
+            this.setState({amount:0})
+            return
+          }
+
+          await state.ShoefyFarming.stakefarmRapid(state.amount, byteValue);
           document.getElementById("modalswitch2").click();
+          
         } else {
           NotificationManager.warning("Can't stake a negative amount.");
           return;
         }
 
         this.updateState({ pending: false });
+        this.setState({amount:0})
         this.updateOnce(true).then();
       } catch (e) {
         this.updateState({ pending: false });
@@ -422,6 +406,7 @@ class CardContainer extends BaseComponent<
     }
   }
 
+
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
     const shoefyFarming = this.readState().ShoefyFarming;
     const value = this.findImage();
@@ -435,7 +420,7 @@ class CardContainer extends BaseComponent<
             ctPercentageStake: 0,
             ctValueStake: 0,
             ctValueStake2: [],
-            userData: shoefyFarming.userNFTs,
+            // userData: shoefyFarming.userNFTs,
             address: this.props.wallet._address,
             balance: shoefyFarming.balance,
             stakedBalance: shoefyFarming.stakedBalance,
@@ -447,7 +432,7 @@ class CardContainer extends BaseComponent<
           this.updateState({
             address: this.props.wallet._address,
             balance: shoefyFarming.balance,
-            userData: shoefyFarming.userNFTs,
+            // userData: shoefyFarming.userNFTs,
             stakedBalance: shoefyFarming.stakedBalance,
             stakedBalance2: shoefyFarming.stakedBalance2,
             allowance: shoefyFarming.allowance,
@@ -463,42 +448,16 @@ class CardContainer extends BaseComponent<
     return true;
   }
 
-  async connectWallet() {
-    // userData
-    try {
-      const value = this.findImage();
-      this.updateState({ pending: true });
-      const wallet = this.props.wallet;
-      const result = await wallet.connect();
-
-      const shoefyFarming = new ShoefyFarming(wallet);
-      // await shoefyFarming.refresh(this.props.currentTab,this.props.index);
-      this.setState({ userData: shoefyFarming.userNFTs });
-
-      if (!result) {
-        throw "The wallet connection was cancelled.";
-      }
-
-      this.updateState({
-        ShoefyFarming: shoefyFarming,
-        wallet: wallet,
-        looping: true,
-        pending: false,
-      });
-
-      this.updateOnce(true).then();
-    } catch (e) {
-      this.updateState({ pending: false });
-      this.handleError(e);
-    }
-  }
-
   handleInputStake(type, event) {
-		let temp = event.target.value.toString();
-    console.log("value of temp:::",temp)
-		if (temp[0] === '0')
-			event.target.value = temp.slice(1, temp.length);
-		this.setStakeValue1(type, event.target.value);
+    this.setState({amount:event.target.value})
+    console.log("Value of amount",this.state.amount)
+
+		// let temp = event.target.value.toString();
+
+    // console.log("value of temp:::",temp)
+		// if (temp[0] === '0')
+		// 	event.target.value = temp.slice(1, temp.length);
+		// this.setStakeValue(type, event.target.value);
 	}
 
   findImage(contractType?: string) {
@@ -609,15 +568,6 @@ class CardContainer extends BaseComponent<
     }
   }
 
-  private async loop(): Promise<void> {
-    const self = this;
-    const cont = await self.updateOnce.call(self);
-
-    if (cont) {
-      this._timeout = setTimeout(async () => await self.loop.call(self), 1000);
-    }
-  }
-
   changeBackground(index: number) {
     this.nftData[index].selected = !this.nftData[index].selected;
   }
@@ -625,48 +575,21 @@ class CardContainer extends BaseComponent<
   handleError(error) {
     ShellErrorHandler.handle(error);
   }
-
-  async componentDidMount() {
-    if (window.ethereum) {
-      const accounts = await window.ethereum.request({
-        method: "eth_accounts",
-      });
-      if (accounts.length == 0)
-        console.log("User is not logged in to MetaMask");
-      else {
-        const chainid = Number(
-          await window.ethereum.request({ method: "eth_chainId" })
-        );
-        if (chainid === 56 || chainid === 4 || chainid === 97)
-          this.props.wallet.setChainId(Number(chainid));
-        this.connectWallet();
-      }
+  
+  shouldComponentUpdate(nextProps: Readonly<StakingProps & WithTranslation<"translation">>, nextState: Readonly<StakingState>, nextContext: any): boolean {
+    if(this.props.farmingData.length != nextProps.farmingData.length){
+      console.log("nftFarming MainProps CardContainer",this.props.farmingData)
+      return true
+    }else{
+      return false
     }
   }
-
-  getNFTdata = () => {
-    let nftData = this.props.userData;
-
-    if (nftData == undefined) {
-      return;
-    }
-
-    let currentData = [];
-
-    for (let i = 0; i <= nftData.length - 1; i++) {
-      currentData.push(nftData[i]);
-      console.log("Value of current nftData", currentData);
-    }
-
-    return currentData;
-  };
 
   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     // No longer need to cast to any - hooray for react!
     this.setState({amount: e.target.value});
     console.log("Value of amount",this.state.amount)
   }
-
 
   checkClassName = (data?: any) => {
     const { farmId } = data;
@@ -686,11 +609,10 @@ class CardContainer extends BaseComponent<
     const mysterCheck = this.props.choosenOption === "Your Farms";
 
     const array = [{ image: "", type: "", lockperiod: "" }];
-    const nftData = this.props.userData?.message?.result || [];
+    const nftData = this.props.farmingData?.message?.result || [];
 
-    if (nftData.length > 0) {
-
-    }
+    // if (nftData.length > 0) {
+    // }
 
     const lockPeriod = true;
 
@@ -701,8 +623,10 @@ class CardContainer extends BaseComponent<
             mysterCheck && nftData.length <= 0 ? " " : "card_container"
           }
         >
+
+          {this.props.choosenOption}
           {/* General Farming Pools Option */}
-          {this.props.choosenOption != "Your Farms" && (
+          {(this.props.choosenOption === "General Farming Pools" || this.props.choosenOption === 'Rapid Farming Pools' ) && (
             <div>
               <div className="row">
                 <div className="col-sm-12 col-md-6 col-lg-3">
@@ -712,6 +636,7 @@ class CardContainer extends BaseComponent<
                     cardType={this.props.nftType}
                     cardSubtitle="Fire"
                     backgroundColor=""
+                    ChoosenOption={this.props.choosenOption}
                   />
                 </div>
 
@@ -722,6 +647,7 @@ class CardContainer extends BaseComponent<
                     cardType={this.props.nftType}
                     cardSubtitle="Earth"
                     backgroundColor=""
+                    ChoosenOption={this.props.choosenOption}
                   />
                 </div>
 
@@ -744,9 +670,10 @@ class CardContainer extends BaseComponent<
                           type="number"
                           className="form-control form-control-lg"
                           onChange={(event) => this.handleInputStake(0, event)}
-                          value={state.amount || 0}
-                          // value={state.ctValueStake2 || 0}
-
+                          value={this.state.amount}
+                          // defaultValue={0}
+                          // value={state.amount || 0}
+                          // value={state.ctValueStake2}
                         />
                       </div>
 
@@ -836,6 +763,7 @@ class CardContainer extends BaseComponent<
                     cardType={this.props.nftType}
                     cardSubtitle="Wind"
                     backgroundColor=""
+                    ChoosenOption={this.props.choosenOption}
                   />
                 </div>
 
@@ -846,6 +774,7 @@ class CardContainer extends BaseComponent<
                     cardType={this.props.nftType}
                     cardSubtitle="Water"
                     backgroundColor=""
+                    ChoosenOption={this.props.choosenOption}
                   />
                 </div>
 
@@ -859,8 +788,10 @@ class CardContainer extends BaseComponent<
             </div>
           )}
 
-          {/* Dynamic data  */}
-          {this.props.choosenOption === "Your Farms" && (
+    {/* // 'Your Farms' 
+    // 'Your Rapid Farms' */} 
+
+          {(this.props.choosenOption === "Your Farms" || this.props.choosenOption  === 'Your Rapid Farms') && (
             <div>
               {nftData.length > 0 ? (
                 <div>
@@ -877,12 +808,12 @@ class CardContainer extends BaseComponent<
                             cardImage={
                               !lockPeriod
                                 ? Mystery
-                                : nftData[0]?.image || Mystery
+                                : nftData[index]?.image || Mystery
                             }
-                            cardTitle={!lockPeriod ? "Character" : "Phoenix"}
+                            cardTitle={nftData[index].currentLayer == 0 ? "Character" : "Phoenix"}
                             cardType={this.props.nftType}
-                            cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
-                            backgroundColor={!lockPeriod ? "Mystery" : ""}
+                            cardSubtitle={nftData[index].currentLayer == 0? "Mystery" : "Fire"}
+                            backgroundColor={nftData[index].currentLayer == 0 ? "Mystery" : ""}
                             ChoosenOption={this.props.choosenOption}
                           />
                           {/* image, farmId, assignedNFT, mintStatus if mint is Complete */}
@@ -988,12 +919,12 @@ class CardContainer extends BaseComponent<
                             {/* {nftData[index + 2]} */}
                             <Card
                               cardImage={
-                                !lockPeriod ? Mystery : [TestImage[index]]
+                                nftData[index+2].currentLayer == 0 ? Mystery : [TestImage[index]]
                               }
-                              cardTitle={!lockPeriod ? "Character" : "Phoenix"}
+                              cardTitle={nftData[index+2].currentLayer == 0 ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
-                              cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
-                              backgroundColor={!lockPeriod ? "Mystery" : ""}
+                              cardSubtitle={nftData[index+2].currentLayer == 0 ? "Mystery" : "Fire"}
+                              backgroundColor={nftData[index+2].currentLayer == 0 ? "Mystery" : ""}
                               ChoosenOption={this.props.choosenOption}
                             />
 
@@ -1028,19 +959,18 @@ class CardContainer extends BaseComponent<
                         return (
                           <div
                           className={nftData.length ==1? "col-sm-12 col-md-6 col-lg-6":"col-sm-12 col-md-6 col-lg-3"}
-
                             key={index}
                           >
                             {/* {nftData[index + 6]} */}
 
                             <Card
                               cardImage={
-                                !lockPeriod ? Mystery : [TestImage[index]]
+                                nftData[index+6].currentLayer == 0? Mystery : [TestImage[index]]
                               }
-                              cardTitle={!lockPeriod ? "Character" : "Phoenix"}
+                              cardTitle={nftData[index+6].currentLayer == 0 ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
-                              cardSubtitle={!lockPeriod ? "Mystery" : "Fire"}
-                              backgroundColor={!lockPeriod ? "Mystery" : ""}
+                              cardSubtitle={nftData[index+6].currentLayer == 0 ? "Mystery" : "Fire"}
+                              backgroundColor={nftData[index+2].currentLayer == 0 ? "Mystery" : ""}
                               ChoosenOption={this.props.choosenOption}
                             />
 
@@ -1075,6 +1005,22 @@ class CardContainer extends BaseComponent<
                     alt="Device"
                     className="noDataAvalible"
                   />
+                    {/* <button
+                              className="btn btn-md link-dark"
+                              style={{
+                                width: "100%",
+                                backgroundColor: "#CF3279",
+                                margin: 0,
+                                color: "white",
+                              }}
+                              type="button"
+                              disabled={state.pending}
+                              onClick={async () =>
+                                this.toggleModal2()
+                              }
+                            >
+                              Open
+                            </button> */}
                 </div>
               )}
             </div>

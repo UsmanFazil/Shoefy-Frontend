@@ -54,6 +54,7 @@ export type StakingProps = {
   currentTab?: string;
   index?: number;
   pending?: boolean;
+  propData?:any
 };
 
 // Call API
@@ -80,6 +81,8 @@ export type StakingState = {
   data: TableView[];
   RowData: Row[];
   userData?:Array;
+  propData:[],
+  test:''
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -101,23 +104,23 @@ class expandableComponent extends BaseComponent<
 > {
   constructor(props: StakingProps & WithTranslation) {
     super(props);
-    // console.log("Value of userData constructor",this.state.userData)
 
     this.state = {
-      // userData:[]
+    
+      propData:[],
+      test:''
     };
   }
-
-  // private nftData = [{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false},{name:"Audi",selected:false}]
-
 
   handleError(error) {
     ShellErrorHandler.handle(error);
   }
 
   componentDidMount() {
-
+    // const wallet = this.props.wallet;
+    // console.log("Value of wallet:::expandable component",wallet)
     try{
+
     // const testValue = require('./test.json')
     // const {message} = testValue;
     // const {result} = message
@@ -128,7 +131,7 @@ class expandableComponent extends BaseComponent<
     
     // console.log("value of message:::",message,result)  
     // this.setState({userData:result})
-    this.fetchData();
+    // this.fetchData();
 
     }
     catch(err){
@@ -148,46 +151,104 @@ class expandableComponent extends BaseComponent<
     //   }
 
     // }catch{
-      
-
     // }
   }
 
-  async fetchData(){
-    try{
-      const { title } = this.props.data;
-      // const currentTitle = title.replace(/\s/g, '').toUpperCase()
-      const currentTitle = title.split(" ");
+  // async fetchData(){
+  //   try{
+  //     const { title } = this.props.data;
+  //     // const currentTitle = title.replace(/\s/g, '').toUpperCase()
+  //     const currentTitle = title.split(" ");
+  //     const wallet = this.props.wallet;
+  //     console.log("Value of wallet:::expandable component",wallet)
+  //     const shoefyFarming = new ShoefyFarming(wallet);
+
+  //     if(currentTitle.length > 2){
+  //           const _currentTitle = currentTitle[0]+currentTitle[1]
+  //           await shoefyFarming.refresh(this.props.currentTab,_currentTitle.toUpperCase());
+
+  //           this.setState({userData:shoefyFarming.userNFTs})
+  //       }else{
+  //           const _currentTitle = currentTitle[0]
+  //           await shoefyFarming.refresh(this.props.currentTab,_currentTitle.toUpperCase());
+
+  //           this.setState({userData:shoefyFarming.userNFTs})
+  //       }
+  
+  //     }catch(err){
+  //       console.log("error occured",err)
+  //     }
+  // }
+
+  componentWillUnmount() {}
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ test: nextProps.choosenOption });  
+  }
+  
+
+  async callApi(){
+
+      try{
+
+      // category 
+      const urlValue = window.location.hash;
+      const hash = urlValue.replace("#", "");
       const wallet = this.props.wallet;
+      console.log("Value of wallet:::expandable component",wallet)
       const shoefyFarming = new ShoefyFarming(wallet);
+      // private _categories: Array<string> = [
+      //   "COMMON",
+      //   "UNIQUE",
+      //   "RARE",
+      //   "EPIC",
+      //   "LEGENDARY",
+      //   "MYTHICGOD",
+      //   "MYTHICDEVIL",
+      //   "MYTHICALIEN"
+      // ]
+      const { title } = this.props.data;
+
+      console.log("Title expandableComponent::: callApi")
+      const currentTitle = title.split(" ");
 
       if(currentTitle.length > 2){
-            const _currentTitle = currentTitle[0]+currentTitle[1]
-            await shoefyFarming.refresh(this.props.currentTab,_currentTitle.toUpperCase());
+            const _currentTitle = (currentTitle[0]+currentTitle[1]).toUpperCase();
+            console.log("cool not running::::",_currentTitle)
 
-            this.setState({userData:shoefyFarming.userNFTs})
+            let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
+            this.setState({propData:resp})
+
         }else{
-            const _currentTitle = currentTitle[0]
-            await shoefyFarming.refresh(this.props.currentTab,_currentTitle.toUpperCase());
+            const _currentTitle = currentTitle[0].toUpperCase();
+            console.log("cool not running::::",_currentTitle)
 
-            this.setState({userData:shoefyFarming.userNFTs})
+            let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
+            this.setState({propData:resp})
         }
   
       }catch(err){
         console.log("error occured",err)
       }
-
   }
 
-  componentWillUnmount() {}
-
-  show_detail(index) {
-    if (this.state["flag" + index] === false)
+  show_detail(index,value) {
+    if (this.state["flag" + index] === false){
       this.setState({ ["flag" + index]: true });
-    //   this.setState({border:"1px solid #08f2f1"});
+    // else{
+    //   console.log("You dummy i am not working:::else")
+    //   }
+    }
     else {
       this.setState({ ["flag" + index]: false });
-      //   this.setState({border:""});
+      if(value === "Your Farms" || value  === 'Your Rapid Farms'){
+        console.log("You dummy i am not working:::")
+        // (this.props.choosenOption === "Your Farms" || this.props.choosenOption  === 'Your Rapid Farms') 
+        this.callApi();
+      }
+      // else{
+      //    this.setState({propData:[]})
+      // }
     }
   }
 
@@ -223,7 +284,7 @@ class expandableComponent extends BaseComponent<
 
     if (!!shoefyFarming) {
       try {
-       const value =  await shoefyFarming.refresh(this.props.currentTab,this.props.index);
+       const value =  await shoefyFarming.refresh();
         console.log("Value of shoefyFarming",value);
         if (resetCt) {
           // this.updateState({
@@ -250,15 +311,12 @@ class expandableComponent extends BaseComponent<
   async connectWallet() {
     // userData
     try {
-      // const value = this.findImage()
-      // this.updateState({ pending: true });
       const wallet = this.props.wallet;
       const shoefyFarming = new ShoefyFarming(wallet);
 
-      await shoefyFarming.refresh(this.props.currentTab,this.props.index);
+      await shoefyFarming.refresh();
 
       this.setState({userData:shoefyFarming.userNFTs})
-      console.log("Value of data userNFT",this.state.userData)
 
       if (!result) {
         throw "The wallet connection was cancelled.";
@@ -297,11 +355,12 @@ class expandableComponent extends BaseComponent<
       }
     }
 
-
     const { title, Image_Path, stakeAmount, lockUpDuration } = this.props.data;
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
     let test = t(title);
+
+    const value = this.props.choosenOption 
 
     return (
       <div>
@@ -309,8 +368,9 @@ class expandableComponent extends BaseComponent<
           <div className="expanding-staking-container">
             {/* <div className="container"> */}
             <div>
-
+             
               <div className="row expandable_staking-body">
+      
                 <FadeInRightDiv className="your_staking remove_top">
                   <div
                     className="each_element remove_bottom"
@@ -350,7 +410,7 @@ class expandableComponent extends BaseComponent<
                       </div>
                       <div
                         className="expand3"
-                        onClick={() => this.show_detail(3)}
+                        onClick={() => this.show_detail(3,value)}
                       >
                         <span>{detail[7]} </span>
 
@@ -364,7 +424,7 @@ class expandableComponent extends BaseComponent<
                         borderTop: detail[0],
                         borderStyle: detail[6],
                         borderColor: detail[5],
-                        overflow: "hidden",
+                        overflow: "hidden"
                       }}
                     >
                       <div className="col-md-12 d-flex">
@@ -377,7 +437,8 @@ class expandableComponent extends BaseComponent<
                             title={title}
                             currentTab={this.props.currentTab}
                             stakeAmount= {stakeAmount}
-                            userData={this.state.userData}
+                            farmingData={this.state.propData}
+                            testOption={value}
                           />
                         </div>
                       </div>

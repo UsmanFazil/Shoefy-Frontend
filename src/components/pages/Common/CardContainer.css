@@ -190,6 +190,7 @@ color: #F4F5F6;
 	left: 12px;
 	top: 12px;
 	border-radius: 10px;
+	background-color: white !important;
 }
 
 .card__title {

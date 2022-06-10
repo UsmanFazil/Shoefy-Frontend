@@ -15,7 +15,11 @@ class Card extends Component<CardProps> {
     
     const backgroundColorcheck = (backgroundColor != "") 
 
-   const Image = this.props.ChoosenOption == "Your Farms"? `data:image/png;base64,${cardImage}`: cardImage
+    console.log("Value of this.props.ChoosenOption:::",this.props.ChoosenOption)
+
+    const Image = (this.props.ChoosenOption === "Your Farms" || this.props.ChoosenOption ==='Your Rapid Farms')? `data:image/png;base64,${cardImage}`: cardImage
+
+    console.log("Your Farms::::",Image)
 
     return (
       <>
@@ -23,7 +27,7 @@ class Card extends Component<CardProps> {
               {/* <div className="card__img"> */}
               <div className={backgroundColorcheck ? "card__img colorful_card": "card__img"}>
 
-                <img src={Image} alt="Device" />
+              <img src={Image} alt="Device" />
               </div>
               <span className="card__title card__text ">{cardType}</span>
               <div className="card__footer">
