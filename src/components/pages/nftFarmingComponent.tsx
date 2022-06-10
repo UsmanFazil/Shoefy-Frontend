@@ -351,6 +351,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     location.replace("/nftFarming#rapid");
     this.setState({ expandingRow:this.state.data.ExpandingRapidRow });
     this.setState({ show: !this.state.show});
+    this.setState({ chooseButton: 'Rapid Farming Pools' });
     this.setState({ currentTab:'rapid' });
     // this.callApi("rapid",this._categories.slice(0, 3))
   }
@@ -360,6 +361,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     location.replace("/nftFarming#general");
     this.setState({ expandingRow:this.state.data.ExpandingRow });
     this.setState({ show: !this.state.show});
+    this.setState({ chooseButton:  'General Farming Pools' });
     this.setState({ currentTab:'general'});
     // this.callApi("general",this._categories)
   }
@@ -680,7 +682,10 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     {this.state.show+"i am test"}
 
     {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
-                
+    
+    {/* general false */}
+    {/* rapid true */}
+
     {/* General Farming */}
     {/* Your Farms */}
     {/* !this.state.show */}
