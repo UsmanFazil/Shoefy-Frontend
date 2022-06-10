@@ -622,7 +622,7 @@ class CardContainer extends BaseComponent<
 
     return (
       <div>
-        {this.props.choosenOption}
+        {/* {this.props.choosenOption} */}
         <div
           className={
             mysterCheck && nftData.length <= 0 ? " " : "card_container"
@@ -963,23 +963,11 @@ class CardContainer extends BaseComponent<
                           >
                             {/* {nftData[index + 6]} */}
 
-                            {/* <Card
-                             cardImage={
-                              !lockPeriod
-                                ? Mystery
-                                : nftData[index+2]?.image || Mystery
-                            }
-                              cardTitle={nftData[index+2].currentLayer == 0 ? "Character" : "Phoenix"}
-                              cardType={this.props.nftType}
-                              cardSubtitle={nftData[index+2].currentLayer == 0 ? "Mystery" : "Fire"}
-                              backgroundColor={nftData[index+2].currentLayer == 0 ? "Mystery" : ""}
-                              ChoosenOption={this.props.choosenOption}
-                            /> */}
                             <Card
                              cardImage={
                               !lockPeriod
                                 ? Mystery
-                                : nftData[index+6].currentLayer == 0? Mystery : [TestImage[index]]
+                                : nftData[index+6]?.image || Mystery
                             }
                               cardTitle={nftData[index+6].currentLayer == 0 ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
@@ -987,7 +975,7 @@ class CardContainer extends BaseComponent<
                               backgroundColor={nftData[index+6].currentLayer == 0 ? "Mystery" : ""}
                               ChoosenOption={this.props.choosenOption}
                             />
-
+                        
                             {nftData[index + 6]?.mintStatus === "Completed" && (
                             <div className={nftData.length ==1? "col-sm-6 col-md-6 col-lg-6":"col-sm-6 col-md-6 col-lg-12"}>
 

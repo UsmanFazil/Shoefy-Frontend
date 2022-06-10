@@ -675,8 +675,9 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     {/* General Farming */}
     {/* General Farming Pool */}
     {/* !this.state.show */}
-    {/*  */}
-    {this.state.chooseButton}
+    
+    {/* {this.state.chooseButton} */}
+    {this.state.show+"i am test"}
 
     {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
                 
