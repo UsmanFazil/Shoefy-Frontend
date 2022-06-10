@@ -412,6 +412,7 @@ class expandableComponent extends BaseComponent<
                         onClick={() => this.show_detail(3,value)}
                       >
                         <span>{detail[7]} </span>
+                        {value}
                         <img src={green_down} width="14px" height="8px"></img>
                       </div>
                     </div>
@@ -431,7 +432,7 @@ class expandableComponent extends BaseComponent<
                             index={this.props.index}
                             nftType={this.find_type(title)}
                             pending={this.props.pending}
-                            choosenOption={this.props.choosenOption}
+                            choosenOption={value}
                             title={title}
                             currentTab={this.props.currentTab}
                             stakeAmount= {stakeAmount}

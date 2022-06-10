@@ -622,6 +622,7 @@ class CardContainer extends BaseComponent<
 
     return (
       <div>
+        {this.props.choosenOption}
         <div
           className={
             mysterCheck && nftData.length <= 0 ? " " : "card_container"
