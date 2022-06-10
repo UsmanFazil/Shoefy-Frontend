@@ -145,7 +145,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       this.setState({selected: false})
       
       this.setState({ chooseButton:  'General Farming Pools' });
-
+      
     }
 
     if( step === "Pools" && hash === 'rapid'){
@@ -353,6 +353,8 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.setState({ show: !this.state.show});
     this.setState({ chooseButton: 'Rapid Farming Pools' });
     this.setState({ currentTab:'rapid' });
+    this.setState({selected: false})
+
     // this.callApi("rapid",this._categories.slice(0, 3))
   }
 
@@ -363,6 +365,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.setState({ show: !this.state.show});
     this.setState({ chooseButton:  'General Farming Pools' });
     this.setState({ currentTab:'general'});
+    this.setState({selected: false})
     // this.callApi("general",this._categories)
   }
 
