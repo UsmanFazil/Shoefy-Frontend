@@ -145,7 +145,7 @@ export class ShoefyFarming {
 
 		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
 
-		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
+		const URL = `${	apiURL +testAddress +"/typeNFT/" +tabtype +
 			"/category/" +
 			_categoryType
 		}`;

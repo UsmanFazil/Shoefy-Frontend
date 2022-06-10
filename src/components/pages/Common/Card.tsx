@@ -15,11 +15,7 @@ class Card extends Component<CardProps> {
     
     const backgroundColorcheck = (backgroundColor != "") 
 
-    console.log("Value of this.props.ChoosenOption:::",this.props.ChoosenOption)
-
     const Image = (this.props.ChoosenOption === "Your Farms" || this.props.ChoosenOption ==='Your Rapid Farms')? `data:image/png;base64,${cardImage}`: cardImage
-
-    console.log("Your Farms::::",Image)
 
     return (
       <>

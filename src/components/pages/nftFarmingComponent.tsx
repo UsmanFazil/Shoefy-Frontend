@@ -651,7 +651,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                   <button
                     className={this.state.selected? "btn btn-md link-dark btn-pink" : "btn btn-md link-dark"}
                     style={{
-                      width: "130px",
+                      width: "184px",
                       height: "40px",
                       backgroundColor: "#120059",
                       margin: "0px 16px",
@@ -665,48 +665,31 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'}
                   </button>
                 </div>
-
-                {this.state.chooseButton}
 {/* 
     // 'General Farming Pools'
     // 'Rapid Farming Pools'
     // 'Your Farms' 
     // 'Your Rapid Farms' */}
 
-{/* {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
-
-{/* Rapid Farming */}
-{/* {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending} key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
                   
-                {/* General Farming */}
-                {/* General Farming Pool */}
-                {/* !this.state.show */}
-                {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
+    {/* General Farming */}
+    {/* General Farming Pool */}
+    {/* !this.state.show */}
+    {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
                 
-                {/* General Farming */}
-                {/* Your Farms */}
-                {/* !this.state.show */}
-                {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
-
-
-                {/*  */}
-                {/* {!this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain fun={this.fun(index,item.title)} data={item} index={index} pending={state.pending} key={item.title} currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
-
-                {/* Rapid Farming */}
-                {/* General */}
-                {/* {this.state.show && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption={this.state.chooseButton}/>))} */}
-                
-                {/* Rapid */}
-                {/* this.state.show */}
-                {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
-                {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
-                
-                
+    {/* General Farming */}
+    {/* Your Farms */}
+    {/* !this.state.show */}
+    {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
 
                 
-
-              </div>
-            </div>
+    {/* Rapid */}
+    {/* this.state.show */}
+    {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
+    {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
+                
+      </div>
+  </div>
             <NotificationContainer />
           </div>
         </div>

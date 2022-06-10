@@ -182,6 +182,10 @@ class CardContainer extends BaseComponent<
 
   selectNFT = (index, data) => {
     try {
+
+      console.log(index)
+
+      console.log("Value of data",data)
       // let test = this._selectedNFT.splice(index,index,{
       //   farmId: data.farmId,
       //   assignedNFT: data.assignedNFT,
@@ -203,6 +207,8 @@ class CardContainer extends BaseComponent<
       });
       this.setState({ harvestAmount: this._selectedNFT.length });
       this.selectedItems[index] = !this.selectedItems[index];
+
+      console.log("Value of selectedItems:::",this._selectedNFT)
       // check for false and true
       if(this.selectedItems[index] === false || this.selectedItems[index] === undefined){
         // this._selectedNFT.push({
@@ -610,21 +616,17 @@ class CardContainer extends BaseComponent<
 
     const array = [{ image: "", type: "", lockperiod: "" }];
     const nftData = this.props.farmingData?.message?.result || [];
-
-    // if (nftData.length > 0) {
-    // }
-
     const lockPeriod = true;
+
+    console.log("Value of amountrender",this.state.amount)
 
     return (
       <div>
         <div
           className={
             mysterCheck && nftData.length <= 0 ? " " : "card_container"
-          }
-        >
+          }>
 
-          {this.props.choosenOption}
           {/* General Farming Pools Option */}
           {(this.props.choosenOption === "General Farming Pools" || this.props.choosenOption === 'Rapid Farming Pools' ) && (
             <div>
@@ -691,11 +693,6 @@ class CardContainer extends BaseComponent<
                             disabled={state.pending}
                             onClick={async () => this.confirmApprove()}
                           >
-                            {/* {!this.state.approveFlag
-                              ? t("staking.Farming.ApproveTitle")
-                              : t("staking.Farming.StakeTitle")
-                              } */}
-
                             {t("staking.Farming.ApproveTitle")}
                           </button>
                         )}
@@ -862,7 +859,7 @@ class CardContainer extends BaseComponent<
                               type="number"
                               className="form-control form-control-lg"
                               readOnly
-                              value={this._selectedNFT.length}
+                              value={state.harvestAmount}
                             />
                           </div>
                           {/* {this._selectedNFT.length} */}
@@ -918,9 +915,11 @@ class CardContainer extends BaseComponent<
                           >
                             {/* {nftData[index + 2]} */}
                             <Card
-                              cardImage={
-                                nftData[index+2].currentLayer == 0 ? Mystery : [TestImage[index]]
-                              }
+                             cardImage={
+                              !lockPeriod
+                                ? Mystery
+                                : nftData[index+2]?.image || Mystery
+                            }
                               cardTitle={nftData[index+2].currentLayer == 0 ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
                               cardSubtitle={nftData[index+2].currentLayer == 0 ? "Mystery" : "Fire"}
@@ -963,14 +962,28 @@ class CardContainer extends BaseComponent<
                           >
                             {/* {nftData[index + 6]} */}
 
+                            {/* <Card
+                             cardImage={
+                              !lockPeriod
+                                ? Mystery
+                                : nftData[index+2]?.image || Mystery
+                            }
+                              cardTitle={nftData[index+2].currentLayer == 0 ? "Character" : "Phoenix"}
+                              cardType={this.props.nftType}
+                              cardSubtitle={nftData[index+2].currentLayer == 0 ? "Mystery" : "Fire"}
+                              backgroundColor={nftData[index+2].currentLayer == 0 ? "Mystery" : ""}
+                              ChoosenOption={this.props.choosenOption}
+                            /> */}
                             <Card
-                              cardImage={
-                                nftData[index+6].currentLayer == 0? Mystery : [TestImage[index]]
-                              }
+                             cardImage={
+                              !lockPeriod
+                                ? Mystery
+                                : nftData[index+6].currentLayer == 0? Mystery : [TestImage[index]]
+                            }
                               cardTitle={nftData[index+6].currentLayer == 0 ? "Character" : "Phoenix"}
                               cardType={this.props.nftType}
                               cardSubtitle={nftData[index+6].currentLayer == 0 ? "Mystery" : "Fire"}
-                              backgroundColor={nftData[index+2].currentLayer == 0 ? "Mystery" : ""}
+                              backgroundColor={nftData[index+6].currentLayer == 0 ? "Mystery" : ""}
                               ChoosenOption={this.props.choosenOption}
                             />
 

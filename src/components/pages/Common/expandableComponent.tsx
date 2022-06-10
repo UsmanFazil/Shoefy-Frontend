@@ -182,9 +182,9 @@ class expandableComponent extends BaseComponent<
 
   componentWillUnmount() {}
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({ test: nextProps.choosenOption });  
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   this.setState({ test: nextProps.choosenOption });  
+  // }
   
 
   async callApi(){
@@ -309,7 +309,6 @@ class expandableComponent extends BaseComponent<
   }
 
   async connectWallet() {
-    // userData
     try {
       const wallet = this.props.wallet;
       const shoefyFarming = new ShoefyFarming(wallet);
@@ -413,7 +412,6 @@ class expandableComponent extends BaseComponent<
                         onClick={() => this.show_detail(3,value)}
                       >
                         <span>{detail[7]} </span>
-
                         <img src={green_down} width="14px" height="8px"></img>
                       </div>
                     </div>
