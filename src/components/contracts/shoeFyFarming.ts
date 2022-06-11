@@ -138,7 +138,6 @@ export class ShoefyFarming {
 			return
 		}
 
-		console.log("I am running:::",tabtype,_categoryType)
 		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
@@ -154,7 +153,6 @@ export class ShoefyFarming {
 
 		try {
 			this._userNFTs = await requestAPICall(URL).then((res) => {
-				console.log("sending to backend request", res.data);
 				return res.data;
 			});
 			return this._userNFTs;

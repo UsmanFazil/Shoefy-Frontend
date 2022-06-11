@@ -193,7 +193,60 @@ class CardContainer extends BaseComponent<
   };
 
   selectNFT = (index, data) => {
+
     try {
+
+    const farmId = data.farmId;
+
+
+      this._selectedNFT.push({
+              farmId: data.farmId,
+            
+      });
+
+    this.selectedItems[index] = !this.selectedItems[index]; //color selection
+    this.setState({ harvestAmount: this._selectedNFT.length }); //length in the input
+
+    // Logic for deletion
+      
+    //   if(this._selectedNFT.length ==0){
+    //     console.log("Empty condition",this._selectedNFT)
+    //     this._selectedNFT.push({
+    //       farmId: data.farmId,
+    //       assignedNFT: data.assignedNFT,
+    //       mintStatus: data.mintStatus,
+    //     });
+    //     this.selectedItems[index] = !this.selectedItems[index];
+    //     this.setState({ harvestAmount: this._selectedNFT.length });
+
+
+    //   }else{
+    //     console.log("Filled condition",this._selectedNFT,farmId)
+
+    //     for (let i = 0; i<= this._selectedNFT.length-1;i++){
+          
+    //       if (farmId === this._selectedNFT[i].farmId){
+
+    //             this._selectedNFT.splice(i,1)
+    //             console.log("i am similar",i,this._selectedNFT[i].farmId,farmId)
+    //             this.setState({ harvestAmount: this._selectedNFT.length });
+    //             this.selectedItems[index] = !this.selectedItems[index];
+    //       }else{
+    //        this._selectedNFT.push({
+    //          farmId: data.farmId,
+    //          assignedNFT: data.assignedNFT,
+    //          mintStatus: data.mintStatus,
+    //        });
+
+    //        this.setState({ harvestAmount: this._selectedNFT.length });
+    //        this.selectedItems[index] = !this.selectedItems[index];
+    //       }
+    //  }
+    //   }
+
+            // Logic for deletion
+
+      
       // let test = this._selectedNFT.splice(index,index,{
       //   farmId: data.farmId,
       //   assignedNFT: data.assignedNFT,
@@ -208,15 +261,10 @@ class CardContainer extends BaseComponent<
       // if selectedItems == true then remove the index from array 
       // else add
       // if undefinde then add and false add 
-      this._selectedNFT.push({
-        farmId: data.farmId,
-        assignedNFT: data.assignedNFT,
-        mintStatus: data.mintStatus,
-      });
-      this.setState({ harvestAmount: this._selectedNFT.length });
-      this.selectedItems[index] = !this.selectedItems[index];
-      // check for false and true
-      if(this.selectedItems[index] === false || this.selectedItems[index] === undefined){
+    
+  
+        // check for false and true
+        // if(this.selectedItems[index] === false || this.selectedItems[index] === undefined){
         // this._selectedNFT.push({
         //   farmId: data.farmId,
         //   assignedNFT: data.assignedNFT,
@@ -224,11 +272,11 @@ class CardContainer extends BaseComponent<
         // });
         // this.setState({ harvestAmount: this._selectedNFT.length });
         // this.selectedItems[index] = !this.selectedItems[index];
-      }else{
+          //  }else{
         // this._selectedNFT.splice(index,1);
         // this.setState({ harvestAmount: this._selectedNFT.length });
         // this.selectedItems[index] = !this.selectedItems[index];
-      }
+          //  }
       
      
     } catch (e) {
@@ -297,6 +345,50 @@ class CardContainer extends BaseComponent<
       this.handleError(e);
     }
   }
+
+  async callApi(){
+
+    try{
+
+    // category 
+    const urlValue = window.location.hash;
+    const hash = urlValue.replace("#", "");
+    const wallet = this.props.wallet;
+    console.log("Value of wallet:::expandable component",wallet)
+    const shoefyFarming = new ShoefyFarming(wallet);
+    // private _categories: Array<string> = [
+    //   "COMMON",
+    //   "UNIQUE",
+    //   "RARE",
+    //   "EPIC",
+    //   "LEGENDARY",
+    //   "MYTHICGOD",
+    //   "MYTHICDEVIL",
+    //   "MYTHICALIEN"
+    // ]
+    const { title } = this.props.title;
+
+    console.log("Value of title:::",title)
+
+    const currentTitle = title.split(" ");
+
+    // if(currentTitle.length > 2){
+    //       const _currentTitle = (currentTitle[0]+currentTitle[1]).toUpperCase();
+
+    //       let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
+    //       this.setState({propData:resp})
+
+    //   }else{
+    //       const _currentTitle = currentTitle[0].toUpperCase();
+
+    //       let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
+    //       this.setState({propData:resp})
+    //   }
+
+    }catch(err){
+      console.log("error occured",err)
+    }
+}
 
   async confirmStake(currentTab): Promise<void> {
     const state = this.readState();
@@ -705,7 +797,6 @@ class CardContainer extends BaseComponent<
     const nftData = this.props.farmingData?.message?.result || [];
 
     if (nftData.length > 0) {
-     console.log("I am rendering:::",nftData);
     }
 
     const lockPeriod = true;

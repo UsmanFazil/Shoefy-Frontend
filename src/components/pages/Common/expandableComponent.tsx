@@ -209,19 +209,16 @@ class expandableComponent extends BaseComponent<
       // ]
       const { title } = this.props.data;
 
-      console.log("Title expandableComponent::: callApi")
       const currentTitle = title.split(" ");
 
       if(currentTitle.length > 2){
             const _currentTitle = (currentTitle[0]+currentTitle[1]).toUpperCase();
-            console.log("cool not running::::",_currentTitle)
 
             let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
             this.setState({propData:resp})
 
         }else{
             const _currentTitle = currentTitle[0].toUpperCase();
-            console.log("cool not running::::",_currentTitle)
 
             let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
             this.setState({propData:resp})
@@ -235,20 +232,14 @@ class expandableComponent extends BaseComponent<
   show_detail(index,value) {
     if (this.state["flag" + index] === false){
       this.setState({ ["flag" + index]: true });
-    // else{
-    //   console.log("You dummy i am not working:::else")
-    //   }
+ 
     }
     else {
       this.setState({ ["flag" + index]: false });
       if(value === "Your Farms" || value  === 'Your Rapid Farms'){
-        console.log("You dummy i am not working:::")
-        // (this.props.choosenOption === "Your Farms" || this.props.choosenOption  === 'Your Rapid Farms') 
         this.callApi();
       }
-      // else{
-      //    this.setState({propData:[]})
-      // }
+  
     }
   }
 
@@ -361,6 +352,11 @@ class expandableComponent extends BaseComponent<
 
     const value = this.props.choosenOption 
 
+    const showStake = (this.props.choosenOption === 'Your Farms' || this.props.choosenOption === 'Rapid Farming Pools')
+
+    {/* 'Your Farms' */}
+    {/* 'Rapid Farming Pools' */}
+
     return (
       <div>
         <div className="content-wrapper">
@@ -397,10 +393,10 @@ class expandableComponent extends BaseComponent<
                             <span>{title}</span>
                           </div>
                         </div>
-                        <div className="expand1">
+                       { !showStake && <div className="expand1">
                           <div className="e2_up">Tokens to stake</div>
                           <div className="e2_down">{stakeAmount}</div>
-                        </div>
+                        </div>}
 
                         <div className="expand2">
                           <div className="e2_up">Lockup Duration</div>

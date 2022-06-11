@@ -692,13 +692,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     {/* Your Farms */}
     {/* !this.state.show */}
     {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
-
                 
     {/* Rapid */}
     {/* this.state.show */}
     {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
     {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
-                
+ 
       </div>
   </div>
             <NotificationContainer />
