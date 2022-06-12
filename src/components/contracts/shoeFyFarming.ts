@@ -3,7 +3,7 @@ import { Contract } from "web3-eth-contract";
 // import { ethers } from 'ethers';
 import * as web3 from "web3-utils";
 import Web3 from "web3";
-import { requestAPICall } from "../../helpers/apiService";
+import { requestAPICall,requestAPICallBody } from "../../helpers/apiService";
 
 export const ShoeFyAddress = {
 	4: "0x8F973d1C33194fe773e7b9242340C3fdB2453b49",
@@ -144,7 +144,7 @@ export class ShoefyFarming {
 
 		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
 
-		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
+		const URL = `${	apiURL +testAddress +"/typeNFT/" +tabtype +
 			"/category/" +
 			_categoryType
 		}`;
@@ -153,6 +153,46 @@ export class ShoefyFarming {
 
 		try {
 			this._userNFTs = await requestAPICall(URL).then((res) => {
+				return res.data;
+			});
+			return this._userNFTs;
+
+		} catch (err) {
+			console.log("Value from expandableComponent inside fetchData", err);
+		}
+	}
+
+	async harvestApiCall(tabtype?: string, _categoryType?: string,data?:any):Promise<any>{
+		console.log("harvestApiCall:::",tabtype);
+		console.log("harvestApiCall:::",_categoryType);
+		console.log("harvestApiCall:::",data)
+
+		if (tabtype == undefined || _categoryType == undefined){
+			return
+		}
+
+		const userData = {
+			farmIds:data
+		  }
+		  
+		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
+		let web3 = new Web3(window.ethereum);
+		const userAddress = this._wallet.getAddress();
+
+		
+
+		// http://3.120.204.209:3000/api/auth/getSigns/userAddress/0x4d23c8E0e601C5e37b062832427b2D62777fAEF9/typeNFT/general/category/COMMON
+		// http://3.120.204.209:3000/api/auth/getSigns/userAddress/0x4d23c8E0e601C5e37b062832427b2D62777fAEF9/typeNFT/general/category/COMMON
+		// const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
+		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${testAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
+
+
+		console.log("harvestApiCall:::",apiURL)
+
+		const returnData =[];
+
+		try {
+			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {
 				return res.data;
 			});
 			return this._userNFTs;

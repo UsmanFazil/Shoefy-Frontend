@@ -346,6 +346,7 @@ class expandableComponent extends BaseComponent<
     }
 
     const { title, Image_Path, stakeAmount, lockUpDuration } = this.props.data;
+
     const state = this.readState();
     const t: TFunction<"translation"> = this.readProps().t;
     let test = t(title);
@@ -357,13 +358,13 @@ class expandableComponent extends BaseComponent<
     {/* 'Your Farms' */}
     {/* 'Rapid Farming Pools' */}
 
+
     return (
       <div>
         <div className="content-wrapper">
           <div className="expanding-staking-container">
             {/* <div className="container"> */}
             <div>
-             
               <div className="row expandable_staking-body">
       
                 <FadeInRightDiv className="your_staking remove_top">

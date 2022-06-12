@@ -153,6 +153,9 @@ class CardContainer extends BaseComponent<
   private _selectedNFT: any = [];
   private selectedItems = [];
 
+  private signatures = [];;
+  private farmIds = [];
+
   constructor(props: StakingProps & WithTranslation) {
     super(props);
 
@@ -198,11 +201,14 @@ class CardContainer extends BaseComponent<
 
     const farmId = data.farmId;
 
-
-      this._selectedNFT.push({
-              farmId: data.farmId,
+      // this._selectedNFT.push(
+      //      farmId:   data.farmId,
             
-      });
+      // );
+
+      this._selectedNFT.push(
+        data.farmId, 
+      );
 
     this.selectedItems[index] = !this.selectedItems[index]; //color selection
     this.setState({ harvestAmount: this._selectedNFT.length }); //length in the input
@@ -303,7 +309,6 @@ class CardContainer extends BaseComponent<
 
     temp[step] = v;
 
-    
     console.log("Value of setStakeValue",temp[step],value);
 
     this.updateState({
@@ -366,24 +371,36 @@ class CardContainer extends BaseComponent<
     //   "MYTHICDEVIL",
     //   "MYTHICALIEN"
     // ]
-    const { title } = this.props.title;
+    const { title } = this.props;
 
     console.log("Value of title:::",title)
 
     const currentTitle = title.split(" ");
 
-    // if(currentTitle.length > 2){
-    //       const _currentTitle = (currentTitle[0]+currentTitle[1]).toUpperCase();
+    if(currentTitle.length > 2){
+          const _currentTitle = (currentTitle[0]+currentTitle[1]).toUpperCase();
 
-    //       let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
-    //       this.setState({propData:resp})
+          let resp = await shoefyFarming.harvestApiCall(hash,_currentTitle,this._selectedNFT);   
+          console.log("Value of response harvestApiCall:::",resp)
+          // this.setState({propData:resp})
 
-    //   }else{
-    //       const _currentTitle = currentTitle[0].toUpperCase();
+      }else{
+          const _currentTitle = currentTitle[0].toUpperCase();
 
-    //       let resp = await shoefyFarming.apiCall(hash,_currentTitle);   
-    //       this.setState({propData:resp})
-    //   }
+          let resp = await shoefyFarming.harvestApiCall(hash,_currentTitle,this._selectedNFT);   
+          console.log("Value of response harvestApiCall:::",resp)
+          const {message} = resp; 
+          
+          message.forEach(element => {
+            console.log("Value of each element:::",element)
+            this.farmIds.push(element.farmId);
+            this.signatures.push(element.sign)
+          });
+
+          console.log("Value of signs:::",this.farmIds,this.signatures)
+
+          // this.setState({propData:resp})
+      }
 
     }catch(err){
       console.log("error occured",err)
@@ -458,13 +475,19 @@ class CardContainer extends BaseComponent<
     }
   }
 
-  async confirmHarvest(currentTab): Promise<void> {
+  async confirmHarvest(): Promise<void> {
     // document.getElementById("modalswitch3").click();
 
+    // harvestNFT(uint256[] memory farmIds_,string[] memory tokenURIs_,bytes[] memory signatures_,bool generalFarm_)
+    // geenral true
+    // rapid false
+
+
+    const urlValue = window.location.hash;
+    const currentTab = urlValue.replace("#", "");
     const state = this.readState();
     const byteValue = this.findImage("byte");
-
-    this.toggleModal();
+    this.callApi();
     // this.setState({harvestAmount:0})
     // this._selectedNFT = []
 
@@ -489,6 +512,8 @@ class CardContainer extends BaseComponent<
       //   this.updateState({ pending: false });
       //   this.handleError(e);
       // }
+    this.toggleModal();
+
     } else {
       // Harvest Rapid NFT
       // try {
@@ -510,6 +535,8 @@ class CardContainer extends BaseComponent<
       //   this.updateState({ pending: false });
       //   this.handleError(e);
       // }
+    this.toggleModal();
+
     }
   }
 
