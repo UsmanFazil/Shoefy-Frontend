@@ -52,6 +52,11 @@ body {
     height: 200px;
 }
 
+.btn-pink{
+	background-color: #CF3279 !important;
+	color: white;
+}
+
 .card_container {
 	/* width: 100%; */
 	max-width: 64rem;
@@ -212,20 +217,6 @@ color: #F4F5F6;
 	box-sizing: border-box;
 }
 
-.card__nft__title {
-	position: absolute;
-	width: 94px;
-	height: 30px;
-	left: 11px;
-	top: 238px;
-	padding: 5px 16px;
-	background: linear-gradient(152.78deg, #FFBBF8 0%, #BEFFFB 100%);
-	text-transform: uppercase;
-	border-radius: 5px;
-	border: 2px solid #ffffff;
-	color: #141416;
-	box-sizing: border-box;
-}
 
 .card__nft__img {
 	text-align: center;
@@ -286,10 +277,6 @@ color: #F4F5F6;
 	/* identical to box height, or 167% */
 	/* Neutrals/3 */
 	color: #ffffff;
-}
-
-.ImageBoarder{
-	border:1px solid linear-gradient(152.78deg, #FFBBF8 0%, #BEFFFB 100%);
 }
 
 .card__text {

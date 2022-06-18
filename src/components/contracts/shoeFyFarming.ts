@@ -11,7 +11,10 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0x005152D60516D761112A284ec623FB72d6FE12E0";
+// export const FarmingAddress = "0x005152D60516D761112A284ec623FB72d6FE12E0";
+export const FarmingAddress = "0x5484d00Ba6a9DE1B4c40942c1620BFFb12091c46";
+
+// 0x5484d00Ba6a9DE1B4c40942c1620BFFb12091c46
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -108,6 +111,34 @@ export class ShoefyFarming {
 		}
 	}
 
+	async harvestfarmGeneral(farmIds:any, tokenURIs:any, signatures:any): Promise<void> {
+		console.log("Value in harvestfarmGeneral:::",farmIds,tokenURIs,signatures);
+		await this.refresh();
+		if (this._balance >0) {
+			
+			await this._farmingContract.methods
+				.harvestNFT(farmIds, tokenURIs,  signatures, true)
+				.send({ from: this._wallet.getAddress() });
+		} else {
+			throw "Your shoefy balance is not sufficient to stake this amount";
+		}
+	}
+
+		async harvestfarmRapid(farmIds:any, tokenURIs:any, signatures:any): Promise<void> {
+		console.log("Value in rapidfarmGeneral:::",farmIds,tokenURIs,signatures);
+
+			await this.refresh();
+			if (this._balance >0) {
+				
+				await this._farmingContract.methods
+					.harvestNFT(farmIds, tokenURIs,  signatures, false)
+					.send({ from: this._wallet.getAddress() });
+			} else {
+				throw "Your shoefy balance is not sufficient to stake this amount";
+			}
+		}
+
+
 	async stakefarmRapid(amount: number, category: string): Promise<void> {
 		await this.refresh();
 		if (this._balance >= amount) {
@@ -144,7 +175,7 @@ export class ShoefyFarming {
 
 		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
 
-		const URL = `${	apiURL +testAddress +"/typeNFT/" +tabtype +
+		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
 			"/category/" +
 			_categoryType
 		}`;
@@ -173,23 +204,15 @@ export class ShoefyFarming {
 
 		const userData = {
 			farmIds:data
-		  }
+		}
 		  
 		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
-		
-
-		// http://3.120.204.209:3000/api/auth/getSigns/userAddress/0x4d23c8E0e601C5e37b062832427b2D62777fAEF9/typeNFT/general/category/COMMON
-		// http://3.120.204.209:3000/api/auth/getSigns/userAddress/0x4d23c8E0e601C5e37b062832427b2D62777fAEF9/typeNFT/general/category/COMMON
-		// const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
-		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${testAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
-
+		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
 
 		console.log("harvestApiCall:::",apiURL)
-
-		const returnData =[];
 
 		try {
 			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {

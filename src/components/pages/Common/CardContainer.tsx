@@ -32,7 +32,8 @@ import { ViewNftcomponent } from "./Modal/ViewNftcomponent";
 
 import Web3 from "web3";
 
-import Mystery from "./ExpandableImage/Mystery.svg";
+import 
+Mystery from "./ExpandableImage/Mystery.svg";
 
 // Common Farming Images
 import CommonPegasus from "./ExpandableImage/Preview/01COMMON/COMMON_Pegasus.png";
@@ -129,6 +130,12 @@ export type StakingState = {
   pending?: boolean;
   approveFlag: boolean;
 
+  nftname:string;
+  category:string;
+  price:string;
+  nftImage:string;
+  categoryAmount:number;
+
   amount?: any;
 };
 
@@ -155,6 +162,7 @@ class CardContainer extends BaseComponent<
 
   private signatures = [];;
   private farmIds = [];
+  private tokenURI = [];
 
   constructor(props: StakingProps & WithTranslation) {
     super(props);
@@ -171,8 +179,11 @@ class CardContainer extends BaseComponent<
       harvestAmount: 0,
       userData: [],
       ctValueStake2:0,
-      amount:''
-
+      amount:'',
+      nftname:'',
+      nftImage:'',
+      category:'',
+      price:'',
     };
   }
 
@@ -191,7 +202,11 @@ class CardContainer extends BaseComponent<
     this.setState({ isModelOpen: !this.state.isModelOpen });
   };
 
-  toggleModal2 = () => {
+  toggleModal2 = (_nftImage:string,_category,_price:string,_name:string) => {
+    this.setState({nftname:_name})
+    this.setState({nftImage:_nftImage})
+    this.setState({category:_category})
+    this.setState({price:_price})
     this.setState({ choosenOpenModel: !this.state.choosenOpenModel });
   };
 
@@ -200,11 +215,6 @@ class CardContainer extends BaseComponent<
     try {
 
     const farmId = data.farmId;
-
-      // this._selectedNFT.push(
-      //      farmId:   data.farmId,
-            
-      // );
 
       this._selectedNFT.push(
         data.farmId, 
@@ -361,16 +371,7 @@ class CardContainer extends BaseComponent<
     const wallet = this.props.wallet;
     console.log("Value of wallet:::expandable component",wallet)
     const shoefyFarming = new ShoefyFarming(wallet);
-    // private _categories: Array<string> = [
-    //   "COMMON",
-    //   "UNIQUE",
-    //   "RARE",
-    //   "EPIC",
-    //   "LEGENDARY",
-    //   "MYTHICGOD",
-    //   "MYTHICDEVIL",
-    //   "MYTHICALIEN"
-    // ]
+
     const { title } = this.props;
 
     console.log("Value of title:::",title)
@@ -394,12 +395,12 @@ class CardContainer extends BaseComponent<
           message.forEach(element => {
             console.log("Value of each element:::",element)
             this.farmIds.push(element.farmId);
-            this.signatures.push(element.sign)
+            this.signatures.push(element.sign);
+            this.tokenURI.push(element.tokenURIs_)
           });
 
           console.log("Value of signs:::",this.farmIds,this.signatures)
 
-          // this.setState({propData:resp})
       }
 
     }catch(err){
@@ -421,7 +422,8 @@ class CardContainer extends BaseComponent<
         if (state.amount > 0) {
 
           if(state.amount > 10){
-            NotificationManager.warning("One user can farm max. 10 common sNFTs");
+            NotificationManager.warning(`One user can farm max. ${this.setCategoryAmount()}  ${this.props.title}`);
+
             this.updateState({ pending: false });
             this.setState({amount:0})
             return
@@ -451,7 +453,7 @@ class CardContainer extends BaseComponent<
         if (state.amount >= 0) {
 
           if(state.amount > 10){
-            NotificationManager.warning("One user can farm max. 10 common sNFTs");
+            NotificationManager.warning(`One user can farm max. ${this.setCategoryAmount()}  ${this.props.title}`);
             this.updateState({ pending: false });
             this.setState({amount:0})
             return
@@ -476,67 +478,56 @@ class CardContainer extends BaseComponent<
   }
 
   async confirmHarvest(): Promise<void> {
-    // document.getElementById("modalswitch3").click();
 
-    // harvestNFT(uint256[] memory farmIds_,string[] memory tokenURIs_,bytes[] memory signatures_,bool generalFarm_)
-    // geenral true
-    // rapid false
-
+    if(this._selectedNFT.length <= 0){
+      NotificationManager.warning("Can't stake a negative amount.");
+      NotificationManager.successfully("Can't stake a negative amount.");
+      return
+    }
 
     const urlValue = window.location.hash;
     const currentTab = urlValue.replace("#", "");
     const state = this.readState();
     const byteValue = this.findImage("byte");
     this.callApi();
-    // this.setState({harvestAmount:0})
-    // this._selectedNFT = []
 
     if (currentTab === "general") {
       // Harvest General NFT
-      // try {
-      //   const state = this.readState();
-      //   this.updateState({ pending: true });
-      //   if (state.ctValueStake >= 0) {
-      //     await state.ShoefyFarming.stakefarmGeneral(
-      //       state.ctValueStake,
-      //       byteValue
-      //     );
-      //     document.getElementById("modalswitch2").click();
-      //   } else {
-      //     NotificationManager.warning("Can't stake a negative amount.");
-      //     return;
-      //   }
-      //   this.updateState({ pending: false });
-      //   this.updateOnce(true).then();
-      // } catch (e) {
-      //   this.updateState({ pending: false });
-      //   this.handleError(e);
-      // }
-    this.toggleModal();
+      try {
+        const state = this.readState();
+        this.updateState({ pending: true });
+          await state.ShoefyFarming.harvestfarmGeneral(
+            this.farmIds,
+            this.tokenURI,
+            this.signatures
+          );
+          this.toggleModal();
+
+        this.updateState({ pending: false });
+        this.updateOnce(true).then();
+      } catch (e) {
+        this.updateState({ pending: false });
+        this.handleError(e);
+      }
 
     } else {
       // Harvest Rapid NFT
-      // try {
-      //   const state = this.readState();
-      //   this.updateState({ pending: true });
-      //   if (state.ctValueStake >= 0) {
-      //     await state.ShoefyFarming.stakefarmRapid(
-      //       state.ctValueStake,
-      //       byteValue
-      //     );
-      //     document.getElementById("modalswitch2").click();
-      //   } else {
-      //     NotificationManager.warning("Can't stake a negative amount.");
-      //     return;
-      //   }
-      //   this.updateState({ pending: false });
-      //   this.updateOnce(true).then();
-      // } catch (e) {
-      //   this.updateState({ pending: false });
-      //   this.handleError(e);
-      // }
-    this.toggleModal();
+      try {
+        const state = this.readState();
+        this.updateState({ pending: true });
+          await state.ShoefyFarming.harvestfarmRapid(
+            this.farmIds,
+            this.tokenURI,
+            this.signatures
+          );
+        this.toggleModal();
 
+        this.updateState({ pending: false });
+        this.updateOnce(true).then();
+      } catch (e) {
+        this.updateState({ pending: false });
+        this.handleError(e);
+      }
     }
   }
 
@@ -732,6 +723,29 @@ class CardContainer extends BaseComponent<
     }
   }
 
+  setCategoryAmount(){
+    const currentIndex = this.props.index;
+    switch (currentIndex) {
+      case 0:
+        return 10
+      case 1:
+        return 9
+      case 2:
+        return 8
+      case 3:
+        return 7
+      case 4:
+        return 6
+      case 5:
+        return 4
+      case 6:
+        return 3
+      case 7:
+        return 2
+    }
+
+  }
+
   // private async loop(): Promise<void> {
   //   const self = this;
   //   const cont = await self.updateOnce.call(self);
@@ -824,6 +838,7 @@ class CardContainer extends BaseComponent<
     const nftData = this.props.farmingData?.message?.result || [];
 
     if (nftData.length > 0) {
+      console.log("Value of NFTDATA:::",nftData)
     }
 
     const lockPeriod = true;
@@ -936,8 +951,8 @@ class CardContainer extends BaseComponent<
                         }}
                       >
                         <label className="golden-label">
-                          One user can farm max. 10 common sNFTs
-                        </label>
+                          One user can farm max. {this.setCategoryAmount()}  {this.props.title}
+                          </label>
                       </div>
 
                       <div
@@ -1045,6 +1060,18 @@ class CardContainer extends BaseComponent<
                               >
                                 Choose NFT
                               </button>)}
+
+                              {nftData[index]?.mintStatus === "Minted" &&(<button
+                                type="button"
+                                className={
+                                    "btn btn-outline-Choose NFT btn-block btn-pink mt-2"
+                                }
+                                onClick={() => this.toggleModal2(nftData[index]?.image,this.props.nftType,this.props.stakeAmount,nftData[index].currentLayer == 0 ? "Character" : "Phoenix")}
+                              >
+                                Open
+                              </button>)}
+                              {/* btn-pink */}
+                              {/* cardTitle={nftData[index].currentLayer == 0 ? "Character" : "Phoenix"} */}
                             </div>
                           
                         </div>
@@ -1248,9 +1275,14 @@ class CardContainer extends BaseComponent<
           </Modal>
 
           <ViewNftcomponent
-            title={`You have successfully harvested ${this.state.harvestAmount} number(s) of common sNFTs`}
+            title={this.state.nftname}
+            type={this.state.category}
+            price={this.state.price}
+            cardImage={this.state.nftImage}
             isOpen={this.state.choosenOpenModel}
             onClose={this.toggleModal2}
+    // console.log("value of things:::",_category,_price,_name)
+
           />
         </div>
         <NotificationContainer />
