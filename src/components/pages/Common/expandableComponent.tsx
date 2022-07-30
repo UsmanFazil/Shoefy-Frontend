@@ -54,7 +54,9 @@ export type StakingProps = {
   currentTab?: string;
   index?: number;
   pending?: boolean;
-  propData?:any
+  propData?:any;
+  balance?:any
+  allowance?:number
 };
 
 // Call API
@@ -106,7 +108,6 @@ class expandableComponent extends BaseComponent<
     super(props);
 
     this.state = {
-    
       propData:[],
       test:''
     };
@@ -121,7 +122,7 @@ class expandableComponent extends BaseComponent<
     // console.log("Value of wallet:::expandable component",wallet)
     try{
 
-    // const testValue = require('./test.json')
+    // const testValue =
     // const {message} = testValue;
     // const {result} = message
      
@@ -182,11 +183,6 @@ class expandableComponent extends BaseComponent<
 
   componentWillUnmount() {}
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ test: nextProps.choosenOption });  
-  // }
-  
-
   async callApi(){
 
       try{
@@ -197,16 +193,6 @@ class expandableComponent extends BaseComponent<
       const wallet = this.props.wallet;
       console.log("Value of wallet:::expandable component",wallet)
       const shoefyFarming = new ShoefyFarming(wallet);
-      // private _categories: Array<string> = [
-      //   "COMMON",
-      //   "UNIQUE",
-      //   "RARE",
-      //   "EPIC",
-      //   "LEGENDARY",
-      //   "MYTHICGOD",
-      //   "MYTHICDEVIL",
-      //   "MYTHICALIEN"
-      // ]
       const { title } = this.props.data;
 
       const currentTitle = title.split(" ");
@@ -355,15 +341,10 @@ class expandableComponent extends BaseComponent<
 
     const showStake = (this.props.choosenOption === 'Your Farms' || this.props.choosenOption === 'Rapid Farming Pools')
 
-    {/* 'Your Farms' */}
-    {/* 'Rapid Farming Pools' */}
-
-
     return (
       <div>
         <div className="content-wrapper">
           <div className="expanding-staking-container">
-            {/* <div className="container"> */}
             <div>
               <div className="row expandable_staking-body">
       
@@ -394,10 +375,10 @@ class expandableComponent extends BaseComponent<
                             <span>{title}</span>
                           </div>
                         </div>
-                       { !showStake && <div className="expand1">
-                          <div className="e2_up">Tokens to stake</div>
+                       <div className="expand1">
+                          <div className="e2_up">Tokens to Lock</div>
                           <div className="e2_down">{stakeAmount}</div>
-                        </div>}
+                        </div>
 
                         <div className="expand2">
                           <div className="e2_up">Lockup Duration</div>
@@ -409,7 +390,6 @@ class expandableComponent extends BaseComponent<
                         onClick={() => this.show_detail(3,value)}
                       >
                         <span>{detail[7]}  </span>
-                        {/* {value} */}
                         <img src={green_down} width="14px" height="8px"></img>
                       </div>
                     </div>
@@ -426,6 +406,8 @@ class expandableComponent extends BaseComponent<
                       <div className="col-md-12 d-flex">
                         <div className="d-flex flex-column flex-fill ">
                           <CardContainerComponentMain
+                            allowance={this.props.allowance}
+                            balance={this.props.balance} 
                             index={this.props.index}
                             nftType={this.find_type(title)}
                             pending={this.props.pending}

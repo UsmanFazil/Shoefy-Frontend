@@ -72,12 +72,16 @@ export type FarmingState = {
   address?: string;
   balance?: number;
 
+  allowance: number,
+	allowance2: number,
+
   // values pending to be set
   pending?: boolean;
   approveFlag: boolean;
   chooseButton?:string;
   currentTab?:string;
   selected?:boolean;
+	approveFlag1: boolean,
 };
 
 const FadeInLeftAnimation = keyframes`${fadeInLeft}`;
@@ -120,7 +124,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       data:[],
       show:false,
       currentTab:"general",
-      selected:false,
+      selected:false
     };
   }
 
@@ -133,17 +137,9 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     const urlValue = window.location.hash;
     const hash = urlValue.replace("#", "");
 
-    console.log("Value of confirmStake",step,hash)
-
-
-  
     if(step === "Pools" && hash === 'general'){
-      // this.setState({selected: true})
-      // {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'}
-      // {this.state.currentTab === 'general' ? 'General Farming Pools':'Rapid Farming Pools'}
 
       this.setState({selected: false})
-      
       this.setState({ chooseButton:  'General Farming Pools' });
       
     }
@@ -156,14 +152,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
     if( step === "Farms" && hash === 'general'){
       this.setState({selected: true})
-      
       this.setState({ chooseButton: 'Your Farms' });
 
     }
 
     if( step === "Farms" && hash === 'rapid'){
       this.setState({selected: true})
-
       this.setState({ chooseButton:  'Your Rapid Farms'});
     }
   }
@@ -265,21 +259,28 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
     const shoefy = this.readState().shoefy;
 
-    if (!!shoefy) {
+    const wallet = this.props.wallet;
+    const shoefyFarming = new ShoefyFarming(wallet);
+
+    if (!!shoefy && !!shoefyFarming) {
       try {
         await shoefy.refresh();
+        await  shoefyFarming.refresh();
         if (!this.readState().looping) {
           return false;
         }
         if (resetCt) {
-          this.updateState({
+          this.updateState
+          ({
             address: this.props.wallet._address,
-            balance: shoefy.balance
+            balance: shoefy.balance,
+						allowance2: shoefyFarming.allowance2            
           });
         } else {
           this.updateState({
             address: this.props.wallet._address,
-            balance: shoefy.balance
+            balance: shoefy.balance,
+						allowance2: shoefyFarming.allowance2
           });
         }
       } catch (e) {
@@ -305,6 +306,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
       this.updateState({
         shoefy: shoefy,
+        ShoefyFarming: ShoefyFarming,
         wallet: wallet,
         looping: true,
         pending: false
@@ -317,10 +319,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       this.updateState({ pending: false });
       this.handleError(e);
     }
-  }
-
-  fun(index,title){
-    console.log("Value of fun:::",index,title);
   }
 
   async disconnectWallet() {
@@ -336,6 +334,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         shoefy: null,
         wallet: null,
         address: null,
+        ShoefyFarming:null,
         looping: false,
         pending: false,
         balance: 0,
@@ -368,18 +367,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.setState({selected: false})
     // this.callApi("general",this._categories)
   }
-
-  // parsePropData(index:number):Array<any>{
-
-  //   if(this.state.propData.length === 0){
-  //       console.log("Value of parsePropData:::",index);  
-  //       return [];
-  //   }else{
-        
-  //       console.log("Value of propData:::DataPresent",this.state.propData,index)
-  //   } 
-
-  // }
 
   render() {
     const state = this.readState();
@@ -568,12 +555,12 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                                     value={numeral(state.balance || 0).format(
                                       "0.00"
                                     )}
-                                    duration="1000"
+                                    duration="500"
                                     formatValue={(value) =>
                                       `${Number(
                                         parseFloat(value).toFixed(2)
                                       ).toLocaleString("en", {
-                                        minimumFractionDigits: 2,
+                                        minimumFractionDigits: 2
                                       })}`
                                     }
                                     className="staking-info"
@@ -666,37 +653,24 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     type="button"
                     onClick={async () => this.confirmStake("Farms")}
                   >
-                    {/* {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'} */}
                     {this.state.currentTab === 'rapid' ? 'Your Rapid Farms':'Your Farms'}
                   </button>
                 </div>
-{/* 
-    // 'General Farming Pools'
-    // 'Rapid Farming Pools'
-    // 'Your Farms' 
-    // 'Your Rapid Farms' */}
-
                   
-    {/* General Farming */}
-    {/* General Farming Pool */}
-    {/* !this.state.show */}
-    
-    {/* {this.state.chooseButton} */}
-
-    {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
-    
-    {/* general false */}
-    {/* rapid true */}
-
-    {/* General Farming */}
-    {/* Your Farms */}
-    {/* !this.state.show */}
-    {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
-                
-    {/* Rapid */}
-    {/* this.state.show */}
-    {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
-    {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
+                 {/* General Farming Pool */}
+                 {( this.state.chooseButton === 'General Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain allowance={this.state.allowance2} balance={numeral(state.balance || 0).format(
+                                                   "0.00")}  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="General Farming Pools"/>))}
+                 
+                 {/* General Farming */}
+                 {/* Your Farms */}
+                 {( this.state.chooseButton === 'Your Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain allowance={this.state.allowance2} balance={numeral(state.balance || 0).format(
+                                                   "0.00")}  data={item} index={index} pending={state.pending}   key={item.title} currentTab={this.state.currentTab} choosenOption="Your Farms"/>))}
+                             
+                 {/* Rapid */}
+                 {(this.state.chooseButton === 'Rapid Farming Pools') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain allowance={this.state.allowance2}  balance={numeral(state.balance || 0).format(
+                                                   "0.00")} data={item} index={index} pending={state.pending}  key={item.title}   currentTab={this.state.currentTab} choosenOption="Rapid Farming Pools"/>))}
+                 {(this.state.chooseButton === 'Your Rapid Farms') && this.state.expandingRow.map((item,index)=>(<ExpandableComponentMain  allowance={this.state.allowance2} balance= {numeral(state.balance || 0).format(
+                                                   "0.00")} data={item} index={index} pending={state.pending}  key={item.title}  currentTab={this.state.currentTab} choosenOption="Your Rapid Farms"/>))}
  
       </div>
   </div>

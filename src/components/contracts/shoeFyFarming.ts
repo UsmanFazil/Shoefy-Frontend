@@ -11,10 +11,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-// export const FarmingAddress = "0x005152D60516D761112A284ec623FB72d6FE12E0";
 export const FarmingAddress = "0x5484d00Ba6a9DE1B4c40942c1620BFFb12091c46";
-
-// 0x5484d00Ba6a9DE1B4c40942c1620BFFb12091c46
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -96,13 +93,9 @@ export class ShoefyFarming {
 		return flag;
 	}
 
-	// farmNFT(bytes32 category_, uint256 farmAmount_, bool generalFarm_)
-	// harvestNFT(uint256[] memory farmIds_,string[] memory tokenURIs_,bytes[] memory signatures_,bool generalFarm_)
-
 	async stakefarmGeneral(amount: number, category: string): Promise<void> {
 		await this.refresh();
 		if (this._balance >= amount) {
-			console.log("value of farmamount", category);
 			await this._farmingContract.methods
 				.farmNFT(category, amount, true)
 				.send({ from: this._wallet.getAddress() });
@@ -142,7 +135,6 @@ export class ShoefyFarming {
 	async stakefarmRapid(amount: number, category: string): Promise<void> {
 		await this.refresh();
 		if (this._balance >= amount) {
-			console.log("value of farmamount", category);
 			await this._farmingContract.methods
 				.farmNFT(category, amount, false)
 				.send({ from: this._wallet.getAddress() });
@@ -194,9 +186,6 @@ export class ShoefyFarming {
 	}
 
 	async harvestApiCall(tabtype?: string, _categoryType?: string,data?:any):Promise<any>{
-		console.log("harvestApiCall:::",tabtype);
-		console.log("harvestApiCall:::",_categoryType);
-		console.log("harvestApiCall:::",data)
 
 		if (tabtype == undefined || _categoryType == undefined){
 			return
@@ -249,7 +238,6 @@ export class ShoefyFarming {
 
 		this._allowance2 =
 			(await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), FarmingAddress).call()) /10 ** 18;
-
 		
 		// const nftData = await requestAPICall(tokenURI).then(res => {
 		// 	// console.log('IPFS Data', res.data)

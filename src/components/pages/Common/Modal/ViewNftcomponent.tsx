@@ -12,14 +12,11 @@ interface ModalProps {
   onClose: () => void;
   type?: string;
   price?: string;
-  category?:string
+  category?:string;
+  description?:string;
+  categoryName?:string;
+  assignedNFT?:string;
 }
-
-
-// title={this.state.nftname}
-// type={this.state.category}
-// price={this.state.price}
-// cardImage={this.state.nftImage}
 
 export const ViewNftcomponent: React.FC<ModalProps> = ({
   title,
@@ -27,8 +24,12 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
   onClose,
   children,
   cardImage,
-  type,price
+  type,price,
+  description,
+  categoryName,
+  assignedNFT
 }) => {
+
   const outsideRef = React.useRef(null);
   const handleCloseOnOverlay = (
     e: React.MouseEvent<HTMLElement, MouseEvent>
@@ -39,8 +40,8 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
   };
   const backgroundColorcheck = "#030843";
 
+
   const Image =`data:image/png;base64,${cardImage}`
-  console.log("Value of category:::",price)
 
   return isOpen ? (
     <div className={"modal"}>
@@ -63,26 +64,19 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
 
           <div className="view_nft_footer_bottom_tag">
 
-          <p className="footer_nft_top_tag_title ">{title}</p>
+          <p className="footer_nft_top_tag_title ">SNFT# {assignedNFT}</p>
           <span className="card__nft__title card__text card__type ">{type}</span>
-
           <p className="view_nft_footer_nft_top_tag set__paragraph ">Price</p>
-
           <p className="view_nft_footer_nft_top_tag card__price ">{price}</p>
-
 
           <p className="card__what">
               What is it?
           </p>
           <p  className="card__description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi culpa,
-            suscipit, accusantium, facere dolorem minima sint odit laudantium
-            iusto aut exercitationem assumenda ipsum molestias! Incidunt tempora
-            illum magni consectetur a!
+            {`${description})`}
           </p>
-            
+
           </div>
-         
         </div>
       </div>
     </div>

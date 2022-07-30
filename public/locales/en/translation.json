@@ -47,7 +47,7 @@
         },
         "Farming": {
             "ApproveTitle": "Approve",
-            "StakeTitle": "Stake",
+            "StakeTitle": "Farm",
             "HarvestTitle": "Harvest",
             "ChooseTitle":"Choose NFT"
         }
@@ -56,13 +56,13 @@
     "NFTFarming": {
         "GeneralFarming": {
             "title": "General Farming",
-            "description": "Stake your SHOE tokens to farm sNFTs of your choice",
-            "amount": "Amount of tokens to stake:",
+            "description": "Lock your SHOE tokens to farm sNFTs of your choice",
+            "amount": "Tokens to Lock",
             "claim_rewards": "Claim rewards"
         },
         "RapidFarming": {
             "title": "Rapid Farming",
-            "description": "Stake extra SHOE tokens to farm sNFTs of your choice in a short duration",
+            "description": "Lock up extra SHOE tokens to farm sNFTs of your choice in a short duration",
             "amount": "Amount of tokens to unstake:",
             "claim_rewards": "Claim rewards"
         }
