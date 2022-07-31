@@ -212,9 +212,7 @@ class CardContainer extends BaseComponent<
   toggleModal = () => {
     this.setState({ isModelOpen: !this.state.isModelOpen });
   };
-
  
-
   // we need
   // image
   // NFT name
@@ -249,7 +247,6 @@ class CardContainer extends BaseComponent<
 
       const farmId = data.farmId;
 
-
       // Logic for deletion
         if(this._selectedNFT.length ==0){
 
@@ -262,6 +259,7 @@ class CardContainer extends BaseComponent<
 
           return 
         }else{
+         
          let flag = false;
          let index1;
 
@@ -288,8 +286,6 @@ class CardContainer extends BaseComponent<
      
         }
 
-        console.log("Value of _selectedNFT",this._selectedNFT)
-    
     } catch (e) {
       this.handleError(e);
     }
@@ -325,9 +321,6 @@ class CardContainer extends BaseComponent<
 
     const constant =
       "115792089237316195423570985008687907853269984665640564039457584007913129639935";
-
-    // const testvalue = constant.toString();
-    // let approve = web3.utils.toWei(testvalue, "ether");
 
     const shoefy = this.readState().shoefy;
 
@@ -414,7 +407,9 @@ class CardContainer extends BaseComponent<
     if (currentAllowence < newValue) {
       NotificationManager.warning(
         `Not enough allowence, kindly approve token first`
-      );}
+      );
+    return 
+  }
 
     if (currentTab === "general") {
       // Stake General NFT
@@ -426,13 +421,24 @@ class CardContainer extends BaseComponent<
         if (state.amount > 0) {
           // if user have enough balance in the account
           if (currentBalance > newValue) {
+         
             // User can't farm more than 10 tokens
-            if (state.amount > 10) {
+            const userLimit = await state.ShoefyFarming.getUserLimit(true,byteValue);
+            if (parseInt(state.amount) > parseInt(userLimit) ) {
               NotificationManager.warning(
-                `One user can farm max. ${this.setCategoryAmount()}  ${
-                  this.props.title
-                }`
-              );
+                `Farm amount exceeding user's farmLimit`);
+
+              this.updateState({ pending: false });
+              this.setState({ amount: 0 });
+              return;
+            }
+
+            // User shouldn't exceed the pool limit
+            const poolLimit = await state.ShoefyFarming.generalFarmsLeft(byteValue);
+
+            if (parseInt(state.amount) > parseInt(poolLimit) ) {
+              NotificationManager.warning(
+                `Farm amount exceeding pool limit`);
 
               this.updateState({ pending: false });
               this.setState({ amount: 0 });
@@ -470,16 +476,27 @@ class CardContainer extends BaseComponent<
 
         if (state.amount >= 0) {
           if (currentBalance > newValue ) {
-            if (state.amount > 10) {
+
+            const userLimit = await state.ShoefyFarming.getUserLimit(false,byteValue);
+
+            if (parseInt(state.amount) > parseInt(userLimit)) {
               NotificationManager.warning(
-                `One user can farm max. ${this.setCategoryAmount()}  ${
-                  this.props.title
-                }`
-              );
+                `Farm amount exceeding user's farmLimit`);
               this.updateState({ pending: false });
               this.setState({ amount: 0 });
               return;
             }
+
+             // User shouldn't exceed the pool limit
+             const poolLimit = await state.ShoefyFarming.rapidFarmsLeft(byteValue);
+             if (parseInt(state.amount) > parseInt(poolLimit) ) {
+               NotificationManager.warning(
+                 `Farm amount exceeding pool limit!!!`);
+ 
+               this.updateState({ pending: false });
+               this.setState({ amount: 0 });
+               return;
+             }
 
             await state.ShoefyFarming.stakefarmRapid(state.amount, byteValue);
             document.getElementById("modalswitch2").click();
@@ -564,7 +581,6 @@ class CardContainer extends BaseComponent<
 
     if (!!shoefyFarming) {
       try {
-        // await shoefyFarming.refresh(this.props.currentTab,this.props.index);
 
         if (resetCt) {
           this.updateState({
@@ -630,12 +646,6 @@ class CardContainer extends BaseComponent<
 
   handleInputStake(type, event) {
     this.setState({ amount: event.target.value });
-
-    // let temp = event.target.value.toString();
-    // console.log("value of temp:::",temp)
-    // if (temp[0] === '0')
-    // 	event.target.value = temp.slice(1, temp.length);
-    // this.setStakeValue(type, event.target.value);
   }
 
   findImage(contractType?: string) {

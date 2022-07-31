@@ -6,16 +6,16 @@ import Card from "./ModalCard";
 import "./ViewNft.css";
 
 interface ModalProps {
-  cardImage:string;
+  cardImage: string;
   title: string;
   isOpen: boolean;
   onClose: () => void;
   type?: string;
   price?: string;
-  category?:string;
-  description?:string;
-  categoryName?:string;
-  assignedNFT?:string;
+  category?: string;
+  description?: string;
+  categoryName?: string;
+  assignedNFT?: string;
 }
 
 export const ViewNftcomponent: React.FC<ModalProps> = ({
@@ -24,12 +24,12 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
   onClose,
   children,
   cardImage,
-  type,price,
+  type,
+  price,
   description,
   categoryName,
-  assignedNFT
+  assignedNFT,
 }) => {
-
   const outsideRef = React.useRef(null);
   const handleCloseOnOverlay = (
     e: React.MouseEvent<HTMLElement, MouseEvent>
@@ -40,8 +40,11 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
   };
   const backgroundColorcheck = "#030843";
 
+  const Image = `data:image/png;base64,${cardImage}`;
 
-  const Image =`data:image/png;base64,${cardImage}`
+  function truncate(str, no_words) {
+    return str.split(" ").splice(0,no_words).join(" ");
+}
 
   return isOpen ? (
     <div className={"modal"}>
@@ -55,27 +58,26 @@ export const ViewNftcomponent: React.FC<ModalProps> = ({
           <img src={Close} alt={"close"} />
         </div>
 
-        <div className={"card_nft"}>
+        <div className={"view_card_nft"}>
           <div className={"card__nft__img"}>
-            <div >
-            <img src={Image} alt="Device" className="ImageBoarder"  />
+            <div>
+              <img src={Image} alt="Device" className="ImageBoarder" />
             </div>
           </div>
 
           <div className="view_nft_footer_bottom_tag">
+            <p className="footer_nft_top_tag_title ">SNFT# {assignedNFT}</p>
+            <span className="card__nft__title card__text card__type ">
+              {type}
+            </span>
+            <p className="view_nft_footer_nft_top_tag set__paragraph ">Price</p>
+            <p className="view_nft_footer_nft_top_tag card__price ">{price}</p>
 
-          <p className="footer_nft_top_tag_title ">SNFT# {assignedNFT}</p>
-          <span className="card__nft__title card__text card__type ">{type}</span>
-          <p className="view_nft_footer_nft_top_tag set__paragraph ">Price</p>
-          <p className="view_nft_footer_nft_top_tag card__price ">{price}</p>
-
-          <p className="card__what">
-              What is it?
-          </p>
-          <p  className="card__description">
-            {`${description})`}
-          </p>
-
+            <p className="card__what">What is it?</p>
+            <p className="card__description">
+              {/* {`${truncate(description, 35)}`}..... */}
+              {description}
+            </p>
           </div>
         </div>
       </div>

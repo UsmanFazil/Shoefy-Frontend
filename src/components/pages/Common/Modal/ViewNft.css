@@ -54,8 +54,8 @@
 
 .modal__nft__box {
 	position: relative;
-	width: 386px !important;
-	height: 628px;
+	width: 654px !important;
+    height: 870px;
 	margin: 0 10%;
 	padding: 20px 80px 80px 20px;
 	/* TRBL */
@@ -63,6 +63,8 @@
 	border-radius: 10px;
 	background-color: #030843;
 	cursor: auto;
+	position: absolute !important;
+    top: 20px !important;
 }
 
 
@@ -124,6 +126,20 @@
 .card__description{
 	max-height: 100px !important;
 }
+
+.view_card_nft {
+	flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 600px;
+    height: 466px;
+    cursor: pointer;
+    position: relative;
+    background-color: #030843;
+}
+
 
 
 .view_nft_footer_bottom_tag{

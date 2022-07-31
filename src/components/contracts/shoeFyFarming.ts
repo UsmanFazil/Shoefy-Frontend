@@ -11,7 +11,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0x5484d00Ba6a9DE1B4c40942c1620BFFb12091c46";
+export const FarmingAddress = "0x5eD4A134362952240e861B0Bc29aeE9826FCa826";
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -26,6 +26,8 @@ export class ShoefyFarming {
 	private _allowance: number = 0;
 	private _allowance2: number = 0;
 	private _balance: number = 0;
+	private _userlimit: number;
+	private _poollimit:number;
 
 	constructor(wallet: Wallet) {
 		this._wallet = wallet;
@@ -155,6 +157,36 @@ export class ShoefyFarming {
 		}
 	}
 
+	async getUserLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
+	const valueReturned = 	await this._farmingContract.methods
+				.getUserLimit(_categoryType, tabtype)
+				.call();
+
+		this._poollimit = valueReturned;
+		return valueReturned
+
+	}
+
+	async generalFarmsLeft( _categoryType?: any):Promise<any>{
+		const valueReturned = 	await this._farmingContract.methods
+					.generalFarmsLeft(_categoryType)
+					.call();
+	
+			this._userlimit = valueReturned;
+			return valueReturned
+	
+		}
+	
+	async rapidFarmsLeft(_categoryType?: any):Promise<any>{
+		const valueReturned = 	await this._farmingContract.methods
+					.getUserLimit(_categoryType)
+					.call();
+	
+			this._poollimit= valueReturned;
+			return valueReturned;
+	
+	}
+
 	async apiCall(tabtype?: string, _categoryType?: string):Promise<any>{
 
 		if (tabtype == undefined || _categoryType == undefined){
@@ -238,6 +270,8 @@ export class ShoefyFarming {
 
 		this._allowance2 =
 			(await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), FarmingAddress).call()) /10 ** 18;
+
+
 		
 		// const nftData = await requestAPICall(tokenURI).then(res => {
 		// 	// console.log('IPFS Data', res.data)
