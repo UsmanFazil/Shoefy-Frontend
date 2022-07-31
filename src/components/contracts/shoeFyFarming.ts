@@ -120,7 +120,6 @@ export class ShoefyFarming {
 	}
 
 		async harvestfarmRapid(farmIds:any, tokenURIs:any, signatures:any): Promise<void> {
-		console.log("Value in rapidfarmGeneral:::",farmIds,tokenURIs,signatures);
 
 			await this.refresh();
 			if (this._balance >0) {
@@ -158,12 +157,41 @@ export class ShoefyFarming {
 	}
 
 	async getUserLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
-	const valueReturned = 	await this._farmingContract.methods
+		console.log("Value of catergory input",tabtype,_categoryType)
+     	const valueReturned = 	await this._farmingContract.methods
 				.getUserLimit(_categoryType, tabtype)
 				.call();
 
-		this._poollimit = valueReturned;
+		const updatedValue = await this._farmingContract.methods.generalFarmsUsed(this._wallet.getAddress(), _categoryType).call();
+		console.log("Value of upated Value",updatedValue);
+
+		this._userlimit = valueReturned;
+		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
 		return valueReturned
+
+	}
+
+	async getUserGeneralLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
+		console.log("Value of catergory input",tabtype,_categoryType)
+
+		const updatedValue = await this._farmingContract.methods.generalFarmsUsed(this._wallet.getAddress(), _categoryType).call();
+		console.log("Value of upated Value",updatedValue);
+
+		this._userlimit = updatedValue;
+		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
+		return updatedValue
+
+	}
+
+	async getUserRapidLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
+		console.log("Value of catergory input",tabtype,_categoryType)
+     	
+		const updatedValue = await this._farmingContract.methods.rapidFarmsUsed(this._wallet.getAddress(), _categoryType).call();
+		console.log("Value of upated Value",updatedValue);
+
+		this._userlimit = updatedValue;
+		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
+		return updatedValue
 
 	}
 
@@ -171,15 +199,17 @@ export class ShoefyFarming {
 		const valueReturned = 	await this._farmingContract.methods
 					.generalFarmsLeft(_categoryType)
 					.call();
+
+		
 	
-			this._userlimit = valueReturned;
+			this._poollimit = valueReturned;
 			return valueReturned
 	
 		}
-	
+		
 	async rapidFarmsLeft(_categoryType?: any):Promise<any>{
 		const valueReturned = 	await this._farmingContract.methods
-					.getUserLimit(_categoryType)
+					.rapidFarmsLeft(_categoryType)
 					.call();
 	
 			this._poollimit= valueReturned;
@@ -193,7 +223,6 @@ export class ShoefyFarming {
 			return
 		}
 
-		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
@@ -227,13 +256,10 @@ export class ShoefyFarming {
 			farmIds:data
 		}
 		  
-		const testAddress = "0x4d23c8E0e601C5e37b062832427b2D62777fAEF9";
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
 		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
-
-		console.log("harvestApiCall:::",apiURL)
 
 		try {
 			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {

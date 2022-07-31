@@ -381,7 +381,6 @@ class CardContainer extends BaseComponent<
         const { message } = resp;
 
         message.forEach((element) => {
-          console.log("Value of each element:::", element);
           this.farmIds.push(element.farmId);
           this.signatures.push(element.sign);
           this.tokenURI.push(element.tokenURIs_);
@@ -400,6 +399,11 @@ class CardContainer extends BaseComponent<
     const currentBalance = parseInt(this.props.balance);
 
     let newValue = value.split(" ")[0] * this.state.amount;
+
+    const categoryuserLimit = this.setCategoryAmount();
+
+    // getUserGeneralLimit
+    // getUserRapidLimit
 
     const state = this.readState();
     const byteValue = this.findImage("byte");
@@ -423,8 +427,13 @@ class CardContainer extends BaseComponent<
           if (currentBalance > newValue) {
          
             // User can't farm more than 10 tokens
-            const userLimit = await state.ShoefyFarming.getUserLimit(true,byteValue);
-            if (parseInt(state.amount) > parseInt(userLimit) ) {
+            const generaluserLimit = await state.ShoefyFarming.getUserGeneralLimit(true,byteValue);
+
+            const remainingLimit = (categoryuserLimit > generaluserLimit ?  (categoryuserLimit-generaluserLimit ): (generaluserLimit- categoryuserLimit))
+
+            // console.log("Value of userLimit",state.amount,generaluserLimit,categoryuserLimit,remainingLimit,typeof(remainingLimit),(parseInt(state.amount) > parseInt(generaluserLimit) ))
+
+            if (parseInt(state.amount) > remainingLimit ) {
               NotificationManager.warning(
                 `Farm amount exceeding user's farmLimit`);
 
@@ -476,10 +485,16 @@ class CardContainer extends BaseComponent<
 
         if (state.amount >= 0) {
           if (currentBalance > newValue ) {
+            
+            const rapiduserLimit = await state.ShoefyFarming.getUserRapidLimit(false,byteValue);
 
-            const userLimit = await state.ShoefyFarming.getUserLimit(false,byteValue);
+            const remainingRapidLimit = (categoryuserLimit > rapiduserLimit ?  (categoryuserLimit-rapiduserLimit ): (rapiduserLimit- categoryuserLimit))
 
-            if (parseInt(state.amount) > parseInt(userLimit)) {
+            // console.log("Value of userLimit",state.amount,rapiduserLimit,categoryuserLimit,remainingRapidLimit,typeof(remainingRapidLimit),(parseInt(state.amount) > parseInt(rapiduserLimit) ))
+
+            const poolLimit = await state.ShoefyFarming.rapidFarmsLeft(byteValue);
+
+            if (parseInt(state.amount) > remainingRapidLimit) {
               NotificationManager.warning(
                 `Farm amount exceeding user's farmLimit`);
               this.updateState({ pending: false });
@@ -488,7 +503,6 @@ class CardContainer extends BaseComponent<
             }
 
              // User shouldn't exceed the pool limit
-             const poolLimit = await state.ShoefyFarming.rapidFarmsLeft(byteValue);
              if (parseInt(state.amount) > parseInt(poolLimit) ) {
                NotificationManager.warning(
                  `Farm amount exceeding pool limit!!!`);
@@ -504,6 +518,9 @@ class CardContainer extends BaseComponent<
             NotificationManager.warning(
               "You don't have enough tokens in your account"
             );
+            this.updateState({ pending: false });
+            this.setState({ amount: 0 });
+            this.updateOnce(true).then();
             return;
           }
         } else {
