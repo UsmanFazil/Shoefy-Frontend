@@ -11,7 +11,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0x5eD4A134362952240e861B0Bc29aeE9826FCa826";
+export const FarmingAddress = "0x5526eaa9627715154AAe74ca28cF7E97D7EaEad4";
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -187,7 +187,7 @@ export class ShoefyFarming {
 		console.log("Value of catergory input",tabtype,_categoryType)
      	
 		const updatedValue = await this._farmingContract.methods.rapidFarmsUsed(this._wallet.getAddress(), _categoryType).call();
-		console.log("Value of upated Value",updatedValue);
+		console.log("Value of upated Value",updatedValue);	
 
 		this._userlimit = updatedValue;
 		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
