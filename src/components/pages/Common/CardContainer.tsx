@@ -428,10 +428,12 @@ class CardContainer extends BaseComponent<
          
             // User can't farm more than 10 tokens
             const generaluserLimit = await state.ShoefyFarming.getUserGeneralLimit(true,byteValue);
+            console.log("Value from blockchain",generaluserLimit);
+
 
             const remainingLimit = (categoryuserLimit > generaluserLimit ?  (categoryuserLimit-generaluserLimit ): (generaluserLimit- categoryuserLimit))
 
-            // console.log("Value of userLimit",state.amount,generaluserLimit,categoryuserLimit,remainingLimit,typeof(remainingLimit),(parseInt(state.amount) > parseInt(generaluserLimit) ))
+            console.log("Value of userLimit",state.amount,generaluserLimit,categoryuserLimit,remainingLimit,typeof(remainingLimit),(parseInt(state.amount) > parseInt(generaluserLimit) ))
 
             if (parseInt(state.amount) > remainingLimit ) {
               NotificationManager.warning(
@@ -488,9 +490,13 @@ class CardContainer extends BaseComponent<
             
             const rapiduserLimit = await state.ShoefyFarming.getUserRapidLimit(false,byteValue);
 
+            console.log("Value from blockchain",rapiduserLimit);
+            console.log("userEntered Amount",state.amount);
+
             const remainingRapidLimit = (categoryuserLimit > rapiduserLimit ?  (categoryuserLimit-rapiduserLimit ): (rapiduserLimit- categoryuserLimit))
 
-            // console.log("Value of userLimit",state.amount,rapiduserLimit,categoryuserLimit,remainingRapidLimit,typeof(remainingRapidLimit),(parseInt(state.amount) > parseInt(rapiduserLimit) ))
+            console.log("Value of amount and remainingRapidLimit minus wali value",remainingRapidLimit )
+            console.log("Value of check",(parseInt(state.amount) > parseInt(rapiduserLimit)))
 
             const poolLimit = await state.ShoefyFarming.rapidFarmsLeft(byteValue);
 
