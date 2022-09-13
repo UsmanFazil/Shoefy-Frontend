@@ -11,7 +11,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0xeba88d7b2a100c58d246c9482aed4b835af0bce0";
+export const FarmingAddress = "0xeba88d7B2A100c58d246c9482AED4B835af0Bce0";
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
