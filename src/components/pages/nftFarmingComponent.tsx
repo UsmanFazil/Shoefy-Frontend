@@ -23,7 +23,7 @@ import styled, { keyframes } from "styled-components";
 import AnimatedNumber from "animated-number-react";
 import {
   NotificationContainer,
-  NotificationManager,
+  NotificationManager
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import { faBars } from "@fortawesome/free-solid-svg-icons";

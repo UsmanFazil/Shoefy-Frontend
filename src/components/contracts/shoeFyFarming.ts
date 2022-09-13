@@ -11,7 +11,7 @@ export const ShoeFyAddress = {
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0x5526eaa9627715154AAe74ca28cF7E97D7EaEad4";
+export const FarmingAddress = "0xeba88d7b2a100c58d246c9482aed4b835af0bce0";
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -107,7 +107,6 @@ export class ShoefyFarming {
 	}
 
 	async harvestfarmGeneral(farmIds:any, tokenURIs:any, signatures:any): Promise<void> {
-		console.log("Value in harvestfarmGeneral:::",farmIds,tokenURIs,signatures);
 		await this.refresh();
 		if (this._balance >0) {
 			
@@ -157,16 +156,13 @@ export class ShoefyFarming {
 	}
 
 	async getUserLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
-		console.log("Value of catergory input",tabtype,_categoryType)
      	const valueReturned = 	await this._farmingContract.methods
 				.getUserLimit(_categoryType, tabtype)
 				.call();
 
 		const updatedValue = await this._farmingContract.methods.generalFarmsUsed(this._wallet.getAddress(), _categoryType).call();
-		console.log("Value of upated Value",updatedValue);
 
 		this._userlimit = valueReturned;
-		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
 		return valueReturned
 
 	}
@@ -184,24 +180,16 @@ export class ShoefyFarming {
 	}
 
 	async getUserRapidLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
-		console.log("Value of catergory input",tabtype,_categoryType)
-     	
 		const updatedValue = await this._farmingContract.methods.rapidFarmsUsed(this._wallet.getAddress(), _categoryType).call();
-		console.log("Value of upated Value",updatedValue);	
 
 		this._userlimit = updatedValue;
-		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
 		return updatedValue
-
 	}
 
 	async generalFarmsLeft( _categoryType?: any):Promise<any>{
 		const valueReturned = 	await this._farmingContract.methods
 					.generalFarmsLeft(_categoryType)
 					.call();
-
-		
-	
 			this._poollimit = valueReturned;
 			return valueReturned
 	
@@ -218,7 +206,7 @@ export class ShoefyFarming {
 	}
 
 	async apiCall(tabtype?: string, _categoryType?: string):Promise<any>{
-
+		console.log("Value inside parameters::::",tabtype,_categoryType)
 		if (tabtype == undefined || _categoryType == undefined){
 			return
 		}
@@ -233,39 +221,56 @@ export class ShoefyFarming {
 			_categoryType
 		}`;
 
-		const returnData =[];
-
 		try {
-			this._userNFTs = await requestAPICall(URL).then((res) => {
+			return this._userNFTs = await requestAPICall(URL).then((res) => {
 				return res.data;
 			});
-			return this._userNFTs;
-
 		} catch (err) {
 			console.log("Value from expandableComponent inside fetchData", err);
 		}
 	}
 
 	async harvestApiCall(tabtype?: string, _categoryType?: string,data?:any):Promise<any>{
-
 		if (tabtype == undefined || _categoryType == undefined){
 			return
 		}
 
+		const sample = [];
+
+		data.forEach(element => {
+			sample.push(element.farmId)
+		});
+
 		const userData = {
-			farmIds:data
+			farmIds:sample
 		}
 		  
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
 		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
-
 		try {
 			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {
-				return res.data;
+				const {data} = res;
+				const {message} = data;
+
+				let farmIdArray = [];
+				let signArray = [];
+				let tokenURIArray = [];
+
+				message.forEach((element) => {
+					farmIdArray.push(element.farmId)
+					signArray.push(element.sign)
+					tokenURIArray.push((element.tokenURI))
+				})
+
+				if(tabtype === 'rapid'){
+				   return this.harvestfarmRapid(farmIdArray,tokenURIArray,signArray)
+				}else{
+				   return this.harvestfarmGeneral(farmIdArray,tokenURIArray,signArray)
+				}
+				
 			});
-			return this._userNFTs;
 
 		} catch (err) {
 			console.log("Value from expandableComponent inside fetchData", err);
