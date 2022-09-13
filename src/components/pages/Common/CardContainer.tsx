@@ -539,42 +539,6 @@ class CardContainer extends BaseComponent<
 
       },5000)
     
-    // if (currentTab === "general") {
-    //   // Harvest General NFT
-    //   try {
-    //     this.updateState({ pending: true });
-    //     await state.ShoefyFarming.harvestfarmGeneral(
-    //       this.farmIds,
-    //       this.tokenURI,
-    //       this.signatures
-    //     );
-    //     this.toggleModal();
-
-    //     this.updateState({ pending: false });
-    //     this.updateOnce(true).then();
-    //   } catch (e) {
-    //     this.updateState({ pending: false });
-    //     this.handleError(e);
-    //   }
-    // } else {
-    //   // Harvest Rapid NFT
-    //   try {
-    //     const state = this.readState();
-    //     this.updateState({ pending: true });
-    //     await state.ShoefyFarming.harvestfarmRapid(
-    //       this.farmIds,
-    //       this.tokenURI,
-    //       this.signatures
-    //     );
-    //     this.toggleModal();
-
-    //     this.updateState({ pending: false });
-    //     this.updateOnce(true).then();
-    //   } catch (e) {
-    //     this.updateState({ pending: false });
-    //     this.handleError(e);
-    //   }
-    // }
   }
 
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
