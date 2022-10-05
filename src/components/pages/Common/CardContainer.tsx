@@ -791,7 +791,6 @@ class CardContainer extends BaseComponent<
   handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     // No longer need to cast to any - hooray for react!
     this.setState({ amount: e.target.value });
-    console.log("Value of amount", this.state.amount);
   }
 
   checkClassName = (data?: any) => {
@@ -815,7 +814,6 @@ class CardContainer extends BaseComponent<
     const nftData = this.props.farmingData?.message?.result || [];
 
     if (nftData.length > 0) {
-
     }
 
     const lockPeriod = true;
@@ -999,13 +997,13 @@ class CardContainer extends BaseComponent<
                             cardTitle={
                               nftData[index].currentLayer == 0
                                 ? "Character"
-                                : "Phoenix"
+                                : nftData[index].shoeType
                             }
                             cardType={this.props.nftType}
                             cardSubtitle={
                               nftData[index].currentLayer == 0
                                 ? "Mystery"
-                                : "Fire"
+                                : nftData[index]?.description.split(" ")[0]
                             }
                             backgroundColor={
                               nftData[index].currentLayer == 0 ? "Mystery" : ""
@@ -1050,7 +1048,7 @@ class CardContainer extends BaseComponent<
                                     this.props.stakeAmount.split(" ")[0],
                                     nftData[index].currentLayer == 0
                                       ? "Character"
-                                      : "Phoenix",
+                                      : nftData[index].shoeType,
                                       nftData[index]?.description,
                                       nftData[index]?.assignedNFT
                                   )
@@ -1132,13 +1130,13 @@ class CardContainer extends BaseComponent<
                               cardTitle={
                                 nftData[index + 2].currentLayer == 0
                                   ? "Character"
-                                  : "Phoenix"
+                                  : nftData[index+2].shoeType
                               }
                               cardType={this.props.nftType}
                               cardSubtitle={
                                 nftData[index + 2].currentLayer == 0
                                   ? "Mystery"
-                                  : "Fire"
+                                  : nftData[index+2]?.description.split(" ")[0]
                               }
                               backgroundColor={
                                 nftData[index + 2].currentLayer == 0
@@ -1174,7 +1172,7 @@ class CardContainer extends BaseComponent<
                             )}
                           
                           {/* change here */}
-                          {nftData[index +2]?.mintStatus === "Minted" && (
+                          {nftData[index+2]?.mintStatus === "Minted" && (
                               <button
                                 type="button"
                                 className={
@@ -1186,9 +1184,9 @@ class CardContainer extends BaseComponent<
                                     nftData[index+2]?.categoryName,
                                     this.props.nftType,
                                     this.props.stakeAmount.split(" ")[0],
-                                    nftData[index].currentLayer == 0
+                                    nftData[index+2].currentLayer == 0
                                       ? "Character"
-                                      : "Phoenix",
+                                      : nftData[index+2].shoeType,
                                       nftData[index+2]?.description,
                                       nftData[index+2]?.assignedNFT
                                   )
@@ -1225,13 +1223,13 @@ class CardContainer extends BaseComponent<
                               cardTitle={
                                 nftData[index + 6].currentLayer == 0
                                   ? "Character"
-                                  : "Phoenix"
+                                  : nftData[index+6].shoeType
                               }
                               cardType={this.props.nftType}
                               cardSubtitle={
                                 nftData[index + 6].currentLayer == 0
                                   ? "Mystery"
-                                  : "Fire"
+                                  : nftData[index+6]?.description.split(" ")[0]
                               }
                               backgroundColor={
                                 nftData[index + 6].currentLayer == 0
@@ -1281,7 +1279,7 @@ class CardContainer extends BaseComponent<
                                     this.props.stakeAmount.split(" ")[0],
                                     nftData[index].currentLayer == 0
                                       ? "Character"
-                                      : "Phoenix",
+                                      : nftData[index+6].shoeType,
                                       nftData[index+6]?.description,
                                       nftData[index+6]?.assignedNFT
                                   )
@@ -1303,22 +1301,7 @@ class CardContainer extends BaseComponent<
                     alt="Device"
                     className="noDataAvalible"
                   />
-                  {/* <button
-                              className="btn btn-md link-dark"
-                              style={{
-                                width: "100%",
-                                backgroundColor: "#CF3279",
-                                margin: 0,
-                                color: "white",
-                              }}
-                              type="button"
-                              disabled={state.pending}
-                              onClick={async () =>
-                                this.toggleModal2()
-                              }
-                            >
-                              Open
-                            </button> */}
+                
                 </div>
               )}
             </div>

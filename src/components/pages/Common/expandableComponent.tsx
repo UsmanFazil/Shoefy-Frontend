@@ -191,7 +191,6 @@ class expandableComponent extends BaseComponent<
       const urlValue = window.location.hash;
       const hash = urlValue.replace("#", "");
       const wallet = this.props.wallet;
-      console.log("Value of wallet:::expandable component",wallet)
       const shoefyFarming = new ShoefyFarming(wallet);
       const { title } = this.props.data;
 
@@ -262,7 +261,6 @@ class expandableComponent extends BaseComponent<
     if (!!shoefyFarming) {
       try {
        const value =  await shoefyFarming.refresh();
-        console.log("Value of shoefyFarming",value);
         if (resetCt) {
           // this.updateState({
           //   userData: shoefyFarming.userNFTs,
