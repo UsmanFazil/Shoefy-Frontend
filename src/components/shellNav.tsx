@@ -154,7 +154,7 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 									this.props.wallet.setChainId(Number(e.target.value));
 									this.disconnectWallet();
 								}}>
-								<option value={4}>Rinkeby Testnet</option>
+								<option value={5}>Goerli Testnet</option>
                                     <option value={97}>BSC Testnet</option>
                                     <option value={56}>BSC Mainnet</option>
 							</select>

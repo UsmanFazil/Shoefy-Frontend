@@ -4,7 +4,7 @@ import WalletConnectProvider from '@walletconnect/web3-provider';
 import { Contract } from 'web3-eth-contract';
 
 export class Wallet {
-	private _chainId: number = 4;
+	private _chainId: number = 5;
 	private _address: string = null;
 	private _provider: any = null;
 	private web3Modal = new Web3Modal({

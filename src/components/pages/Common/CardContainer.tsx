@@ -765,7 +765,7 @@ class CardContainer extends BaseComponent<
         const chainid = Number(
           await window.ethereum.request({ method: "eth_chainId" })
         );
-        if (chainid === 56 || chainid === 4 || chainid === 97)
+        if (chainid === 56 || chainid === 5 || chainid === 97)
           this.props.wallet.setChainId(Number(chainid));
         this.connectWallet();
       }

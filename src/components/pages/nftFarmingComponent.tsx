@@ -199,7 +199,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
         const chainid = Number(
           await window.ethereum.request({ method: "eth_chainId" })
         );
-        if (chainid === 56 || chainid === 4 || chainid === 97)
+        if (chainid === 56 || chainid === 5 || chainid === 97)
           this.props.wallet.setChainId(Number(chainid));
           this.connectWallet();
       }
@@ -439,7 +439,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
                     this.disconnectWallet();
                   }}
                 >
-                  <option value={4}>Rinkeby Testnet</option>
+                  <option value={5}>Goerli Testnet</option>
                   <option value={97}>BSC Testnet</option>
                   <option value={56}>BSC Mainnet</option>
                 </select>

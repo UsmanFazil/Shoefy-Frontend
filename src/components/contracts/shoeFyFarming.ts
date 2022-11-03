@@ -6,12 +6,12 @@ import Web3 from "web3";
 import { requestAPICall,requestAPICallBody } from "../../helpers/apiService";
 
 export const ShoeFyAddress = {
-	4: "0x8F973d1C33194fe773e7b9242340C3fdB2453b49",
+	4: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
 	97: "0x4c687a9158F31321aD76eC7185C458201B375582",
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
 
-export const FarmingAddress = "0xeba88d7B2A100c58d246c9482AED4B835af0Bce0";
+export const FarmingAddress = "0x1ee67B31BFdf4cF2F52E14D38894f3b8d03cB314";
 
 export class ShoefyFarming {
 	private readonly _wallet: Wallet;
@@ -87,11 +87,9 @@ export class ShoefyFarming {
 
 	// Need this
 	async approve(amount: string): Promise<void> {
-		console.log("Value of shoefyStaking approve:::", amount);
 		let flag = await this._shoeFyContract.methods
 			.approve(FarmingAddress, amount)
 			.send({ from: this._wallet.getAddress() });
-		console.log("Value of _shoeFyContract approve", this._shoeFyContract);
 		return flag;
 	}
 
@@ -168,13 +166,10 @@ export class ShoefyFarming {
 	}
 
 	async getUserGeneralLimit(tabtype?: boolean, _categoryType?: any):Promise<any>{
-		console.log("Value of catergory input",tabtype,_categoryType)
 
 		const updatedValue = await this._farmingContract.methods.generalFarmsUsed(this._wallet.getAddress(), _categoryType).call();
-		console.log("Value of upated Value",updatedValue);
 
 		this._userlimit = updatedValue;
-		console.log("Value of this._wallet.getAddress()",this._wallet.getAddress(),tabtype,_categoryType)
 		return updatedValue
 
 	}
@@ -206,7 +201,6 @@ export class ShoefyFarming {
 	}
 
 	async apiCall(tabtype?: string, _categoryType?: string):Promise<any>{
-		console.log("Value inside parameters::::",tabtype,_categoryType)
 		if (tabtype == undefined || _categoryType == undefined){
 			return
 		}
