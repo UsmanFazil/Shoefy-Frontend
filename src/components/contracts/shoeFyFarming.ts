@@ -6,7 +6,7 @@ import Web3 from "web3";
 import { requestAPICall,requestAPICallBody } from "../../helpers/apiService";
 
 export const ShoeFyAddress = {
-	4: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
+	5: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
 	97: "0x4c687a9158F31321aD76eC7185C458201B375582",
 	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
 };
