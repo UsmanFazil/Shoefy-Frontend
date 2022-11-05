@@ -5,7 +5,7 @@ import * as web3 from 'web3-utils';
 import { requestAPICall } from '../../helpers/apiService';
 import Web3 from 'web3';
 
-export const ShoeFyAddress = "0x8F973d1C33194fe773e7b9242340C3fdB2453b49";
+export const ShoeFyAddress = "0x296ae8ED976B246003a09fD16Fd0BF7574533017";
 export const ShoeFyNFTAddress = "0x72DbF51BC4Dc948DA21e6790b4935521f86483D1";
 export const NFTStakingAddress = "0x31831F9f0a5C95Ce7b0E547C7e9eb8442E92C760";
 

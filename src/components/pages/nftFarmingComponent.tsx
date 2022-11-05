@@ -10,8 +10,6 @@ import { Modal } from "./Common/Modal/Modal.component";
 
 import {ShoefyFarming } from "../contracts/shoeFyFarming";
 
-import { Shoefy } from "../contracts/shoefy";
-
 import {
   WithTranslation,
   withTranslation,
@@ -61,7 +59,6 @@ interface TableView {
 
 export type FarmingState = {
   data: TableView[];
-  shoefy?: Shoefy;
   ShoefyFarming?: ShoefyFarming;
   wallet?: Wallet;
   looping?: boolean;
@@ -166,7 +163,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     if (!!this._timeout) {
       clearTimeout(this._timeout);
     }
-    this.updateState({ shoefy: null, looping: false });
+    this.updateState({ ShoefyFarming: null, looping: false });
   }
 
   async componentDidMount() {
@@ -213,9 +210,7 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
 
     if(prevState.currentTab != hash){
       if(hash == 'rapid'){
-            // this.callApi(hash,this._categories.slice(0, 3))
       }else{
-          //  this.callApi(hash,this._categories)
       }
     }
   }
@@ -257,14 +252,14 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
   }
 
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
-    const shoefy = this.readState().shoefy;
+  //  const shoefy = this.readState().shoefy;
 
     const wallet = this.props.wallet;
     const shoefyFarming = new ShoefyFarming(wallet);
 
-    if (!!shoefy && !!shoefyFarming) {
+    if (!!shoefyFarming) {
       try {
-        await shoefy.refresh();
+        // await shoefy.refresh();
         await  shoefyFarming.refresh();
         if (!this.readState().looping) {
           return false;
@@ -273,13 +268,13 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
           this.updateState
           ({
             address: this.props.wallet._address,
-            balance: shoefy.balance,
+            balance: shoefyFarming.balance,
 						allowance2: shoefyFarming.allowance2            
           });
         } else {
           this.updateState({
             address: this.props.wallet._address,
-            balance: shoefy.balance,
+            balance: shoefyFarming.balance,
 						allowance2: shoefyFarming.allowance2
           });
         }
@@ -302,10 +297,10 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       if (!result) {
         throw "The wallet connection was cancelled.";
       }
-      const shoefy = new Shoefy(wallet);
+
+      const shoefyFarming = new ShoefyFarming(wallet);
 
       this.updateState({
-        shoefy: shoefy,
         ShoefyFarming: ShoefyFarming,
         wallet: wallet,
         looping: true,
@@ -331,7 +326,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
       }
 
       this.updateState({
-        shoefy: null,
         wallet: null,
         address: null,
         ShoefyFarming:null,
@@ -354,7 +348,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.setState({ currentTab:'rapid' });
     this.setState({selected: false})
 
-    // this.callApi("rapid",this._categories.slice(0, 3))
   }
 
   onGeneral(){
@@ -365,7 +358,6 @@ class nftFarmingComponent extends BaseComponent<StakingProps & WithTranslation,F
     this.setState({ chooseButton:  'General Farming Pools' });
     this.setState({ currentTab:'general'});
     this.setState({selected: false})
-    // this.callApi("general",this._categories)
   }
 
   render() {

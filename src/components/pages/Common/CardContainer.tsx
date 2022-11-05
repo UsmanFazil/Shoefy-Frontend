@@ -7,8 +7,6 @@ import { Wallet } from "../../wallet";
 import { withWallet } from "../../walletContext";
 
 import { ShoefyFarming } from "../../contracts/shoeFyFarming";
-import { Shoefy } from "../../contracts/shoefy";
-
 import { fadeInLeft, fadeInRight, pulse } from "react-animations";
 import styled, { keyframes } from "styled-components";
 import AnimatedNumber from "animated-number-react";
@@ -106,7 +104,6 @@ export type StakingProps = {
 
 export type StakingState = {
   // ShoefyFarming
-  shoefy?: Shoefy;
   ShoefyFarming?: ShoefyFarming;
   wallet?: Wallet;
   looping?: boolean;
@@ -283,25 +280,6 @@ class CardContainer extends BaseComponent<
     }
   };
 
-  setStakeValue(step, value) {
-    const r = this.readState().ShoefyFarming;
-    if (!r) return;
-
-    const t = r.balance;
-    const v = value;
-
-    const temp = this.readState().ctValueStake2;
-
-    temp[step] = v;
-
-    this.updateState({
-      ctPercentageStake: Math.floor((100 * v) / t),
-      ctValueStake2: temp,
-    });
-
-    this.setState({ amount: temp });
-  }
-
   async confirmApprove(): Promise<void> {
     const currentBalance = this.props.balance;
 
@@ -313,8 +291,6 @@ class CardContainer extends BaseComponent<
 
     const constant =
       "115792089237316195423570985008687907853269984665640564039457584007913129639935";
-
-    const shoefy = this.readState().shoefy;
 
     // if user doesn't have enough balance
     if (currentBalance <= 0) {
@@ -543,7 +519,6 @@ class CardContainer extends BaseComponent<
 
   private async updateOnce(resetCt?: boolean): Promise<boolean> {
     const shoefyFarming = this.readState().ShoefyFarming;
-    const shoefy = this.readState().shoefy;
 
     const value = this.findImage();
 
@@ -560,7 +535,6 @@ class CardContainer extends BaseComponent<
             balance: shoefyFarming.balance,
             allowance: shoefyFarming.allowance,
             allowance2: shoefyFarming.allowance2,
-            balance: shoefy.balance,
           });
         } else {
           this.updateState({
@@ -571,7 +545,6 @@ class CardContainer extends BaseComponent<
             stakedBalance2: shoefyFarming.stakedBalance2,
             allowance: shoefyFarming.allowance,
             allowance2: shoefyFarming.allowance2,
-            balance: shoefy.balance,
           });
         }
       } catch (e) {

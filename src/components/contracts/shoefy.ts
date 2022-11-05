@@ -6,29 +6,30 @@ import { Contract } from 'web3-eth-contract';
 import * as web3 from 'web3-utils';
 import Web3 from 'web3';
 export const ShoeFyAddress = {
-	4: "0x8F973d1C33194fe773e7b9242340C3fdB2453b49",
-	97: "0x4c687a9158F31321aD76eC7185C458201B375582",
-	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC"
+	5: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
+	97: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
+	56: "0x296ae8ED976B246003a09fD16Fd0BF7574533017"
 };
 export const StakingAddress = "0x86bdb4ea03f1b5158229c8fd15dca51310dc4661";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
 
 export const Staking2Address = {
-	4: "0x5a73c86898fe04d4e92eb1b8ed206ba695ffa96e",
+	5: "0x5a73c86898fe04d4e92eb1b8ed206ba695ffa96e",
 	97: "0x9c43e0274f7182d592fb132157ee0d22a8bb3cc4",
 	56: "0x799dae1a15f75184700b0cE7DBD74Db6f0699973",
 	1 : ""
 };
 
 export const NFTAddress = {
-	4: "0x55ce195424f478f87c69dc158112ebdb285e140c",
+	5: "0x55ce195424f478f87c69dc158112ebdb285e140c",
 	97: "0x3129997dc8e9efd0d36749f6a9c62b0c85fc9fa8"
 }
 
 export const SaleAddress = {
-	4: "0x55a0451bc9f9d214bf5a7107e71f81138b26dc25",
+	5: "0x55a0451bc9f9d214bf5a7107e71f81138b26dc25",
 	97: "0xcb2ef1dd6a8ff15d6f5dc7dd8df247adf3045988"
 }
+
 export class Shoefy {
 	private readonly _wallet: Wallet;
 	private readonly _contract: Contract;
@@ -55,7 +56,9 @@ export class Shoefy {
 	private _allowance: number = 0;
 	private _allowance2: number = 0;
 	private _tokencaps2: any = [];
+	
 	constructor(wallet: Wallet) {
+		console.log("Both running")
 		this._wallet = wallet;
 		// this._stakingContract = wallet.connectToContract(StakingAddress, require('./staking.abi.json'));
 		this._shoeFyContract = wallet.connectToContract(ShoeFyAddress[this._wallet.getChainId()], require('./shoefy.abi.json'));

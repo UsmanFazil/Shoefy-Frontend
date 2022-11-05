@@ -1,7 +1,5 @@
 import React from "react";
 import Close from "../ExpandableImage/close.svg";
-import image from "../../../../images/CommonNFT.svg";
-import Card from "./ModalCard";
 
 import "./ViewNft.css";
 

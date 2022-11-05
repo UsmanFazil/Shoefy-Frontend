@@ -7,8 +7,8 @@ import { requestAPICall,requestAPICallBody } from "../../helpers/apiService";
 
 export const ShoeFyAddress = {
 	5: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
-	97: "0x4c687a9158F31321aD76eC7185C458201B375582",
-	56: "0xc0F42b31D154234A0A3eBE7ec52c662101C1D9BC",
+	97: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
+	56: "0x296ae8ED976B246003a09fD16Fd0BF7574533017",
 };
 
 export const FarmingAddress = "0x1ee67B31BFdf4cF2F52E14D38894f3b8d03cB314";
@@ -30,12 +30,15 @@ export class ShoefyFarming {
 	private _poollimit:number;
 
 	constructor(wallet: Wallet) {
+		console.log("Both running")
+
 		this._wallet = wallet;
 		// this._stakingContract = wallet.connectToContract(StakingAddress, require('./staking.abi.json'));
 		this._shoeFyContract = wallet.connectToContract(
 			ShoeFyAddress[this._wallet.getChainId()],
 			require("./shoefy.abi.json")
 		);
+
 		this._farmingContract = wallet.connectToContract(
 			FarmingAddress,
 			require("./shoeFyFarming.abi.json")
@@ -207,8 +210,7 @@ export class ShoefyFarming {
 
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
-
-		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
+		const apiURL = "http://3.120.204.209:3001/api/auth/getFarms/userAddress/";
 
 		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
 			"/category/" +
@@ -242,7 +244,7 @@ export class ShoefyFarming {
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
-		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
+		const apiURL = `http://3.120.204.209:3001/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
 		try {
 			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {
 				const {data} = res;
@@ -276,6 +278,8 @@ export class ShoefyFarming {
 		let web3 = new Web3(window.ethereum);
 		let balance_eth = await web3.eth.getBalance(this._wallet.getAddress());
 
+		console.log("Value of balance_eth",balance_eth);
+
 		//Math to 3 decimals
 		const truncateByDecimalPlace = (value, numDecimalPlaces) =>
 			Math.trunc(value * Math.pow(10, numDecimalPlaces)) /
@@ -292,6 +296,8 @@ export class ShoefyFarming {
 					10 ** 12
 			) /
 			10 ** 6;
+
+		console.log("Value of whatever:::",this._balance)
 
 		this._allowance2 =
 			(await this._shoeFyContract.methods.allowance(this._wallet.getAddress(), FarmingAddress).call()) /10 ** 18;
