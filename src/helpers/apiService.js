@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 export const requestAPICall = async (url) => {
+  console.log("Value of reuestAPICallBody:::",url)
   return await axios.get(url)
 }
 

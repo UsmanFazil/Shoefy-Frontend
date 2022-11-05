@@ -210,7 +210,7 @@ export class ShoefyFarming {
 
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
-		const apiURL = "http://3.120.204.209:3001/api/auth/getFarms/userAddress/";
+		const apiURL = "http://3.120.204.209:3000/api/auth/getFarms/userAddress/";
 
 		const URL = `${	apiURL +userAddress +"/typeNFT/" +tabtype +
 			"/category/" +
@@ -244,7 +244,7 @@ export class ShoefyFarming {
 		let web3 = new Web3(window.ethereum);
 		const userAddress = this._wallet.getAddress();
 
-		const apiURL = `http://3.120.204.209:3001/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
+		const apiURL = `http://3.120.204.209:3000/api/auth/getSigns/userAddress/${userAddress}/typeNFT/${tabtype}/category/${_categoryType}`;
 		try {
 			this._userNFTs = await requestAPICallBody(apiURL,userData).then((res) => {
 				const {data} = res;
